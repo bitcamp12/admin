@@ -1,0 +1,84 @@
+body{
+	font-family: Arial, sans-serif;
+	white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+/* 헤더 스타일링 */
+header {
+	background-color: white;
+	border-bottom: 1px solid #E5E7EB;
+	box-shadow: 0 4px 6px -1px rgba(107, 70, 193, 0.05);
+}
+
+/* 사이드바 기본 스타일 */
+.nav-transition {
+	transition: all 0.3s ease;
+	background: linear-gradient(to bottom, #ffffff, #FAFAFA);
+	box-shadow: 1px 0 10px rgba(107, 70, 193, 0.08);
+	padding: 0;
+}
+
+/* ul 태그 스타일 수정 */
+.nav-transition ul {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem; /* 메뉴 간격 */
+}
+
+.nav-transition ul li {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+/* 사이드바 네비게이션 아이템 */
+.nav-item {
+	font-family: Arial, sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 0.875rem 1.5rem; /* 패딩 조정 */
+	color: #6B7280;
+	transition: all 0.2s ease;
+	border-radius: 8px;
+	margin: 0.25rem 0.75rem; /* 마진 조정 */
+	width: calc(100% - 1.5rem); /* 너비 조정 */
+	position: relative;
+	height: 3rem;
+}
+
+.nav-item:hover {
+	background: #BE97EC;
+	color: white;
+	transform: translateY(-1px);
+	box-shadow: 0 2px 4px rgba(139, 92, 246, 0.1);
+}
+
+/* 사이드바 아이콘 */
+.nav-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	opacity: 1.2;
+}
+
+/* 축소된 사이드바 스타일 */
+.nav-hidden {
+	width: 4.5rem;
+}
+
+.nav-hidden .nav-item {
+	justify-content: center;
+	padding: 0.875rem;
+	margin: 0 auto;
+	width: 3.5rem;
+}
+
+.nav-hidden .menu-text {
+	display: none;
+}
