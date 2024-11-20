@@ -39,3 +39,10 @@ mybatis:
     # 스네이크 케이스와 카멜 케이스 매핑을 자동으로 처리
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/**/*Mapper.xml  # MyBatis 매퍼 파일 경로 설정
+
+ncp:
+  accessKey: 45ACB51A1BAE3E46F3F8
+  secretKey: 92678775703FF4ABA952C6FB668A4D4EBDCB42DD
+  regionName: kr-standard
+  endPoint: https://kr.object.ncloudstorage.com
+  bucketName: bitcamp-9th-bucket-135
