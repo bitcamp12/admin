@@ -1,140 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title> 공연 정보 등록</title>
-<script th:src="@{/static/js/playRegisterForm.js}"></script>
+<title>공연 정보 등록</title>
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+<link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
 </head>
 <body>
-<div class="container mt-5">
-        <form>
+<div class="container">
+		<div class="title">공연 정보 수정</div>
+        <form class="row g-3 needs-validation" id="playRegisterForm" novalidate>
             <!-- 공연명 -->
             <div class="mb-3">
-                <label for="performanceName" class="form-label">공연명</label>
-                <input type="text" class="form-control" id="performanceName" placeholder="공연명을 입력하세요">
+                <label for="play_name" class="form-label">공연명</label>
+                <input type="text" class="form-control" id="play_name" name= "play_name" placeholder="공연명을 입력하세요" required>
+                <div class="invalid-feedback">공연명을 입력해 주세요.</div>
             </div>
             
-            <!-- 공연 설명 -->
-			<div class="mb-3">
-			    <label for="performanceDescription" class="form-label">공연 설명</label>
-			    <textarea class="form-control" id="performanceDescription" rows="4" placeholder="공연 설명을 입력하세요"></textarea>
-			</div>
+            <!-- 공연 시작 및 종료 날짜 -->
+            <div class="mb-3 row" style="padding : 0">
+                <div class="col">
+                    <label for="start_date" class="form-label">공연 기간 시작일</label>
+                    <input type="date" class="form-control" id="start_date" style="width: 250px;" required>
+                    <div class="invalid-feedback">공연 시작 날짜를 입력해 주세요.</div>
+                </div>
+                <div class="col">
+                    <label for="end_date" class="form-label">공연 기간 종료일</label>
+                    <input type="date" class="form-control" id="end_date" style="width: 250px;" required>
+                    <div class="invalid-feedback">공연 종료 날짜를 입력해 주세요.</div>
+                    <div id="end_date_invalid-feedback"> </div>
+                </div>
+            </div>
+		    <!-- 상영관 타입 등록 -->
+            <div class="mb-3">
+                <label for="venueSelect" class="form-label">상영관 타입 선택</label>
+                <select class="form-select" id="venueSelect" required>
+                    <option selected disabled value="">상영관을 선택하세요</option>
+                    <option value="venue1">A타입</option>
+                    <option value="venue2">B타입</option>
+                    <option value="venue3">C타입</option>
+                </select>
+                <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
+            </div>
+
+            <!-- 총 출연진 등록 -->
+            <div class="mb-3">
+                <label for="total_actor" class="form-label">총 출연진</label>
+                <input type="text" class="form-control" id="total_actor" name="total_actor" placeholder="출연진을 입력하세요." required>
+                <div class="invalid-feedback">출연진을 입력해 주세요.</div>
+            </div>
+
+            <!-- 공연포스터 이미지 업로드 -->
+            <div class="mb-3">
+                <label for="posterUpload" class="form-label">공연포스터 등록</label>
+                <input type="file" class="form-control" id="posterUpload" accept="image/*" onchange="previewImage()" required>
+                <div class="invalid-feedback">공연 포스터를 업로드해 주세요.</div>
+            </div>
             
-			<!-- 공연 시작 및 종료 날짜 -->
-			<div class="mb-3 row">
-			    <div class="col">
-			        <label for="startDate" class="form-label">공연시작날짜</label>
-			        <input type="date" class="form-control" id="startDate" style="width: 250px;">
-			    </div>
-			    <div class="col">
-			        <label for="endDate" class="form-label">공연종료날짜</label>
-			        <input type="date" class="form-control" id="endDate" style="width: 250px;">
-			    </div>
-			</div>
-
-            <!-- 공연시간 -->
-            <div class="mb-3">
-                <label for="performanceDate" class="form-label">공연시간</label>
-                <div class="input-group">
-                    <button type="button" class="btn btn-outline-secondary">날짜 선택</button>
-                    <input type="date" class="form-control" id="performanceDate">
-                </div>
+            <!-- 공연포스터 이미지 미리보기 -->
+            <div class="mb-3 text-center">
+                <img id="posterPreview" class="rounded-custom" src="" alt="이미지 미리보기" style="display: none; max-width: 100%; height: auto; margin-top: 10px;">
+                <div id="posterPreviewMsg"></div>
             </div>
 
-            <!-- 할인시작, 할인종료 -->
-            <div class="mb-3 row">
-                <div class="col">
-                    <label for="discountStart" class="form-label">할인시작</label>
-                    <input type="time" class="form-control" id="discountStart">
-                </div>
-                <div class="col">
-                    <label for="discountEnd" class="form-label">할인종료</label>
-                    <input type="time" class="form-control" id="discountEnd">
-                </div>
+            <!-- 네이버 스마트에디터 2.0 API -->
+            <div id="smarteditor">
+                <textarea name="description" id="editorTxt" rows="40" cols="10" style="width: 100%; height: 500px;" placeholder="내용을 입력해주세요." required></textarea>
             </div>
 
-            <!-- 최소할인율, 최대할인율 -->
-            <div class="mb-3 row">
-                <div class="col">
-                    <label for="minDiscount" class="form-label">최소할인율</label>
-                    <input type="number" class="form-control" id="minDiscount" placeholder="%">
-                </div>
-                <div class="col">
-                    <label for="maxDiscount" class="form-label">최대할인율</label>
-                    <input type="number" class="form-control" id="maxDiscount" placeholder="%">
-                </div>
-            </div>
-
-			<!-- 공연 위치 등록 -->
-			<div class="mb-3 row">
-			    <div class="col-auto">
-			        <label for="zipcode" class="form-label">우편번호</label>
-			        <div class="input-group">
-			            <input type="text" class="form-control" id="zipcode" placeholder="우편번호 입력" style="width: 150px;">
-			            <button type="button" class="btn btn-outline-secondary">주소 찾기</button>
-			        </div>
-			    </div>
-			    <div class="col">
-			        <label for="address" class="form-label">상세주소</label>
-			        <input type="text" class="form-control" id="address" placeholder="상세주소 입력">
-			    </div>
+           <div class="form-footer">
+				<button type="submit" class="btn btn-primary">수정</button>
+				<button type="reset" class="btn btn-secondary"
+					onclick="noticeClearPreview()">초기화</button>
 			</div>
-			
-			<!-- 상영관 타입 등록 -->
-			<div class="mb-3">
-			    <label for="venueSelect" class="form-label">상영관 타입 선택</label>
-			    <select class="form-select" id="venueSelect">
-			        <option selected>상영관을 선택하세요</option>
-			        <option value="venue1">A타입</option>
-			        <option value="venue2">B타입</option>
-			        <option value="venue3">C타입</option>
-			        <!-- 필요에 따라 옵션을 추가하세요 -->
-			    </select>
-			</div>
-			
-            <!-- 출연진 등록-->
-            <div class="mb-3">
-                <label for="performanceName" class="form-label">출연진</label>
-                <input type="text" class="form-control" id="performanceName" placeholder="출연진을 입력하세요.">
-            </div>
-			
-	        <!-- 공연포스터 등록 -->
-	        <div class="mb-3">
-	            <label for="posterUpload" class="form-label">공연포스터 등록</label>
-	            <input type="file" class="form-control" id="posterUpload" accept="image/*" onchange="previewImage()">
-	        </div>
-	        <div class="mb-3 text-center">
-	            <img id="posterPreview" class="rounded-custom"  src="" alt="이미지 미리보기" style="display: none; max-width: 100%; height: auto; margin-top: 10px;">
-	            <div id="posterPreviewMsg"> </div>
-	        </div>
-			<div class="mb-3 text-center">
-			    <!-- 수정 버튼 -->
-			    <button type="submit" class="btn btn-primary">수정</button>
-			    <!-- 다시 입력 버튼 -->
-			    <button type="reset" class="btn btn-secondary">다시 입력</button>
-			</div>
-			</form>
-	    </div>
-
-<script type="text/javascript">
-function previewImage() {
-    const fileInput = document.getElementById('posterUpload');
-    const preview = document.getElementById('posterPreview');
-    
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-        document.getElementById("posterPreviewMsg").innerHTML = "<p style='font-color: grey;'> 포스터 미리보기 </p>";
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-}
-</script>
+        </form>
+    </div>
 </body>
+<script type="text/javascript">
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+</script>
+<script th:src="@{/static/js/playUpdate.js}"></script>
+<script th:src="@{/static/js/writeForm.js}"></script>
+
 </html>

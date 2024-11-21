@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.NoticeDTO;
-import com.example.demo.objectstorage.ObjectStorageService;
+import com.example.demo.objectstorage.NCPObjectStorageService;
 import com.example.demo.service.NoticeService;
 import com.example.demo.util.ApiResponse;
 
@@ -21,7 +21,7 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	@Autowired
-	private ObjectStorageService objectStorageService;
+	private NCPObjectStorageService objectStorageService;
 	
 	
 	@PostMapping
@@ -42,6 +42,7 @@ public class NoticeController {
 			//이미지 처리
 			if (image != null && !image.isEmpty()) {
 				//이미지 파일 저장 및 파일명 생성
+				System.out.println(objectStorageService);
 				String imageFileName = objectStorageService.uploadFile(image);
 				String originalFilename = image.getOriginalFilename();
 				
