@@ -9,10 +9,12 @@
 </head>
 <body>
 	<div class="container">
-		<h1>공지사항 목록</h1>
-		<div class="search-container">	
-			<input type="text" placeholder="검색"> 
-			<input type="button" value="검색">
+	
+		<div class="title">공지사항 목록</div>
+		
+		<div class="search-bar">
+			<input type="text" id="search" placeholder="검색">
+			<button onclick="performSearch()">검색</button>
 		</div>
 		<table>
 			<thead>
@@ -26,29 +28,29 @@
 			</thead>
 			<tbody>
 				<!-- 공지사항 목록 출력 -->
-				<tr>
+				<tr onclick="loadBodyForm('noticeDetail?seq=1')">
 					<td>1</td>
 					<td>공지사항 1</td>
 					<td>2024-11-19</td>
 					<td>2024-11-19</td>
 					<td>Y</td>
 				</tr>
-				<tr>
-				<td>2</td>
+				<tr onclick="loadBodyForm('noticeDetail?seq=2')">
+					<td>2</td>
 					<td>공지사항 2</td>
 					<td>2024-11-19</td>
 					<td>2024-11-19</td>
 					<td>Y</td>
 				</tr>
-				<tr>
-				<td>3</td>
+				<tr onclick="loadBodyForm('noticeDetail?seq=3')">
+					<td>3</td>
 					<td>공지사항 3</td>
 					<td>2024-11-19</td>
 					<td>2024-11-19</td>
 					<td>Y</td>
 				</tr>
-				<tr>
-				<td>4</td>
+				<tr onclick="loadBodyForm('noticeDetail?seq=4')">
+					<td>4</td>
 					<td>공지사항 4</td>
 					<td>2024-11-19</td>
 					<td>2024-11-19</td>
@@ -56,18 +58,13 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="text-end">
-			<a href="/notice/write" class="btn">글쓰기</a>
+		<div class="pagination">
+			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
+			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
 		</div>
-		 <div class="pagination">
-	        <a href="#">&laquo;</a> <!-- Previous page -->
-	        <a href="#" class="active">1</a>
-	        <a href="#">2</a>
-	        <a href="#">3</a>
-	        <a href="#">4</a>
-	        <a href="#">5</a>
-	        <a href="#">&raquo;</a> <!-- Next page -->
-    	</div>
+		<div class="text-end">
+			<a class="btn" onclick="loadBodyForm('noticeWriteForm')">글쓰기</a>
+		</div>
 	</div>
 </body>
 </html>
