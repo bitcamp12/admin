@@ -45,7 +45,10 @@ public class SellerController {
     	return "/seller/body/qnaList";  
     }
     
-
+    @GetMapping("/timeRegisterForm")
+    public String timeRegisterForm(Model model) {
+    	return "/seller/body/timeRegisterForm";  
+    }
 
     
 }
