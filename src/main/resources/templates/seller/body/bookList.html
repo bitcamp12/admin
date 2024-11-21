@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/static/js/common_bootstrap.js}"></script>
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+</head>
+<body>
+	<div class="container">
+		<div class="title">예매 관리</div>
+		<div class="search-bar">
+			<input type="text" placeholder="검색">
+			<button type="button">검색</button>
+			<select class="form-select w-auto col-md-4" aria-label="정렬">
+					<option selected value="1">공연명↑</option>
+					<option value="2">공연명↓</option>
+					<option value="3">최신등록순</option>
+					<option value="4">할인율순</option>
+			</select>
+		</div>
+			<table>
+				<thead >
+					 <tr>
+	                    <th>사용자ID</th>
+	                    <th>공연명</th>
+	                    <th>공연일</th>
+	                    <th>공연장</th>
+	                    <th>예매번호</th>
+	                    <th>예매일</th>
+	                    <th>좌석번호</th>
+	                    <th>결제금액</th>
+	                    <th>취소가능여부</th>
+	                </tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>example1</td>
+						<td>누가 죄인인가</td>
+						<td>2024.12.25 17:00</td>
+						<td>A타입</td>
+						<td>14513</td>
+						<td>2024.12.25 16:35</td>
+						<td>A01</td>
+						<td>11500원</td>
+						<td ><button type="button"
+								class="custom-btn">가능</button>
+						</td>
+					</tr>
+							<tr>
+						<td>example1</td>
+						<td>누가 죄인인가</td>
+						<td>2024.12.25 17:00</td>
+						<td>A타입</td>
+						<td>14513</td>
+						<td>2024.12.25 16:35</td>
+						<td>A01</td>
+						<td>11500원</td>
+						<td ><button type="button"
+								class="custom-btn-disable">확정</button>
+						</td>
+					</tr>
+					<!-- 추가 행은 필요에 따라 추가 -->
+				</tbody>
+			</table>
+		<div class="pagination">
+			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
+			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		</div>
+</body>
+</html>

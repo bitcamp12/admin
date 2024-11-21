@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PlayDTO {
-
 	private int playSeq;
 	private String name;
 	private LocalDateTime startTime;
@@ -19,6 +18,4 @@ public class PlayDTO {
 	private String imageOriginalFileName;
 	private String description;
 	private String address;
-	private String totalActor;
-	
 }
