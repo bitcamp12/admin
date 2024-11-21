@@ -31,6 +31,26 @@
                     <div id="end_date_invalid-feedback"> </div>
                 </div>
             </div>
+
+            <!-- 공연 위치 등록 - 우편 API-->
+            <!-- 
+            <div class="mb-3 row">
+                <div class="col-auto">
+                    <label for="zipcode" class="form-label">공연장 등록</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="postcode" name="postcode" placeholder="우편번호" style="width: 100px;" required>
+                        <div class="invalid-feedback">우편번호를 입력해 주세요.</div>
+                    	<input type="button"  class="btn btn-outline-secondary" onclick="daumPostCodeSearch()" value="우편번호 찾기"><br>
+                    </div>
+                </div>
+                <div class="col">
+                    <label for="address" class="form-label">상세주소</label>
+                    <input type="text" name="address" class="form-control" id="address" placeholder="상세주소 입력" required>
+                    <div class="invalid-feedback">상세 주소를 입력해 주세요.</div>
+                </div>
+            </div>
+            -->
+            
 		    <!-- 상영관 타입 등록 -->
             <div class="mb-3">
                 <label for="venueSelect" class="form-label">상영관 타입 선택</label>
@@ -77,23 +97,80 @@
     </div>
 </body>
 <script type="text/javascript">
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
+document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
+	event.preventDefault(); // 기본 제출 방지
+
+    var form = this;
+
+    // 브라우저 기본 유효성 검사
+    /*
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated'); // 부트스트랩 유효성 스타일 추가
+        return; // 유효성 실패 시 중단
+    }
+	*/
+	
+    // 유효성 통과 후 AJAX 요청
+    var formData = {
+        play_name: document.getElementById('play_name').value,
+        start_date: document.getElementById('start_date').value,
+        end_date: document.getElementById('end_date').value,
+        description: document.getElementById('description').value,
+        total_actor: document.getElementById('total_actor').value
+    };
+
+    $.ajax({
+        type: 'post',
+        url: '/api/playTimeTables/playRegisterWrite',
+        data: JSON.stringify(formData),
+        contentType: 'application/json; charset=utf-8',
+        success: function() {
+            location.href = '/secure/seller/index';
+        },
+        error: function(error) {
+            console.log('에러 발생:', error);
+        }
+    });
+});
+
+function previewImage() {
+    const fileInput = document.getElementById('posterUpload');
+    const preview = document.getElementById('posterPreview');
+    
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+    }
+}
+
+
+function smartEditor() {
+	// 네이버 스마트 에디터 2.0 API 
+	let oEditors = [];
+	
+    console.log("Naver SmartEditor");
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",
+        sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+    });
+}
+
+$(document).ready(function() {
+    smartEditor();
+});
 </script>
+</body>
 <script th:src="@{/static/js/playRegisterForm.js}"></script>
 <script th:src="@{/static/js/writeForm.js}"></script>
-
 </html>
