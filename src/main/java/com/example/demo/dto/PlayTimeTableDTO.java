@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,12 +11,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlayTimeTableDTO {
 	private int playTimeTableSeq;
-	private int playSeq;
+	private int play_seq;
+	private int theater_seq;
 	private String start_time;
 	private String end_time;
 	private String start_dis_time;
 	private String end_dis_time;
 	private int min_rate;
 	private int max_rate;
-	private LocalDateTime target_date;
+	private LocalDate target_date;
 }

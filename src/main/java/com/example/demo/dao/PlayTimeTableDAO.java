@@ -12,8 +12,8 @@ import com.example.demo.dto.PlayTimeTableDTO;
 @Mapper
 public interface PlayTimeTableDAO {
 
-	@Insert("INSERT INTO PLAY_TIME_TABLE (playSeq, start_time, end_time, start_dis_time, end_dis_time, min_rate, max_rate,target_date )"
-			+ " VALUES(#{play_seq}, #{start_time}, #{end_time}, #{start_dis_time}, #{end_dis_time}, #{min_rate}, #{max_rate}, #{target_date})")
+	@Insert("INSERT INTO PLAY_TIME_TABLE (play_seq, theater_seq, start_time, end_time, start_dis_time, end_dis_time, min_rate, max_rate, target_date)"
+							+ " VALUES(#{play_seq}, #{theater_seq}, #{start_time}, #{end_time}, #{start_dis_time}, #{end_dis_time}, #{min_rate}, #{max_rate}, #{target_date})")
 	public void timeRegisterWrite(PlayTimeTableDTO playTimeTableDTO);
 
 	@Select("SELECT play_seq, name, start_time, end_time FROM PLAY ORDER BY START_TIME")
