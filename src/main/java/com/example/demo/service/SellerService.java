@@ -11,7 +11,4 @@ public class SellerService {
 	@Autowired 
 	SellerDAO sellerDAO;
 	
-	public void playReg(SellerDTO sellerDTO) {
-		sellerDAO.playReg(sellerDTO);
-	}
 }
