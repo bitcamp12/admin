@@ -72,7 +72,7 @@
 				<button type="submit" class="btn btn-primary">수정</button>
 				<button type="reset" class="btn btn-secondary"
 					onclick="noticeClearPreview()">초기화</button>
-				<button onclick="loadBodyForm('playList')" class="btn btn-primary">목록</button>		
+				<button type="button" onclick="loadBodyForm('playList')" class="btn btn-primary">목록</button>		
 			</div>
         </form>
     </div>
@@ -93,6 +93,22 @@
         });
     }, false);
 })();
+function smartEditor() {
+	// 네이버 스마트 에디터 2.0 API 
+	let oEditors = [];
+	
+    console.log("Naver SmartEditor");
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",
+        sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+    });
+}
+
+$(document).ready(function() {
+    smartEditor();
+});
 </script>
 <script th:src="@{/static/js/playUpdate.js}"></script>
 <script th:src="@{/static/js/writeForm.js}"></script>

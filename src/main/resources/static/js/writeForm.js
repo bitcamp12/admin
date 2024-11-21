@@ -1,5 +1,4 @@
 $(document).ready(function() {
-	loadDaumPostcodeScript();
 
 	// 할인율 유효성 체크
 	$('#maxDiscountInput').focusout(validateDiscounts);
