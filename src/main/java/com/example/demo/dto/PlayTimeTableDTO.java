@@ -10,13 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PlayTimeTableDTO {
-
 	private int playTimeTableSeq;
 	private int playSeq;
-	private int theaterSeq;
-	private LocalDateTime startTime;
-	private LocalDateTime endTime;
-	private LocalDateTime minRate;
-	private LocalDateTime maxRate;
-	private LocalDateTime targetDate;
+	private String start_time;
+	private String end_time;
+	private String start_dis_time;
+	private String end_dis_time;
+	private int min_rate;
+	private int max_rate;
+	private LocalDateTime target_date;
 }

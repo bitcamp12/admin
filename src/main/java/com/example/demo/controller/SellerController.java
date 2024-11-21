@@ -1,14 +1,23 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.demo.dto.PlayDTO;
+import com.example.demo.service.PlayService;
 
 //Seller = 공연 관계자
 @Controller
 @RequestMapping(value="/secure/seller")
 public class SellerController {
+    
+	@Autowired
+	private PlayService playService;
 
 	@GetMapping("/index")
 	public String index(Model model) {
@@ -45,11 +54,11 @@ public class SellerController {
     	return "/seller/body/qnaList";  
     }
     
+    // 공연 시간 등록
     @GetMapping("/timeRegisterForm")
     public String timeRegisterForm(Model model) {
     	return "/seller/body/timeRegisterForm";  
     }
-
     
 }
 
