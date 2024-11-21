@@ -4,10 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.PlayDAO;
+import com.example.demo.dto.PlayDTO;
 
 @Service
 public class PlayService {
 
 	@Autowired
 	private PlayDAO playDAO;
+
+	public void playRegister(PlayDTO playDTO) {
+		playDAO.playRegister(playDTO);
+	}
 }
