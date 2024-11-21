@@ -13,7 +13,7 @@ import com.example.demo.service.MemberService;
 import com.example.demo.service.PlayService;
 
 @RestController
-@RequestMapping(value="/api/play")
+@RequestMapping(value="/api/plays")
 public class PlayController {
     
 	@Autowired
@@ -24,6 +24,6 @@ public class PlayController {
 	
     @PostMapping("/playRegisterWrite")
     public void playRegisterWrite(@RequestBody PlayDTO playDTO) {
-        playService.playRegister(playDTO);
+        playService.playRegisterWrite(playDTO);
     }
 }
