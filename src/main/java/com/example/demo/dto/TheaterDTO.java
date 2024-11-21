@@ -8,10 +8,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class TheaterDTO {
-
 	private int theaterSeq;
 	private int seatX;
 	private int seatY;
 	private String name;
-	
 }

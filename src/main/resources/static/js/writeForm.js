@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    smartEditor();
 	loadDaumPostcodeScript();
 
 	// 할인율 유효성 체크
@@ -17,7 +16,6 @@ $(document).ready(function() {
 	// 할인시간 유효성 체크
 	$('#start_dis_time').focusout(validateDisTime);
 	$('#end_dis_time').focusout(validateDisTime);
-
 });
 
 
@@ -165,52 +163,6 @@ function validateDiscounts() {
 	}
 };
 
-
-// 네이버 스마트 에디터 2.0 API 
-let oEditors = [];
-
-function smartEditor() {
-    console.log("Naver SmartEditor");
-    nhn.husky.EZCreator.createInIFrame({
-        oAppRef: oEditors,
-        elPlaceHolder: "editorTxt",
-        sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
-        fCreator: "createSEditor2"
-    });
-}
-
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-	
-
-	// 글쓰기 버튼 클릭 액션 - 폼제출
-	$('#playRegisterBtn').click(function(){
-		$.ajax({
-			type: 'post',
-			url: '/playRegisterWrite',
-			data: $('#writeForm').serialize(), //변수=값&변수=값...
-			success: function(){
-				location.href='/seller/index';
-			},
-			error: function(e){
-				console.log(e);
-			}
-		});//$.ajax
-	});
-	
-})();
 
 
 // 포스터 이미지 미리보기 

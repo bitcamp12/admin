@@ -19,9 +19,6 @@ public class PlayController {
 	@Autowired
 	private PlayService playService;
 	
-	@Autowired
-	MemberService memberService;
-	
     @PostMapping("/playRegisterWrite")
     public void playRegisterWrite(@RequestBody PlayDTO playDTO) {
         playService.playRegisterWrite(playDTO);

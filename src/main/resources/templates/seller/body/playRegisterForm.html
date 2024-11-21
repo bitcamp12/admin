@@ -36,6 +36,7 @@
             </div>
 
             <!-- 공연 위치 등록 - 우편 API-->
+            <!-- 
             <div class="mb-3 row">
                 <div class="col-auto">
                     <label for="zipcode" class="form-label">공연장 등록</label>
@@ -51,18 +52,7 @@
                     <div class="invalid-feedback">상세 주소를 입력해 주세요.</div>
                 </div>
             </div>
-
-            <!-- 상영관 타입 등록 -->
-            <div class="mb-3">
-                <label for="venueSelect" class="form-label">상영관 타입 선택</label>
-                <select class="form-select" id="venueSelect" required>
-                    <option selected disabled value="">상영관을 선택하세요</option>
-                    <option value="venue1">A타입</option>
-                    <option value="venue2">B타입</option>
-                    <option value="venue3">C타입</option>
-                </select>
-                <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
-            </div>
+            -->
 
             <!-- 총 출연진 등록 -->
             <div class="mb-3">
@@ -91,7 +81,7 @@
 
             <div class="mb-3 text-center">
                 <!-- 등록 버튼 -->
-                <button class="btn btn-primary" id="playRegisterBtn" type="button">등록</button>
+                <button class="btn btn-primary" id="playRegisterBtn" type="submit">등록</button>
                 <!-- 다시 입력 버튼 -->
                 <button type="reset" class="btn btn-secondary">다시입력</button>
             </div>
@@ -99,24 +89,42 @@
     </div>
 
 <script type="text/javascript">
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
-</script>
+document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
+	event.preventDefault(); // 기본 제출 방지
 
-<script type="text/javascript">
+    var form = this;
+
+    // 브라우저 기본 유효성 검사
+    /*
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated'); // 부트스트랩 유효성 스타일 추가
+        return; // 유효성 실패 시 중단
+    }
+	*/
+	
+    // 유효성 통과 후 AJAX 요청
+    var formData = {
+        play_name: document.getElementById('play_name').value,
+        start_date: document.getElementById('start_date').value,
+        end_date: document.getElementById('end_date').value,
+        description: document.getElementById('description').value,
+        total_actor: document.getElementById('total_actor').value
+    };
+
+    $.ajax({
+        type: 'post',
+        url: '/api/playTimeTables/playRegisterWrite',
+        data: JSON.stringify(formData),
+        contentType: 'application/json; charset=utf-8',
+        success: function() {
+            location.href = '/secure/seller/index';
+        },
+        error: function(error) {
+            console.log('에러 발생:', error);
+        }
+    });
+});
+
 function previewImage() {
     const fileInput = document.getElementById('posterUpload');
     const preview = document.getElementById('posterPreview');
@@ -135,6 +143,24 @@ function previewImage() {
         preview.style.display = 'none';
     }
 }
+
+
+function smartEditor() {
+	// 네이버 스마트 에디터 2.0 API 
+	let oEditors = [];
+	
+    console.log("Naver SmartEditor");
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",
+        sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+    });
+}
+
+$(document).ready(function() {
+    smartEditor();
+});
 </script>
 </body>
 </html>
