@@ -12,7 +12,7 @@ public class PlayService {
 	@Autowired
 	private PlayDAO playDAO;
 
-	public void playRegister(PlayDTO playDTO) {
-		playDAO.playRegister(playDTO);
+	public void playRegisterWrite(PlayDTO playDTO) {
+		playDAO.playRegisterWrite(playDTO);
 	}
 }
