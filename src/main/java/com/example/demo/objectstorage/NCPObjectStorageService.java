@@ -43,6 +43,8 @@ public class NCPObjectStorageService implements ObjectStorageService {
 
 	@Override
 	public String uploadFile(MultipartFile img) {
+		System.out.println("--------uploadfile 인식 불가!!----------------------");
+		System.out.println(img);
 		try(InputStream inputStream = img.getInputStream()) {
 			String imageFileName = UUID.randomUUID().toString();
 			//String imageFileName = img.getOriginalFilename();
