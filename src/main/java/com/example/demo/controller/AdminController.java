@@ -46,4 +46,22 @@ public class AdminController {
      	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
          return "admin/body/noticeWriteForm";  // index.html 템플릿을 렌더링
      }
+    
+    @GetMapping("/noticeUpdateForm")
+  	public String noticeUpdateForm(Model model) {
+      	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+          return "admin/body/noticeUpdateForm";  // index.html 템플릿을 렌더링
+      }
+    
+    @GetMapping("/reviewAfterList")
+  	public String reviewAfterList(Model model) {
+      	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+          return "admin/body/reviewAfterList";  // index.html 템플릿을 렌더링
+      }
+    
+    @GetMapping("/reviewBeforeList")
+  	public String reviewBeforeList(Model model) {
+      	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+          return "admin/body/reviewBeforeList";  // index.html 템플릿을 렌더링
+      }
 }

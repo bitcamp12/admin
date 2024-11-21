@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>공연 정보 등록</title>
+<<<<<<< HEAD
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/static/js/common_bootstrap.js}"></script>
 <script th:src="@{/static/js/playRegisterForm.js}"></script>
@@ -12,6 +13,15 @@
 <body>
 <div class="container mt-5">
         <form class="row g-3 needs-validation" id="timeRegisterForm" novalidate>
+=======
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+<link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
+</head>
+<body>
+<div class="container">
+		<div class="title">공연 시간표 등록</div>
+        <form class="row g-3 needs-validation" novalidate>
+>>>>>>> 408f87ed95005efa31e9fc7a28bfb8e24b8e6011
             <!-- 공연명 -->
             <div class="mb-3">
                 <label for="play_name" class="form-label">공연명</label>
@@ -30,14 +40,13 @@
             <div class="mb-3">
                 <label for="performanceDate" class="form-label">관람일</label>
                 <div class="input-group">
-                    <button type="button" class="btn btn-outline-secondary">날짜 선택</button>
                     <input type="date" class="form-control" name="target_date" id="performanceDate" required>
                     <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
                 </div>
             </div>
 
             <!-- 공연시작, 공연종료 -->
-            <div class="mb-3 row">
+            <div class="mb-3 row" style="padding : 0">
                 <div class="col">
                     <label for="start_time" class="form-label">공연 시작 시간</label>
                     <input type="time" class="form-control" name="start_time" id="start_time" required>
@@ -52,7 +61,7 @@
             </div>
 			
             <!-- 할인시작, 할인종료 -->
-            <div class="mb-3 row">
+            <div class="mb-3 row" style="padding : 0">
                 <div class="col">
                     <label for="start_dis_time" class="form-label">할인 시작 시간</label>
                     <input type="time" class="form-control" name="start_dis_time"  id="start_dis_time" required>
@@ -67,7 +76,7 @@
             </div>
             
             <!-- 최소할인율, 최대할인율 -->
-            <div class="mb-3 row">
+            <div class="mb-3 row" style="padding : 0">
                 <div class="col">
                     <label for="minDiscount" class="form-label">최소 할인율</label>
                     <input type="number" class="form-control" id="minDiscountInput" name="min_rate" min="0" max="99" placeholder="%" required>
@@ -81,7 +90,7 @@
                     <div id="max_discount_invalid-feedback"> </div>
                 </div>
             </div>
-            
+
            <!-- 상영관 타입 등록 -->
             <div class="mb-3">
                 <label for="theater" class="form-label">상영관 타입 선택</label>
@@ -92,12 +101,11 @@
                 <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
             </div>
 
-            <div class="mb-3 text-center">
-                <!-- 등록 버튼 -->
-                <button class="btn btn-primary" id="timeRegisterBtn" type="submit">등록</button>
-                <!-- 다시 입력 버튼 -->
-                <button type="reset" class="btn btn-secondary">다시입력</button>
-            </div>
+            <div class="form-footer">
+				<button type="submit" class="btn btn-primary">등록</button>
+				<button type="reset" class="btn btn-secondary"
+					onclick="noticeClearPreview()">초기화</button>
+			</div>
         </form>
     </div>
 
@@ -183,5 +191,7 @@ $(document).ready(function() {
 	theaterListSelect(); // 상영관 불러오기
 });
 </script>
+<script th:src="@{/static/js/playRegisterForm.js}"></script>
+<script th:src="@{/static/js/writeForm.js}"></script>
 </body>
 </html>

@@ -10,13 +10,12 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class NoticeDTO {
-
 	private int noticeSeq;
 	private String title;
 	private String content;
 	private LocalDateTime createdDate;
 	private LocalDateTime updatedDate;
-	private String hide; // 'Y' or 'N'
-	private String imageFileName;
-	private String imageOriginalFileName;
+	private String hide; // 'Y' or 'N'(숨김여부)
+	private String imageFileName;  // 저장될 파일명
+	private String imageOriginalFileName;  //원본 파일명
 }

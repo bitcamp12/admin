@@ -60,11 +60,6 @@ public class SellerController {
     	return "/seller/body/timeRegisterForm";  
     }
     
-    @PostMapping("/playRegisterWrite")
-    public void playRegisterWrite(@RequestBody PlayDTO playDTO) {
-        playService.playRegisterWrite(playDTO);
-    }
-    
 }
 
 /*
