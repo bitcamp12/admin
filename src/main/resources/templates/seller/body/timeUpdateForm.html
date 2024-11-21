@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>공연 시간표 등록</title>
+<title>공연 정보 수정</title>
 <link rel="stylesheet" th:href="@{/static/css/common.css}">
 <link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
 </head>
 <body>
 <div class="container">
-		<div class="title">공연 시간표 등록</div>
+		<div class="title">공연 시간표 수정</div>
         <form class="row g-3 needs-validation" novalidate>
             <!-- 공연명 -->
             <div class="mb-3">
@@ -90,10 +90,10 @@
             </div>
 
             <div class="form-footer">
-				<button type="submit" class="btn btn-primary">등록</button>
+				<button type="submit" class="btn btn-primary">수정</button>
 				<button type="reset" class="btn btn-secondary"
 					onclick="noticeClearPreview()">초기화</button>
-				<button onclick="loadBodyForm('timeList')" class="btn btn-primary">목록</button>		
+					<button onclick="loadBodyForm('timeList')" class="btn btn-primary">목록</button>			
 			</div>
         </form>
     </div>
