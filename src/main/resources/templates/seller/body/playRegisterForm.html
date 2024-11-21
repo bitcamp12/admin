@@ -98,6 +98,7 @@
     </div>
 </body>
 <script type="text/javascript">
+var oEditors = [];
 document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
 	event.preventDefault(); // 기본 제출 방지
 
@@ -110,19 +111,20 @@ document.getElementById('playRegisterForm').addEventListener('submit', function(
         return; // 유효성 실패 시 중단
     }
 	*/
+	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
 	
     // 유효성 통과 후 AJAX 요청
     var formData = {
         play_name: document.getElementById('play_name').value,
         start_date: document.getElementById('start_date').value,
         end_date: document.getElementById('end_date').value,
-        description: document.getElementById('description').value,
+        description: document.getElementById("editorTxt").value,
         total_actor: document.getElementById('total_actor').value
     };
 
     $.ajax({
         type: 'post',
-        url: '/api/playTimeTables/playRegisterWrite',
+        url: '/api/plays/playRegisterWrite',
         data: JSON.stringify(formData),
         contentType: 'application/json; charset=utf-8',
         success: function() {
@@ -156,7 +158,6 @@ function previewImage() {
 
 function smartEditor() {
 	// 네이버 스마트 에디터 2.0 API 
-	let oEditors = [];
 	
     console.log("Naver SmartEditor");
     nhn.husky.EZCreator.createInIFrame({
