@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원 관리</title>
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+</head>
+<body>
+	<div class="container">
+		<div class="title">기대평 관리</div>
+
+		<!-- 검색 -->
+		<div class="search-bar">
+			<input type="text" id="search" placeholder="검색">
+			<button onclick="performSearch()">검색</button>
+		</div>
+
+		<!-- 테이블 -->
+		<table>
+			<thead>
+				<tr>
+					<th>구분</th>
+					<th>아이디</th>
+					<th>작성자</th>
+					<th>공연명</th>
+					<th>내용</th>
+					<th>작성 날짜</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>gw7191</td>
+					<td>홍길동</td>
+					<td>겨울 왕국</td>
+					<td>추워요</td>
+					<td>2024-01-01</td>
+					<td ><button type="button"
+								class="custom-btn" data-bs-toggle="modal" data-bs-target="#confirmModal">
+						삭제</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- 모달 -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="confirmModalLabel">기대평 삭제</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        정말로 삭제하시겠습니까?
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
+		        <button type="button" class="custom-btn" id="confirmDeleteBtn">삭제</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- 페이징 -->
+		<div class="pagination">
+			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
+			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		</div>
+	</div>
+
+	<script>
+		function performSearch() {
+			const searchValue = document.getElementById('search').value;
+			alert(`검색어: ${searchValue}`);
+			// 실제 검색 로직은 추가 구현 필요
+		}
+	</script>
+</body>
+</html>

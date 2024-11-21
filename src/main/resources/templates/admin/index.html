@@ -61,10 +61,15 @@
 								<i class="fas fa-clipboard-list"></i>
 							</div> <span class="menu-text ml-3 font-medium">공지사항 목록</span>
 					</span></li>
-					<li><span id="reviewList" class="nav-item">
+					<li><span id="reviewBeforeList" class="nav-item">
 							<div class="nav-icon">
 								<i class="fas fa-list-alt"></i>
-							</div> <span class="menu-text ml-3 font-medium">리뷰 관리</span>
+							</div> <span class="menu-text ml-3 font-medium">기대평 관리</span>
+					</span></li>
+					<li><span id="reviewAfterList" class="nav-item">
+							<div class="nav-icon">
+								<i class="fas fa-list-alt"></i>
+							</div> <span class="menu-text ml-3 font-medium">관람평 관리</span>
 					</span></li>
 					<li><span id="chatting" class="nav-item">
 							<div class="nav-icon">
@@ -75,6 +80,11 @@
 							<div class="nav-icon">
 								<i class="fas fa-chart-line"></i>
 							</div> <span class="menu-text ml-3 font-medium">이용자 분석</span>
+					</span></li>
+					<li><span id="noticeUpdateForm" class="nav-item">
+							<div class="nav-icon">
+								<i class="fas fa-chart-line"></i>
+							</div> <span class="menu-text ml-3 font-medium">테스트</span>
 					</span></li>
 				</ul>
 			</div>
@@ -87,6 +97,7 @@
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script th:src="@{/static/js/admin_index.js}"></script>
 	<script>
 document.addEventListener('DOMContentLoaded', function(){
     const sidebar = document.getElementById('sidebar');
@@ -112,57 +123,15 @@ document.addEventListener('DOMContentLoaded', function(){
 	 loadClickEvent('memberList');
 	 loadClickEvent('sellerList');
 	 loadClickEvent('noticeList');
-	 loadClickEvent('reviewList');
+	 loadClickEvent('reviewBeforeList');
+	 loadClickEvent('reviewAfterList');
 	 loadClickEvent('chatting');
 	 loadClickEvent('analysis');
-    
+	 loadClickEvent('noticeUpdateForm');
 });
 
-//타임리프 body 불러오기
-function loadClickEvent(elementId, url) {
-    document.getElementById(elementId).addEventListener('click', function() {
-        const mainContent = document.getElementById('mainContent');
-        fetch('/secure/admin/'+elementId) // Fetch the content from the server
-            .then(response => response.text())
-            .then(html => {
-                mainContent.innerHTML = html; // Update the main content
-            });
-    });
-}
 
-function loadBodyForm(elementId) {
-     const mainContent = document.getElementById('mainContent');
-     fetch('/secure/admin/'+elementId) // Fetch the content from the server
-         .then(response => response.text())
-         .then(html => {
-             mainContent.innerHTML = html; // Update the main content
-         });
-}
-// 공지 사항 이미지 미리보기 함수
-function noticePreviewImage(event) {
-	const input = event.target;
-	const preview = document.getElementById('imagePreview');
-
-	if (input.files && input.files[0]) {
-		const reader = new FileReader();
-
-		reader.onload = function(e) {
-			preview.src = e.target.result;
-			preview.style.display = 'block'; // 미리보기 이미지 보이게 설정
-		};
-
-		reader.readAsDataURL(input.files[0]);
-	}
-}
-
-// 미리보기 초기화 함수
-function noticeClearPreview() {
-	const preview = document.getElementById('imagePreview');
-	const imageInput = document.getElementById('image');
-	preview.src = '';
-	preview.style.display = 'none';
-	imageInput.value = '';
-}	
 </script>
+
 </body>
 </html>
