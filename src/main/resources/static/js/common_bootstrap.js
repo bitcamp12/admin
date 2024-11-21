@@ -9,7 +9,7 @@ window.onload = function() {
 	// Bootstrap Refine CSS 추가
 	var refineCSS = document.createElement('link');
 	refineCSS.rel = 'stylesheet';
-	refineCSS.href = '../../static/css/bootstrap_refine.css';
+	refineCSS.href = '/static/css/bootstrap_refine.css';
 	document.head.appendChild(refineCSS);
 	
 	// Bootstrap JS 추가
