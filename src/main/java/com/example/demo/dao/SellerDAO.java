@@ -6,5 +6,4 @@ import com.example.demo.dto.SellerDTO;
 
 @Mapper
 public interface SellerDAO {
-	public void playReg(SellerDTO sellerDTO);
 }
