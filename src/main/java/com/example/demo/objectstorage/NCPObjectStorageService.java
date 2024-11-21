@@ -43,7 +43,7 @@ public class NCPObjectStorageService implements ObjectStorageService {
 
 	@Override
 	public String uploadFile(MultipartFile img) {
-		System.out.println("--------uploadfile 인식 불가!!----------------------");
+        System.out.println("Starting file upload 과정 시작...");
 		System.out.println(img);
 		try(InputStream inputStream = img.getInputStream()) {
 			String imageFileName = UUID.randomUUID().toString();
@@ -52,6 +52,11 @@ public class NCPObjectStorageService implements ObjectStorageService {
 			ObjectMetadata objectMetadata = new ObjectMetadata();
 			objectMetadata.setContentType(img.getContentType());
 			
+            // 업로드 전 로그
+            System.out.println("bucket 업로딩중...: " + naverConfiguration.getBucketName());
+            System.out.println("폴더 위치: " + naverConfiguration.getDirectoryPath());
+
+			
 			PutObjectRequest putObjectRequest = 
 					new PutObjectRequest(naverConfiguration.getBucketName(),
 							naverConfiguration.getDirectoryPath() + imageFileName,
@@ -59,9 +64,12 @@ public class NCPObjectStorageService implements ObjectStorageService {
 										 objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
 			
 			s3.putObject(putObjectRequest);
-			System.out.println("imageFileName : " + imageFileName);
+			System.out.println("파일 업로드 성공!!");
 			return imageFileName;
+			
 		}catch(Exception e) {
+            System.err.println("파일 업로드 중 에러 발생: " + e.getMessage());
+            e.printStackTrace();
 			throw new RuntimeException("파일 업로드 에러");
 		}
 		
