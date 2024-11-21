@@ -42,6 +42,7 @@ public class NoticeController {
 			//이미지 처리
 			if (image != null && !image.isEmpty()) {
 				//이미지 파일 저장 및 파일명 생성
+				System.out.println(objectStorageService);
 				String imageFileName = objectStorageService.uploadFile(image);
 				System.out.println("-----------------inside image----------------------");
 				System.out.println(image);			
