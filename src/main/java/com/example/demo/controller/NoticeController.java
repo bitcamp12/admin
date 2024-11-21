@@ -24,7 +24,7 @@ public class NoticeController {
 	private NCPObjectStorageService objectStorageService;
 	
 	
-	@PostMapping
+	@PostMapping("")
 	public ResponseEntity<ApiResponse<Void>> registerNotice(
 			@RequestParam("title") String title,
 			@RequestParam("content") String content,
@@ -44,13 +44,10 @@ public class NoticeController {
 				//이미지 파일 저장 및 파일명 생성
 				System.out.println(objectStorageService);
 				String imageFileName = objectStorageService.uploadFile(image);
-				String originalFilename = image.getOriginalFilename();
-				
 				System.out.println("-----------------inside image----------------------");
-				System.out.println(image);
-				
+				System.out.println(image);			
 				noticeDTO.setImageFileName(imageFileName);
-				noticeDTO.setImageOriginalFileName(originalFilename);
+				noticeDTO.setImageOriginalFileName(image.getOriginalFilename());
 			}
 			
 			System.out.println("---------------------------ajdfkljasdklfjasdlkfjsdalkf---------------------");
@@ -63,7 +60,7 @@ public class NoticeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest()
-					.body(new ApiResponse<>(500,"서버 오류", null));
+					.body(new ApiResponse<>(500,"서버 오류: " + e.getMessage(), null));
 		}
 		
 		
