@@ -33,10 +33,11 @@
 		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
 		            <td th:text="${notice.title}" 
 		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
-		            <td th:text="${#dates.format(notice.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}" 
-		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
-		            <td th:text="${#dates.format(notice.updatedDate, 'yyyy년 MM월 dd일 HH시 mm분')}"
-		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+		           <td th:text="${#temporals.format(notice.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"
+				    th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+					<td th:text="${#temporals.format(notice.updatedDate, 'yyyy년 MM월 dd일 HH시 mm분')}"
+				    th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+
 		            <td class="text-center">
 		                <div class="form-switch form-check d-flex justify-content-center">
 		                    <label class="form-check-label" th:for="'toggle' + ${notice.noticeSeq}"></label>
