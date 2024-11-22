@@ -44,7 +44,7 @@
 								class="custom-btn" 
 								data-bs-toggle="modal" 
 								data-bs-target="#confirmModal"
-								data-seq="${reviewAfter.reviewAfterSeq}">삭제</button>
+								th:attr="data-seq=${reviewAfter.reviewAfterSeq}">삭제</button>
 					</td>
 				</tr>
 			</tbody>
@@ -96,6 +96,7 @@
 $('#confirmModal').on('show.bs.modal', function(event) {
 	var button = $(event.relatedTarget); // 버튼을 클릭한 요소
 	var seq = button.data('seq'); // data-seq 값 가져오기
+	console.log(seq)
 	$('#confirmDeleteBtn').data('seq', seq); // 삭제 버튼에 seq 값을 저장
 });
 
@@ -105,14 +106,14 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 	var seq = $(this).data('seq'); // 저장된 seq 값을 가져오기
 
 	$('#confirmModal').modal('hide');
-v4
+
     // 배경 회색 제거
     var backdrop = document.querySelector('.modal-backdrop');
     if (backdrop) {
         backdrop.remove();  // 배경을 수동으로 제거
     }
 	// AJAX로 삭제 요청 보내기
-	fetch(`/api/reviewAfter/${seq}`, {
+	fetch(`/api/reviewAfters/${seq}`, {
 		method: 'DELETE',
 		headers: {
 			'Content-Type': 'application/json'

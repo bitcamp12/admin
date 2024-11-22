@@ -92,7 +92,7 @@ public class AdminController {
   	public String reviewAfterList(Model model) {
       	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
     	List<ReviewAfter> reviewAfterList = reviewAfterRepository.findAll();
-    	System.out.println(reviewAfterList.get(0).getRating());
+    	//System.out.println(reviewAfterList.get(0).getRating());
     	model.addAttribute("reviewAfterList", reviewAfterList);
           return "admin/body/reviewAfterList";  // index.html 템플릿을 렌더링
       }
