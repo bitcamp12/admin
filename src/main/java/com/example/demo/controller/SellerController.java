@@ -60,6 +60,17 @@ public class SellerController {
     	return "/seller/body/timeRegisterForm";  
     }
     
+    // 공연 시간 등록
+    @GetMapping("/timeUpdateForm")
+    public String timeUpdateForm(Model model) {
+    	return "/seller/body/timeUpdateForm";  
+    }
+    
+    // 공연 시간 등록
+    @GetMapping("/timeList")
+    public String timeList(Model model) {
+    	return "/seller/body/timeList";  
+    }
 }
 
 /*
