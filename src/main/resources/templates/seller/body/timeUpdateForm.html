@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>공연 시간표 등록</title>
+<title>공연 정보 수정</title>
 <link rel="stylesheet" th:href="@{/static/css/common.css}">
 <link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
 </head>
 <body>
 <div class="container">
-		<div class="title">공연 시간표 등록</div>
+		<div class="title">공연 시간표 수정</div>
         <form class="row g-3 needs-validation" novalidate>
             <!-- 공연명 -->
             <div class="mb-3">
                 <label for="play_name" class="form-label">공연명</label>
-					<select class="form-select" id="play_name" name="play_name" required>
+					<select class="form-select" id="play_name" name="play_seq" required>
 					    <option selected disabled value="">공연명을 선택하세요</option>
 					    <!--  DB 조회 후 동적 추가 -->
 					</select>
@@ -28,7 +28,7 @@
             <div class="mb-3">
                 <label for="performanceDate" class="form-label">관람일</label>
                 <div class="input-group">
-                    <input type="date" class="form-control" name="target_date" id="target_date" required>
+                    <input type="date" class="form-control" name="target_date" id="performanceDate" required>
                     <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
             <div class="mb-3 row" style="padding : 0">
                 <div class="col">
                     <label for="minDiscount" class="form-label">최소 할인율</label>
-                    <input type="number" class="form-control" id="minDiscountInput" name="min_rate" min="0" max="98" placeholder="%" required>
+                    <input type="number" class="form-control" id="minDiscountInput" name="min_rate" min="0" max="99" placeholder="%" required>
                     <div class="invalid-feedback">최소 할인율을 입력해 주세요.</div>
                     <div id="min_discount_invalid-feedback"> </div>
                 </div>
@@ -90,10 +90,10 @@
             </div>
 
             <div class="form-footer">
-				<button type="submit" class="btn btn-primary">등록</button>
+				<button type="submit" class="btn btn-primary">수정</button>
 				<button type="reset" class="btn btn-secondary"
 					onclick="noticeClearPreview()">초기화</button>
-				<button type="button" onclick="loadBodyForm('timeList')" class="btn btn-primary">목록</button>		
+					<button type = "button" onclick="loadBodyForm('timeList')" class="btn btn-primary">목록</button>			
 			</div>
         </form>
     </div>
@@ -114,20 +114,19 @@ document.getElementById('timeRegisterForm').addEventListener('submit', function(
 	
     // 유효성 통과 후 AJAX 요청
     var formData = {
-		play_seq: document.getElementById('play_name').value,
-		theater_seq: document.getElementById('theater').value,
+		playSeq: document.getElementById('playSeq').value,
 		start_time: document.getElementById('start_time').value,
 		end_time: document.getElementById('end_time').value,
 		start_dis_time: document.getElementById('start_dis_time').value,
 		end_dis_time: document.getElementById('end_dis_time').value,
-		min_rate: document.getElementById('minDiscountInput').value,
-		max_rate: document.getElementById('maxDiscountInput').value,
+		min_rate: document.getElementById('min_rate').value,
+		max_rate: document.getElementById('max_rate').value,
 		target_date: document.getElementById('target_date').value
     };
 
     $.ajax({
         type: 'post',
-        url: '/api/playTimeTables/timeRegisterWrite',
+        url: '/api/plas/timeRegisterWrite',
         data: JSON.stringify(formData),
         contentType: 'application/json; charset=utf-8',
         success: function() {
