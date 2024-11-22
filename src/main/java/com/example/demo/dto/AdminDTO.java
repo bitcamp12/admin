@@ -7,7 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AdminDTO {
+public class AdminDTO {    
+	private String searchKeyword; // 검색어
 
 	private int adminSeq;
 	private String id;

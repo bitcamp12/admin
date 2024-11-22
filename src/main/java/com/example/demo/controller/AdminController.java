@@ -1,17 +1,24 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.example.demo.dto.MemberDTO;
+import com.example.demo.service.MemberService;
 
 // Admin = 사이트 관리자
 @Controller
 @RequestMapping(value="/secure/admin")
 public class AdminController {
-    
-    @GetMapping("/index")
+	@Autowired
+    private MemberService memberService;
+
+	@GetMapping("/index")
 	public String index(Model model) {
     	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
         return "admin/index";  // index.html 템플릿을 렌더링
@@ -19,7 +26,8 @@ public class AdminController {
     
     @GetMapping("/memberList")
 	public String memberList(Model model) {
-    	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+    	List<MemberDTO> members = memberService.getAllMembers();
+    	model.addAttribute("members", members);
         return "admin/body/memberList";  // index.html 템플릿을 렌더링
     }
     

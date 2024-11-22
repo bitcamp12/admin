@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>회원 관리</title>
-<link rel="stylesheet" th:href="@{/static/css/common.css}">
-<link rel="stylesheet" th:href="@{/static/css/memberList.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>회원 관리</title>
+	<link rel="stylesheet" th:href="@{/static/css/common.css}">
+	<link rel="stylesheet" th:href="@{/static/css/memberList.css}">
 </head>
 <body>
 	<div class="container">
@@ -14,7 +14,8 @@
 		<!-- 검색 -->
 		<div class="search-bar">
 			<input type="text" id="search" placeholder="검색">
-			<button onclick="performSearch()">검색</button>
+			<!-- <button onclick="performSearch()">검색</button> -->
+			<button type="button" id="search_button" th:onclick="performSearch()">검색</button>
 		</div>
 
 		<!-- 테이블 -->
@@ -31,59 +32,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td>gw7191</td>
-					<td>홍길동</td>
-					<td>user1@ml.com</td>
-					<td>010-1234-5678</td>
-					<td>남</td>
-					<td>2024-01-01</td>
-				</tr>
-				<tr>
-					<td>2</td>
-					<td>gw7192</td>
-					<td>김영희</td>
-					<td>user2@mail.com</td>
-					<td>010-5678-1234</td>
-					<td>여</td>
-					<td>2024-02-01</td>
-				</tr>
-				<tr>
-					<td>3</td>
-					<td>gw2323</td>
-					<td>박철수</td>
-					<td>user3@mail.com</td>
-					<td>010-9876-5432</td>
-					<td>남</td>
-					<td>2024-03-01</td>
-				</tr>
-				<tr>
-					<td>4</td>
-					<td>user4</td>
-					<td>홍길동</td>
-					<td>user1@maimaie@mail..com</td>
-					<td>010-1234-5678</td>
-					<td>남</td>
-					<td>2024-01-01</td>
-				</tr>
-				<tr>
-					<td>5</td>
-					<td>w2q2e</td>
-					<td>김영희</td>
-					<td>user2@mail.com</td>
-					<td>010-5678-1234</td>
-					<td>여</td>
-					<td>2024-02-01</td>
-				</tr>
-				<tr>
-					<td>6</td>
-					<td>gw2323</td>
-					<td>박철수</td>
-					<td>user3@mail.com</td>
-					<td>010-9876-5432</td>
-					<td>남</td>
-					<td>2024-03-01</td>
+				<tr th:each="member:${members}">
+					<td th:text="${member.memberSeq}"></td>
+					<td th:text="${member.id}"></td>
+					<td th:text="${member.name}"></td>
+					<td th:text="${member.email}"></td>
+					<td th:text="${member.phone}"></td>
+					<td th:text="${member.gender}"></td>
+					<td th:text="${#temporals.format(member.registerDate,'yyyy-MM-dd')}"></td>
 				</tr>
 			</tbody>
 		</table>
@@ -94,13 +50,6 @@
 			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
 		</div>
 	</div>
-
-	<script>
-		function performSearch() {
-			const searchValue = document.getElementById('search').value;
-			alert(`검색어: ${searchValue}`);
-			// 실제 검색 로직은 추가 구현 필요
-		}
-	</script>
+		<script th:src="@{/static/js/member_search.js}"></script>
 </body>
 </html>

@@ -110,18 +110,13 @@ document.addEventListener('DOMContentLoaded', function(){
         sidebar.classList.toggle('nav-hidden');
     });
     
-    // 첫 화면 보여줄 내용
-    const mainContent = document.getElementById('mainContent');
-	//mainContent.innerHTML = html;
-	 fetch('/secure/admin/memberList')  // 서버에서 해당 HTML 파일을 요청
-     .then(response => response.text())
-     .then(html => {
-         document.getElementById('mainContent').innerHTML = html;
-     });
 	 
+     // 첫 화면 보여줄 내용
+     loadBodyForm('memberList');
+
 	 //클릭 이벤트 설정
 	 loadClickEvent('memberList');
-	 loadClickEvent('sellerList');
+     loadClickEvent('sellerList');
 	 loadClickEvent('noticeList');
 	 loadClickEvent('reviewBeforeList');
 	 loadClickEvent('reviewAfterList');
