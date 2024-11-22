@@ -41,7 +41,7 @@
         </div>
         <div class="text-end">
             <button th:onclick="|loadBodyForm('noticeUpdateForm/${notice.noticeSeq}')|" class="btn">수정</button>
-            <button th:onclick="|deleteNotice('${notice.noticeSeq}')|" class="btn">삭제</button>
+            <button data-bs-toggle="modal" data-bs-target="#confirmModal" class="btn">삭제</button>
             <button type="button" onclick="loadBodyForm('noticeList')" class="btn">목록</button>
         </div>
         
@@ -62,10 +62,37 @@
 		    </div>
 		  </div>
 		</div>
+		
+		<!-- 정말로 삭제 할까요? 모달 -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="confirmModalLabel">공지 삭제</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        정말로 삭제하시겠습니까?
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
+		        <button type="button" class="custom-btn" th:onclick="|deleteNotice('${notice.noticeSeq}')|" id="confirmDeleteBtn">삭제</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
 <script>
 function deleteNotice(noticeSeq) {
-	
+    var modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    modal.hide();
+
+    // 배경 회색 제거
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.remove();  // 배경을 수동으로 제거
+    }
+
 	console.log('deleteNotice 함수 실행'+noticeSeq)
 	//서버로 데이터 전송
 	fetch('/api/notices/'+noticeSeq, {
@@ -78,11 +105,11 @@ function deleteNotice(noticeSeq) {
 		return response.json();
 	})
 	.then(data => {
-		showModal('공지 사항 삭제가 성공했습니다.');
+		showModal('공지 사항 삭제가 성공했습니다.');		
 		loadBodyForm('noticeList'); //목록 페이지 이동
 	})
 	.catch(error => {
-		console.error('Error:', error);
+		//console.error('Error:', error);
 		showModal('공지 사항 삭제가 실패했습니다.');
 	});
 }
@@ -94,6 +121,7 @@ function showModal(message) {
     const Modal = new bootstrap.Modal(document.getElementById('Modal'));
     Modal.show();
 }
+
 </script>
 </body>
 </html>

@@ -12,8 +12,8 @@ import lombok.Setter;
 public class PlayDTO {
 	private int playSeq;
 	private String name;
-	private LocalDate startDate;
-	private LocalDate endDate;
+	private LocalDate startTime;
+	private LocalDate endTime;
 	private String imageFileName;
 	private String imageOriginalFileName;
 	private String description;

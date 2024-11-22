@@ -112,14 +112,7 @@ document.addEventListener('DOMContentLoaded', function(){
         sidebar.classList.toggle('nav-hidden');
     });
     
-    // 첫 화면 보여줄 내용
-    const mainContent = document.getElementById('mainContent');
-	//mainContent.innerHTML = html;
-	 fetch('/secure/seller/playList')  // 서버에서 해당 HTML 파일을 요청
-     .then(response => response.text())
-     .then(html => {
-         document.getElementById('mainContent').innerHTML = html;
-     });
+     loadBodyForm('playList');
 	 
 	 //클릭 이벤트 설정
 	 loadClickEvent('playList');
