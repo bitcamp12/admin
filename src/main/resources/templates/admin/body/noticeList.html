@@ -28,54 +28,24 @@
 			</thead>
 			<tbody>
 				<!-- 공지사항 목록 출력 -->
-				<tr>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">공지사항 1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td class="text-center">
-					  <div class="form-switch form-check d-flex justify-content-center">
-					    <label class="form-check-label" for="toggle1"></label>
-					    <input class="form-check-input" type="checkbox" id="toggle1">
-					  </div>
-					</td>
-				</tr>
-				<tr>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">공지사항 1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td class="text-center">
-					  <div class="form-switch form-check d-flex justify-content-center">
-					    <label class="form-check-label" for="toggle1"></label>
-					    <input class="form-check-input" type="checkbox" id="toggle1">
-					  </div>
-					</td>
-				</tr>
-				<tr>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">공지사항 1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-						<td class="text-center">
-					  <div class="form-switch form-check d-flex justify-content-center">
-					    <label class="form-check-label" for="toggle1"></label>
-					    <input class="form-check-input" type="checkbox" id="toggle1">
-					  </div>
-					</td>
-				</tr>
-					<tr>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">공지사항 1</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td onclick="loadBodyForm('noticeDetail?seq=1')">2024-11-19</td>
-					<td class="text-center">
-					  <div class="form-switch form-check d-flex justify-content-center">
-					    <label class="form-check-label" for="toggle1"></label>
-					    <input class="form-check-input" type="checkbox" id="toggle1">
-					  </div>
-					</td>
-				</tr>
+				  <tr th:each="notice : ${noticeList}">
+		            <td th:text="${notice.noticeSeq}" 
+		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+		            <td th:text="${notice.title}" 
+		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+		            <td th:text="${#dates.format(notice.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}" 
+		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+		            <td th:text="${#dates.format(notice.updatedDate, 'yyyy년 MM월 dd일 HH시 mm분')}"
+		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
+		            <td class="text-center">
+		                <div class="form-switch form-check d-flex justify-content-center">
+		                    <label class="form-check-label" th:for="'toggle' + ${notice.noticeSeq}"></label>
+		                    <input class="form-check-input" type="checkbox" 
+		                           th:id="'toggle' + ${notice.noticeSeq}" 
+		                           th:checked="${notice.hide == 'Y' ? 'checked' : null}">
+		                </div>
+		            </td>
+		        </tr>
 			</tbody>
 		</table>
 		<div class="pagination">
@@ -86,6 +56,6 @@
 			<a class="btn" onclick="loadBodyForm('noticeWriteForm')">글쓰기</a>
 		</div>
 	</div>
-		<script th:src="@{/static/js/loadClickEvent.js}"></script>
+<script th:src="@{/static/js/loadClickEvent.js}"></script>
 </body>
 </html>
