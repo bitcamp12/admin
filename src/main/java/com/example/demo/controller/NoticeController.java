@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.NoticeDTO;
 import com.example.demo.objectstorage.NCPObjectStorageService;
+import com.example.demo.repository.NoticeRepository;
 import com.example.demo.service.NoticeService;
 import com.example.demo.util.ApiResponse;
 
@@ -23,50 +22,78 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
+
+	@Autowired
+	private NoticeRepository noticeRepository;
 	
 	@Autowired
 	private NCPObjectStorageService objectStorageService;
-	
+
+	//공지 사항 등록
 	@PostMapping("")
 	public ResponseEntity<ApiResponse<Void>> registerNotice(
 			@RequestParam("title") String title,
 			@RequestParam("content") String content,
-			@RequestParam(value= "image", required = false) MultipartFile image) {
-		
+			@RequestParam(value = "image", required = false) MultipartFile image) {
+
 		try {
-			//DTO 객체 생성
+			// DTO 객체 생성
 			NoticeDTO noticeDTO = new NoticeDTO();
 			noticeDTO.setTitle(title);
 			noticeDTO.setContent(content);
-			noticeDTO.setHide("N");   // 기본값 설정
-			System.out.println("-------------------------------------------------");
-			System.out.println(image);
-			
-			//이미지 처리
+			noticeDTO.setHide("N"); // 기본값 설정
+
+			// 이미지 처리
 			if (image != null && !image.isEmpty()) {
-				//이미지 파일 저장 및 파일명 생성
+				// 이미지 파일 저장 및 파일명 생성
 				System.out.println(objectStorageService);
 				String imageFileName = objectStorageService.uploadFile(image);
 				System.out.println("-----------------inside image----------------------");
-				System.out.println(image);			
+				System.out.println(image);
 				noticeDTO.setImageFileName(imageFileName);
 				noticeDTO.setImageOriginalFileName(image.getOriginalFilename());
-			}
-			
-			System.out.println("---------------------------ajdfkljasdklfjasdlkfjsdalkf---------------------");
-			System.out.println(image);
-			
-			//공지사항 등록
+			};
+
+			// 공지사항 등록
 			noticeService.registerNotice(noticeDTO);
-			
+
 			return ResponseEntity.ok(new ApiResponse<>(200, "공지사항 등록 성공", null));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.badRequest()
-					.body(new ApiResponse<>(500,"서버 오류: " + e.getMessage(), null));
+			return ResponseEntity.badRequest().body(new ApiResponse<>(400, "서버 오류: " + e.getMessage(), null));
 		}
-		
-		
 	}
-	
-}  
+
+	//공지 사항 수정
+	//@PutMapping("{noticeSeq}")
+	// 원래 PUT이 맞는데 , form데이터는 put 지원하지 않음
+	@PostMapping("/update/{noticeSeq}")
+	public ResponseEntity<ApiResponse<Void>> updateNotice(
+			@PathVariable("noticeSeq") int noticeSeq,
+			@RequestParam("title") String title, 
+			@RequestParam("content") String content,
+			@RequestParam(value = "image", required = false) MultipartFile image) {
+
+		try { // 공지 사항 수정
+			noticeService.updateNotice(noticeSeq, title, content, image);
+			return ResponseEntity.ok().body(new ApiResponse<>(200, "공지 사항이 수정에 성공했습니다.", null));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(new ApiResponse<>(400, "공지 사항이 수정에 실패했습니다.", null));
+		}
+	}
+
+	//공지 사항 삭제
+	@DeleteMapping("{noticeSeq}")
+	public ResponseEntity<ApiResponse<Void>> deleteNotice(
+			@PathVariable("noticeSeq") int noticeSeq) {
+
+		try { // 공지 사항 수정
+			noticeRepository.deleteById(noticeSeq);
+			return ResponseEntity.ok().body(new ApiResponse<>(200, "공지 사항 삭제에 성공했습니다.", null));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(new ApiResponse<>(400, "공지 사항이 삭제가 실패했습니다.", null));
+		}
+	}
+}

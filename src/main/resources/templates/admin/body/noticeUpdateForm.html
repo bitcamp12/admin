@@ -12,37 +12,111 @@
 <body>
 	<div class="container">
 		<div class="title">공지사항 수정</div>
-		<form action="/submit-notice" method="post"
-			enctype="multipart/form-data">
+		<form method="post" enctype="multipart/form-data">
+			<div class="mb-3">
+				<label th:text="'글 번호: ' + ${notice.noticeSeq}"></label>
+			</div>
 			<!-- 제목 -->
 			<div class="mb-3">
 				<label for="title">제목</label> <input type="text"
 					class="form-control" id="title" name="title"
-					placeholder="제목을 입력하세요" required>
+					placeholder="제목을 입력하세요" required
+					 th:value="${notice.title}">
 			</div>
 
 			<!-- 텍스트 에디터 -->
 			<div class="mb-3">
 				<label for="content">내용</label>
 				<textarea class="form-control" id="content" name="content" rows="8"
-					placeholder="내용을 작성하세요" required></textarea>
+		          placeholder="내용을 작성하세요" required
+		          th:text="${notice.content}"></textarea>
 			</div>
 
 			<!-- 이미지 등록 -->
 			<div class="mb-3">
 				<label for="image">이미지 등록</label> <input type="file"
 					class="form-control" id="image" name="image"
-					onchange="noticePreviewImage(event)"> <img id="imagePreview"
-					class="image-preview" alt="이미지 미리보기">
+					onchange="noticePreviewImage(event)">
+			<img id="imagePreview"
+					class="image-preview" 
+					th:src="'https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/' + ${notice.imageFileName}" alt="공지사항 이미지"> 
 			</div>
 
 			<!-- 버튼 -->
 			<div class="form-footer">
-				<button type="submit" class="btn btn-primary">수정</button>
+				<button type="button" th:onclick="|updateNotice('${notice.noticeSeq}')|" class="btn btn-primary">수정</button>
 				<button type="button" onclick="loadBodyForm('noticeList')" class="btn btn-primary">목록</button>	
 			</div>
+			 <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 		</form>
 	</div>
+<script th:src="@{/static/js/noticeUpdateForm.js}"></script>	
+<script>
+function updateNotice(noticeSeq) {
 	
+	console.log('updateNotice 함수 실행'+noticeSeq)
+	//폼 데이터- 제목, 내용, 이미지 등록
+	const title=document.getElementById('title').value;
+	const content=document.getElementById('content').value;
+	const imageFile=document.getElementById('image').files[0];
+
+	console.log('제목 :', title);
+	console.log('내용 :', content);
+	console.log('이미지 :', imageFile);
+
+	//폼데이터 객체
+	const formData = new FormData();
+	formData.append('title', title);
+	formData.append('content', content);
+	if (imageFile) {
+		formData.append('image', imageFile);
+	}
+	
+	//서버로 데이터 전송
+	fetch('/api/notices/update/'+noticeSeq, {
+		method : 'POST',
+		body : formData
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('서버 응답 중 에러 발생함')
+		}
+		return response.json();
+	})
+	.then(data => {
+		showModal('공지 사항 수정이 성공했습니다.');
+		loadBodyForm('noticeDetail/'+noticeSeq); //목록 페이지 이동
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		showModal('공지 사항 수정이 실패했습니다.');
+	});
+}
+
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
+</script>
 </body>
 </html>
