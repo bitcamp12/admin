@@ -37,11 +37,14 @@
 				<label for="image">이미지 등록</label> <input type="file"
 					class="form-control" id="image" name="image"
 					onchange="noticePreviewImage(event)">
-			<img id="imagePreview"
-					class="image-preview" 
-					th:src="'https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/' + ${notice.imageFileName}" alt="공지사항 이미지"> 
+			 	 <div th:if="${notice.imageFileName}">
+				    <img id="imagePreview" class="image-preview" th:src="'https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/' + ${notice.imageFileName}" 
+				         alt="공지사항 이미지">
+				</div>
+				<div th:unless="${notice.imageFileName}">
+					<img id="imagePreview" class="image-preview" style="display:none;" alt="이미지 미리보기">
+				</div>
 			</div>
-
 			<!-- 버튼 -->
 			<div class="form-footer">
 				<button type="button" th:onclick="|updateNotice('${notice.noticeSeq}')|" class="btn btn-primary">수정</button>
