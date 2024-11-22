@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,5 +26,10 @@ public class NoticeService {
 		if(result != 1) {
 			throw new RuntimeException("공지사항 등록 실패");
 		}
+	}
+
+
+	public List<NoticeDTO> getNoticeList() {
+		return noticeDAO.getNoticeList();
 	}
 }

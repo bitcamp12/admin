@@ -1,16 +1,22 @@
 package com.example.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.service.NoticeService;
+
 // Admin = 사이트 관리자
 @Controller
 @RequestMapping(value="/secure/admin")
 public class AdminController {
     
+	@Autowired
+	private NoticeService noticeService;
+	
     @GetMapping("/index")
 	public String index(Model model) {
     	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
@@ -32,6 +38,7 @@ public class AdminController {
     @GetMapping("/noticeList")
  	public String noticeList(Model model) {
      	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+    	 model.addAttribute("noticeList",noticeService.getNoticeList());
          return "admin/body/noticeList";  // index.html 템플릿을 렌더링
      }
     
