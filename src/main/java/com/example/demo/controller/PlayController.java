@@ -23,4 +23,9 @@ public class PlayController {
     public void playRegisterWrite(@RequestBody PlayDTO playDTO) {
         playService.playRegisterWrite(playDTO);
     }
+
+    @PostMapping("/playListSelect")
+    public String playListSelect(@RequestBody PlayDTO playDTO) {
+    	playService.playListSelect(playDTO);
+    }
 }
