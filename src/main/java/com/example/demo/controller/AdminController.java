@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.entity.Notice;
+import com.example.demo.entity.ReviewAfter;
+import com.example.demo.entity.ReviewBefore;
 import com.example.demo.repository.NoticeRepository;
+import com.example.demo.repository.ReviewAfterRepository;
+import com.example.demo.repository.ReviewBeforeRepository;
 import com.example.demo.service.NoticeService;
 
 // Admin = 사이트 관리자
@@ -23,6 +28,12 @@ public class AdminController {
 	
 	@Autowired
 	private NoticeRepository noticeRepository;
+	
+	@Autowired
+	private ReviewBeforeRepository reviewBeforeRepository;
+	
+	@Autowired
+	private ReviewAfterRepository reviewAfterRepository;
 	
     @GetMapping("/index")
 	public String index(Model model) {
@@ -80,12 +91,17 @@ public class AdminController {
     @GetMapping("/reviewAfterList")
   	public String reviewAfterList(Model model) {
       	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+    	List<ReviewAfter> reviewAfterList = reviewAfterRepository.findAll();
+    	System.out.println(reviewAfterList.get(0).getRating());
+    	model.addAttribute("reviewAfterList", reviewAfterList);
           return "admin/body/reviewAfterList";  // index.html 템플릿을 렌더링
       }
     
     @GetMapping("/reviewBeforeList")
   	public String reviewBeforeList(Model model) {
       	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
-          return "admin/body/reviewBeforeList";  // index.html 템플릿을 렌더링
+    	List<ReviewBefore> reviewBeforeList = reviewBeforeRepository.findAll();
+    	model.addAttribute("reviewBeforeList", reviewBeforeList);
+        return "admin/body/reviewBeforeList";  // index.html 템플릿을 렌더링
       }
 }

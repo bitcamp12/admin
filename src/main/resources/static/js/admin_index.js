@@ -1,5 +1,5 @@
 //타임리프 body 불러오기
-function loadClickEvent(elementId, url) {
+function loadClickEvent(elementId) {
     document.getElementById(elementId).addEventListener('click', function() {
         const mainContent = document.getElementById('mainContent');
         fetch('/secure/admin/'+elementId) // Fetch the content from the server

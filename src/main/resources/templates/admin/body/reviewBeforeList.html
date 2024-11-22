@@ -30,13 +30,13 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td>gw7191</td>
-					<td>홍길동</td>
-					<td>겨울 왕국</td>
-					<td>추워요</td>
-					<td>2024-01-01</td>
+				<tr th:each="reviewBefore : ${reviewBeforeList}">
+					<td th:text="${reviewBefore.reviewBeforeSeq}">1</td>
+					<td th:text="${reviewBefore.member.id}">gw7191</td>
+					<td th:text="${reviewBefore.member.name}">홍길동</td>
+					<td th:text="${reviewBefore.play.name}">겨울 왕국</td>
+					<td th:text="${reviewBefore.content}">추워요</td>
+					<td th:text="${#temporals.format(reviewBefore.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
 					<td ><button type="button"
 								class="custom-btn" data-bs-toggle="modal" data-bs-target="#confirmModal">
 						삭제</button>
