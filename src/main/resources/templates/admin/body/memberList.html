@@ -14,8 +14,7 @@
 		<!-- 검색 -->
 		<div class="search-bar">
 			<input type="text" id="search" placeholder="검색">
-			<!-- <button onclick="performSearch()">검색</button> -->
-			<button type="button" id="search_button" th:onclick="performSearch()">검색</button>
+			<button type="button" id="search_button" th:onclick="performSearch(1)">검색</button>
 		</div>
 
 		<!-- 테이블 -->
@@ -31,25 +30,38 @@
 					<th>가입 날짜</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr th:each="member:${members}">
-					<td th:text="${member.memberSeq}"></td>
-					<td th:text="${member.id}"></td>
-					<td th:text="${member.name}"></td>
-					<td th:text="${member.email}"></td>
-					<td th:text="${member.phone}"></td>
-					<td th:text="${member.gender}"></td>
-					<td th:text="${#temporals.format(member.registerDate,'yyyy-MM-dd')}"></td>
-				</tr>
+			<tbody id="memberTableBody">
+			    <tr th:each="member : ${members}">
+			        <td th:text="${member.memberSeq}"></td>
+			        <td th:text="${member.id}"></td>
+			        <td th:text="${member.name}"></td>
+			        <td th:text="${member.email}"></td>
+			        <td th:text="${member.phone}"></td>
+			        <td th:text="${member.gender}"></td>
+			        <td th:text="${#temporals.format(member.registerDate,'yyyy-MM-dd')}"></td>
+			    </tr>
 			</tbody>
 		</table>
 
 		<!-- 페이징 -->
-		<div class="pagination">
-			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
-			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		<div class="pagination" th:if="${totalPages > 0}">
+			<!-- 이전 버튼 -->
+			<a href="#" th:if="${currentPage > 1}" th:onclick="'loadPage(' +${currentPage -1} + ')'">이전</a> 
+			
+			<!-- 페이지 번호 -->
+			<th:block th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+				<a href="#"
+					th:text="${pageNum}"
+					th:class="${pageNum == currentPage ? 'active' : ''}"
+					th:onclick="'loadPage('+ ${pageNum} + ')'"></a>
+			</th:block>
+			
+			<!-- 다음 버튼 -->
+			<a href="#" th:if="${currentPage < totalPages}" 
+				th:onclick="'loadPage(' + ${currentPage + 1} + ')'"> 다음</a>
 		</div>
 	</div>
+		<!-- <script th:src="@{/static/js/member_search.js}"></script> -->
 		<script th:src="@{/static/js/member_search.js}"></script>
 </body>
 </html>

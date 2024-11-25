@@ -1,12 +1,15 @@
-package com.example.demo.entity;
+package com.example.demo.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @NoArgsConstructor
-public class Seller {
+public class LoginDTO {
 
+	private String id;
+	private String password;
 }
+

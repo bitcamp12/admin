@@ -31,17 +31,20 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td>1</td>
-					<td>gw7191</td>
-					<td>홍길동</td>
-					<td>겨울 왕국</td>
-					<td>추워요</td>
-					<td>1</td>
-					<td>2024-01-01</td>
-					<td ><button type="button"
-								class="custom-btn" data-bs-toggle="modal" data-bs-target="#confirmModal">
-						삭제</button>
+			<tr th:each="reviewAfter : ${reviewAfterList}">
+					<td th:text="${reviewAfter.reviewAfterSeq}">1</td>
+					<td th:text="${reviewAfter.member.id}">gw7191</td>
+					<td th:text="${reviewAfter.member.name}">홍길동</td>
+					<td th:text="${reviewAfter.play.name}">겨울 왕국</td>
+					<td th:text="${reviewAfter.content}">추워요</td>
+					<td th:text="${reviewAfter.rating}">3</td>
+					<td th:text="${#temporals.format(reviewAfter.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+					<td >
+						<button type="button"
+								class="custom-btn" 
+								data-bs-toggle="modal" 
+								data-bs-target="#confirmModal"
+								th:attr="data-seq=${reviewAfter.reviewAfterSeq}">삭제</button>
 					</td>
 				</tr>
 			</tbody>
@@ -64,7 +67,23 @@
 		    </div>
 		  </div>
 		</div>
-		
+		 <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 		<!-- 페이징 -->
 		<div class="pagination">
 			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
@@ -72,12 +91,55 @@
 		</div>
 	</div>
 
-	<script>
-		function performSearch() {
-			const searchValue = document.getElementById('search').value;
-			alert(`검색어: ${searchValue}`);
-			// 실제 검색 로직은 추가 구현 필요
+<script>
+// 모달 열 때 seq 값을 전달
+$('#confirmModal').on('show.bs.modal', function(event) {
+	var button = $(event.relatedTarget); // 버튼을 클릭한 요소
+	var seq = button.data('seq'); // data-seq 값 가져오기
+	console.log(seq)
+	$('#confirmDeleteBtn').data('seq', seq); // 삭제 버튼에 seq 값을 저장
+});
+
+// 삭제 버튼 클릭 시 서버에 삭제 요청 보내기
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+	
+	var seq = $(this).data('seq'); // 저장된 seq 값을 가져오기
+
+	$('#confirmModal').modal('hide');
+
+    // 배경 회색 제거
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.remove();  // 배경을 수동으로 제거
+    }
+	// AJAX로 삭제 요청 보내기
+	fetch(`/api/reviewAfters/${seq}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json'
 		}
-	</script>
+	})
+	.then(response => {
+		if (response.ok) {
+			showModal('관람평이 삭제되었습니다.');
+			 loadBodyForm('reviewAfterList');
+		} else {
+			showModal('관람평이 삭제가 실패했습니다.');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		alert('삭제 요청 중 오류가 발생했습니다.');
+	});
+});
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
+</script>
 </body>
 </html>

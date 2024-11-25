@@ -11,12 +11,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlayDTO {
 	private int playSeq;
-	private String play_name;
-	private LocalDate start_date;
-	private LocalDate end_date;
+	private String name;
+	private LocalDate startTime;
+	private LocalDate endTime;
 	private String imageFileName;
 	private String imageOriginalFileName;
 	private String description;
 	private String address;
-	private String total_actor;
+	private String totalActor;
 }

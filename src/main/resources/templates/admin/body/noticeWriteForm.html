@@ -43,6 +43,23 @@
 				<button type = "button" onclick="loadBodyForm('noticeList')" class="btn btn-primary">목록</button>	
 			</div>
 		</form>
+		 <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 <script th:src="@{/static/js/noticeWriteForm.js}"></script>	
 <script>
@@ -79,13 +96,22 @@ function submitNotice() {
 		return response.json();
 	})
 	.then(data => {
-		alert('공지사항 등록 완료');
+		showModal('공지 사항 등록이 성공했습니다.');
 		loadBodyForm('noticeList'); //목록 페이지 이동
 	})
 	.catch(error => {
 		console.error('Error:', error);
-		alert('오류 발생');
+		showModal('공지 사항 등록이 실패했습니다.');
 	});
+}
+
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
 }
 </script>
 

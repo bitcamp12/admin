@@ -13,38 +13,115 @@
         <div class="notice-detail">
             <div class="notice-item">
                 <label>글 번호 :</label>
-                <span>1</span>
+               <span th:text="${notice.noticeSeq}"></span>
             </div>
             <div class="notice-item">
                 <label>제목 :</label>
-                <span>공지사항 제목</span>
+              <span th:text="${notice.title}"></span>
             </div>
             <div class="notice-item">
                 <label>작성 날짜 :</label>
-                <span>2024-11-19</span>
+                <span th:text="${#temporals.format(notice.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}">2024-11-19</span>
             </div>
             <div class="notice-item">
                 <label>수정 날짜 :</label>
-                <span>2024-11-19</span>
+               <span th:text="${#temporals.format(notice.updatedDate, 'yyyy년 MM월 dd일 HH시 mm분')}">2024-11-19</span>
             </div>
         </div>
         <div class="notice-content">
             <label>내용:</label>
               <!-- Image Section -->
-	        <div class="notice-image">
-	            <img src="/static/images/default-profile.png" alt="공지사항 이미지">
-	        </div>
-	            
-            <p>
+	        <div class="notice-image" th:if="${notice.imageFileName}">
+	         <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/' + ${notice.imageFileName}" alt="공지사항 이미지">   
+	         </div>
+            <p th:text="${notice.content}">
                 공지사항 내용이 여기에 표시됩니다. 이 내용은 예시이며, 실제 데이터에 따라 변경됩니다. 
                 공지사항 상세 페이지의 디자인이 업데이트되어 가독성이 높아졌습니다.
             </p>
         </div>
         <div class="text-end">
-            <button onclick="loadBodyForm('noticeUpdateForm')" class="btn">수정</button>
-            <button class="btn">삭제</button>
+            <button th:onclick="|loadBodyForm('noticeUpdateForm/${notice.noticeSeq}')|" class="btn">수정</button>
+            <button data-bs-toggle="modal" data-bs-target="#confirmModal" class="btn">삭제</button>
             <button type="button" onclick="loadBodyForm('noticeList')" class="btn">목록</button>
         </div>
+        
+        <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- 정말로 삭제 할까요? 모달 -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="confirmModalLabel">공지 삭제</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        정말로 삭제하시겠습니까?
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
+		        <button type="button" class="custom-btn" th:onclick="|deleteNotice('${notice.noticeSeq}')|" id="confirmDeleteBtn">삭제</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
+<script>
+function deleteNotice(noticeSeq) {
+    var modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    modal.hide();
+
+    // 배경 회색 제거
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.remove();  // 배경을 수동으로 제거
+    }
+
+	console.log('deleteNotice 함수 실행'+noticeSeq)
+	//서버로 데이터 전송
+	fetch('/api/notices/'+noticeSeq, {
+		method : 'DELETE',
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('서버 응답 중 에러 발생함')
+		}
+		return response.json();
+	})
+	.then(data => {
+		showModal('공지 사항 삭제가 성공했습니다.');		
+		loadBodyForm('noticeList'); //목록 페이지 이동
+	})
+	.catch(error => {
+		//console.error('Error:', error);
+		showModal('공지 사항 삭제가 실패했습니다.');
+	});
+}
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
+
+</script>
 </body>
 </html>

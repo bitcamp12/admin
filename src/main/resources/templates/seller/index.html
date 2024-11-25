@@ -31,7 +31,8 @@
 				<h2 class="text-xl font-semibold text-gray-800">공연 관계자</h2>
 			</div>
 			<div class="flex items-center">
-				<span class="mr-3 text-gray-600">공연 관계자 님</span> <img
+			<span class="mr-3 text-gray-600" th:text="${name} + ' 님'"></span> 
+			<img
 					src="/static/images/default-profile.png" alt="Profile"
 					class="w-10 h-10 rounded-full border-2 border-purple-100">
 			</div>
@@ -79,6 +80,23 @@
 		<main class="flex-1 p-6 bg-purple-50">
 			<div id="mainContent" class="main-content"></div>
 		</main>
+		<!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -95,14 +113,7 @@ document.addEventListener('DOMContentLoaded', function(){
         sidebar.classList.toggle('nav-hidden');
     });
     
-    // 첫 화면 보여줄 내용
-    const mainContent = document.getElementById('mainContent');
-	//mainContent.innerHTML = html;
-	 fetch('/secure/seller/playList')  // 서버에서 해당 HTML 파일을 요청
-     .then(response => response.text())
-     .then(html => {
-         document.getElementById('mainContent').innerHTML = html;
-     });
+     loadBodyForm('playList');
 	 
 	 //클릭 이벤트 설정
 	 loadClickEvent('playList');
@@ -111,6 +122,15 @@ document.addEventListener('DOMContentLoaded', function(){
 	 loadClickEvent('qnaList');
 	 loadClickEvent('timeUpdateForm');
 });
+
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
 </script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script th:src="@{/static/js/common_bootstrap.js}"></script>

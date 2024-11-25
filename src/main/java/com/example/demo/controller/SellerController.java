@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.demo.dto.PlayDTO;
 import com.example.demo.service.PlayService;
 
+import jakarta.servlet.http.HttpSession;
+
 //Seller = 공연 관계자
 @Controller
 @RequestMapping(value="/secure/seller")
@@ -19,8 +21,16 @@ public class SellerController {
 	@Autowired
 	private PlayService playService;
 
+	@Autowired
+	HttpSession httpSession;
+	
 	@GetMapping("/index")
 	public String index(Model model) {
+		String role = (String) httpSession.getAttribute("role");
+    	String name = (String) httpSession.getAttribute("name");
+    	if("SELLER".equals(role) && name != null) {
+    		model.addAttribute("name", name);
+    	}
         return "seller/index";  // index.html 템플릿을 렌더링
     }
     

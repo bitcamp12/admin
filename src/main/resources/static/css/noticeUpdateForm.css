@@ -25,20 +25,10 @@
 	outline: none;
 }
 
-/* 이미지 미리보기 스타일 */
-.image-preview {
-	max-width: 100%;
-	max-height: 300px;
-	display: none;
-	margin-top: 20px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
-
 /* 버튼 스타일 */
 .form-footer {
 	display: flex;
-	justify-content: right;
+	justify-content: center;
 	gap: 10px;
 	margin-top: 40px;
 }
@@ -74,4 +64,13 @@
 .form-footer .btn:focus {
 	outline: none;
 	box-shadow: 0 0 0 3px rgba(184, 97, 235, 0.5);
+}
+
+/* 이미지 미리보기 스타일 */
+.image-preview {
+	max-width: 100%;
+	max-height: 300px;
+	margin-top: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
 }
