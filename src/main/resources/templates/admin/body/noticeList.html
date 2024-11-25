@@ -23,7 +23,7 @@
 					<th>제목</th>
 					<th>작성 날짜</th>
 					<th>수정 날짜</th>
-					<th>공개 여부</th>
+					<th>숨김 여부</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -43,7 +43,8 @@
 		                    <label class="form-check-label" th:for="'toggle' + ${notice.noticeSeq}"></label>
 		                    <input class="form-check-input" type="checkbox" 
 		                           th:id="'toggle' + ${notice.noticeSeq}" 
-		                           th:checked="${notice.hide == 'Y' ? 'checked' : null}">
+		                          th:checked="${notice.hide == T(com.example.demo.entity.Notice.HideStatus).Y ? 'checked' : null}"
+		                           th:onclick="|toggleHideStatus(${notice.noticeSeq}, this)|">
 		                </div>
 		            </td>
 		        </tr>
@@ -56,6 +57,51 @@
 		<div class="text-end">
 			<a class="btn" onclick="loadBodyForm('noticeWriteForm')">글쓰기</a>
 		</div>
+		
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 	</div>
+<script type="text/javascript">
+function toggleHideStatus(noticeSeq, checkboxElement) {
+    const isChecked = checkboxElement.checked; // 체크박스 상태 가져오기
+
+    // 서버에 상태 변경 요청 (AJAX)
+    $.ajax({
+        type: 'PUT', // POST 요청
+        url: '/api/notices/updateHideStatus/'+noticeSeq+'?hide='+isChecked, // 서버 API URL
+        success: function(response) {
+        	showModal('상태가 성공적으로 업데이트되었습니다');
+            // 상태 변경 후 필요에 따라 UI 업데이트 추가
+        },
+        error: function(error) {
+        	showModal('에러 발생:', error);
+            // 오류 발생 시 체크박스를 원래 상태로 되돌리기
+            checkboxElement.checked = !isChecked;
+        }
+    });
+}
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
+</script>
 </body>
 </html>
