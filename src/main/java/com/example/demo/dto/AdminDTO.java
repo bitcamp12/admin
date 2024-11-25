@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AdminDTO {    
-	private String searchKeyword; // 검색어
-
 	private int adminSeq;
 	private String id;
 	private String name;
 	private String password;
+
+	private String searchKeyword; // 검색어
 }

@@ -50,7 +50,6 @@ public class NoticeController {
 				noticeDTO.setImageOriginalFileName(image.getOriginalFilename());
 			}
 			
-			System.out.println("---------------------------ajdfkljasdklfjasdlkfjsdalkf---------------------");
 			System.out.println(image);
 			
 			//공지사항 등록
