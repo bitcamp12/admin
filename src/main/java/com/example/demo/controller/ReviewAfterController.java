@@ -19,15 +19,12 @@ public class ReviewAfterController {
 	@Autowired
 	private ReviewAfterService reviewAfterService;
 	
-	@Autowired
-	private ReviewAfterRepository reviewAfterRepository;
-	
 	@DeleteMapping("{reviewAfterSeq}")
 	public ResponseEntity<ApiResponse<Void>> deleteReviewAfter(
 			@PathVariable("reviewAfterSeq") int reviewAfterSeq) {
 
 		try { // 공지 사항 수정
-			reviewAfterRepository.deleteById(reviewAfterSeq);
+			reviewAfterService.deleteById(reviewAfterSeq);
 			return ResponseEntity.ok().body(new ApiResponse<>(200, "관람평 삭제에 성공했습니다.", null));
 		} catch (Exception e) {
 			e.printStackTrace();

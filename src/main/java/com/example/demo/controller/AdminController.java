@@ -18,6 +18,8 @@ import com.example.demo.repository.ReviewAfterRepository;
 import com.example.demo.repository.ReviewBeforeRepository;
 import com.example.demo.service.NoticeService;
 
+import jakarta.servlet.http.HttpSession;
+
 // Admin = 사이트 관리자
 @Controller
 @RequestMapping(value="/secure/admin")
@@ -35,9 +37,18 @@ public class AdminController {
 	@Autowired
 	private ReviewAfterRepository reviewAfterRepository;
 	
+	@Autowired
+	HttpSession httpSession;
+	
     @GetMapping("/index")
 	public String index(Model model) {
     	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+    	String role = (String) httpSession.getAttribute("role");
+    	String name = (String) httpSession.getAttribute("name");
+    	System.out.println(name);
+    	if("ADMIN".equals(role) && name != null) {
+    		model.addAttribute("name", name);
+    	}
         return "admin/index";  // index.html 템플릿을 렌더링
     }
     

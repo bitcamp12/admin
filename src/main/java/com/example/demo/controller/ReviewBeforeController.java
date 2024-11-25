@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.repository.ReviewBeforeRepository;
 import com.example.demo.service.ReviewBeforeService;
 import com.example.demo.util.ApiResponse;
 
@@ -19,15 +18,12 @@ public class ReviewBeforeController {
 	@Autowired
 	private ReviewBeforeService reviewBeforeService;
 	
-	@Autowired
-	private ReviewBeforeRepository reviewBeforeRepository;
-	
 	@DeleteMapping("{reviewBeforeSeq}")
 	public ResponseEntity<ApiResponse<Void>> deleteReviewBefore(
 			@PathVariable("reviewBeforeSeq") int reviewBeforeSeq) {
 
 		try { // 공지 사항 수정
-			reviewBeforeRepository.deleteById(reviewBeforeSeq);
+			reviewBeforeService.deleteById(reviewBeforeSeq);
 			return ResponseEntity.ok().body(new ApiResponse<>(200, "기대평 삭제에 성공했습니다.", null));
 		} catch (Exception e) {
 			e.printStackTrace();

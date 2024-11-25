@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.demo.dao.NoticeDAO;
 import com.example.demo.dto.NoticeDTO;
 import com.example.demo.entity.Notice;
+import com.example.demo.entity.Notice.HideStatus;
 import com.example.demo.objectstorage.NCPObjectStorageService;
 import com.example.demo.repository.NoticeRepository;
 
@@ -73,6 +74,22 @@ public class NoticeService {
 			notice.setUpdatedDate(LocalDateTime.now());
 			noticeRepository.save(notice);
 		}
+	}
+
+	public void deleteNotice(int noticeSeq) {
+		noticeRepository.deleteById(noticeSeq);
+	}
+
+	public void updateHideStatus(int noticeSeq, String hide) throws Exception {
+		Notice notice = noticeRepository.findById(noticeSeq).orElseThrow(
+				()-> new Exception("공지찾기 실패")
+		);
+		
+		if(hide.equals("true"))
+			notice.setHide(HideStatus.Y);
+		else
+			notice.setHide(HideStatus.N);
+		noticeRepository.save(notice);
 	}
 
 }

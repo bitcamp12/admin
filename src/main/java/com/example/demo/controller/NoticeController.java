@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.NoticeDTO;
 import com.example.demo.objectstorage.NCPObjectStorageService;
-import com.example.demo.repository.NoticeRepository;
 import com.example.demo.service.NoticeService;
 import com.example.demo.util.ApiResponse;
 
@@ -22,9 +22,6 @@ public class NoticeController {
 
 	@Autowired
 	private NoticeService noticeService;
-
-	@Autowired
-	private NoticeRepository noticeRepository;
 	
 	@Autowired
 	private NCPObjectStorageService objectStorageService;
@@ -89,11 +86,25 @@ public class NoticeController {
 			@PathVariable("noticeSeq") int noticeSeq) {
 
 		try { // 공지 사항 수정
-			noticeRepository.deleteById(noticeSeq);
+			noticeService.deleteNotice(noticeSeq);
 			return ResponseEntity.ok().body(new ApiResponse<>(200, "공지 사항 삭제에 성공했습니다.", null));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.badRequest().body(new ApiResponse<>(400, "공지 사항이 삭제가 실패했습니다.", null));
 		}
 	}
+	
+	@PutMapping("/updateHideStatus/{noticeSeq}")
+	public ResponseEntity<ApiResponse<Void>> updateHideStatus(
+			@PathVariable("noticeSeq") int noticeSeq,
+			@RequestParam(name = "hide", required = true) String hide) {
+		try {
+			noticeService.updateHideStatus(noticeSeq, hide);
+			return ResponseEntity.ok().body(new ApiResponse<>(200, "숨김여부 수정 성공", null));
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.notFound().build();
+		}	
+	}
+	
 }

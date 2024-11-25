@@ -41,12 +41,24 @@ function login(userType) {
 		}
 
 		// 입력이 모두 유효하면 로그인 처리
-		if (valid) {	
-			if ($username.val() === '1' && $password.val() === '1') {
-				alert(userType + ' 로그인 성공');
-			}else{
-				$matchError.show();
-			}
+		if (valid) {
+			const data = {
+				id : $username.val(),
+				password : $password.val()
+			};
+			$.ajax({
+					//회원가입 진행
+					type: 'post',
+					url : '/api/secure/login/'+userType,
+					data : JSON.stringify(data),
+					contentType: 'application/json',
+					success : function(data) {
+						location.href='/secure/'+userType+'/index';
+					},
+					error : function(e) {
+						$matchError.show();
+			   		}
+			    }); // ajax
 		} else {
 			return;
 		}

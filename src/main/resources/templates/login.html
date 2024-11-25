@@ -42,8 +42,8 @@
 			</div>
 			<div id="admin-password-error" class="error-message">비밀 번호를 입력하세요.</div>		
 			<div id="admin-match-error" class="error-message" style="margin-top : 10px;">아이디 또는 비밀 번호가 일치하지 않습니다.</div>		
-			<div class="form-actions">
-				<button type="submit" id="admin-login-button" class="login-button" onclick="login('admin')">로그인</button>
+			<div>
+				<button type="button" id="admin-login-button" class="login-button" onclick="login('admin')">로그인</button>
 			</div>
 		</div>
 
@@ -67,28 +67,28 @@
 			</div>
 			<div id="seller-password-error" class="error-message">비밀 번호를 입력하세요.</div>		
 			<div id="seller-match-error" class="error-message" style="margin-top : 10px;">아이디 또는 비밀 번호가 일치하지 않습니다.</div>		
-			<div class="form-actions">
-				<button type="submit" id="seller-login-button" class="login-button" onclick="login('seller')">로그인</button>
+			<div>
+				<button type="button" id="seller-login-button" class="login-button" onclick="login('seller')">로그인</button>
 			</div>
 		</div>
 	</div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script th:src="@{/static/js/login.js}"></script>
-	<script>
-		function switchTab(tab) {
-			// 탭 버튼의 상태를 변경
-			document.getElementById('admin-tab').classList.remove('active');
-			document.getElementById('seller-tab').classList.remove('active');
-			if (tab === 'admin') {
-				document.getElementById('admin-tab').classList.add('active');
-				document.getElementById('admin-form').style.display = 'block';
-				document.getElementById('seller-form').style.display = 'none';
-			} else if (tab === 'seller') {
-				document.getElementById('seller-tab').classList.add('active');
-				document.getElementById('admin-form').style.display = 'none';
-				document.getElementById('seller-form').style.display = 'block';
-			}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/static/js/login.js}"></script>
+<script>
+	function switchTab(tab) {
+		// 탭 버튼의 상태를 변경
+		document.getElementById('admin-tab').classList.remove('active');
+		document.getElementById('seller-tab').classList.remove('active');
+		if (tab === 'admin') {
+			document.getElementById('admin-tab').classList.add('active');
+			document.getElementById('admin-form').style.display = 'block';
+			document.getElementById('seller-form').style.display = 'none';
+		} else if (tab === 'seller') {
+			document.getElementById('seller-tab').classList.add('active');
+			document.getElementById('admin-form').style.display = 'none';
+			document.getElementById('seller-form').style.display = 'block';
 		}
-	</script>
+	}
+</script>
 </body>
 </html>
