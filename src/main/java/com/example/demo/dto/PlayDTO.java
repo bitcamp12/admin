@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PlayDTO {
 	private int playSeq;
+	private int memberSeq;         // 공연 관계자 pk
 	private String name;
 	private LocalDate startTime;
 	private LocalDate endTime;
