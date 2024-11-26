@@ -8,12 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.PlayTimeTableDTO;
+import com.example.demo.entity.PlayTimeTable;
+import com.example.demo.repository.PlayRepository;
 import com.example.demo.repository.PlayTimeTableRepository;
+import com.example.demo.repository.TheaterRepository;
 import com.example.demo.service.PlayTimeTableService;
 import com.example.demo.util.ApiResponse;
 
@@ -28,6 +32,11 @@ public class PlayTimeTableController {
 	@Autowired
 	private PlayTimeTableRepository playTimeTableRepository;
 	
+	@Autowired
+	PlayRepository playRepository;
+	
+	@Autowired
+	TheaterRepository theaterRepository;
 	
 	// 공연 시간 정보 입력 
     @PostMapping("/timeRegisterWrite")
@@ -54,5 +63,30 @@ public class PlayTimeTableController {
     	}
     }
     
+    @PutMapping("{playTimeSeq}")
+    public ResponseEntity<ApiResponse<Void>> updateTimeTable(
+    		@PathVariable("playTimeSeq") int playTimeSeq,
+    		@RequestBody PlayTimeTableDTO playTimeTableDTO) {
+    	
+    	try {
+    		PlayTimeTable playTimeTable = playTimeTableRepository.findById(playTimeSeq).get();
+    		playTimeTable.setEndDisTime(playTimeTableDTO.getEndDisTime());
+    		playTimeTable.setStartDisTime(playTimeTableDTO.getStartDisTime());
+    		playTimeTable.setMaxRate(playTimeTableDTO.getMaxRate());
+     		playTimeTable.setMinRate(playTimeTableDTO.getMinRate());
+     		playTimeTable.setStartTime(playTimeTableDTO.getStartTime());
+     		playTimeTable.setEndTime(playTimeTableDTO.getEndTime());
+     		playTimeTable.setTargetDate(playTimeTableDTO.getTargetDate().atStartOfDay());
+    		playTimeTable.setPlay(playRepository.findById(playTimeTableDTO.getPlaySeq()).get());
+    		playTimeTable.setTheater(theaterRepository.findById(playTimeTableDTO.getTheaterSeq()).get());
+    		playTimeTableRepository.save(playTimeTable);
+    		return ResponseEntity.ok().body(new ApiResponse<>(200, "시간표가 수정됨", null));
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    		return ResponseEntity.internalServerError().build();
+    	    
+    	}
+    }
     
 }

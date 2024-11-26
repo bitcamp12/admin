@@ -28,7 +28,8 @@
             <div class="mb-3">
                 <label for="performanceDate" class="form-label">관람일</label>
                 <div class="input-group">
-                    <input type="date" class="form-control" name="target_date" id="target_date" required>
+                    <input type="date" class="form-control" name="target_date" id="target_date" required
+                    th:value="${#dates.format(targetDate, 'yyyy-MM-dd')}">
                     <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
                 </div>
             </div>

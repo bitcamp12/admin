@@ -105,8 +105,18 @@ public class SellerController {
     }
     
     // 공연 시간 등록
-    @GetMapping("/timeUpdateForm")
-    public String timeUpdateForm(Model model) {
+    @GetMapping("/timeUpdateForm/{seq}")
+    public String timeUpdateForm(@PathVariable("seq") int seq, Model model) {
+    	
+    	model.addAttribute("timetable", playTimeTableRepository.findById(seq).get());
+    	model.addAttribute("playList", playRepository.findAll());
+    	model.addAttribute("theaterList", theaterRepository.findAll());
+    	
+    	ZoneId zoneId = ZoneId.systemDefault();
+	    Date targetDate = Date.from(playTimeTableRepository.findById(seq).get()
+	    		.getTargetDate().atZone(zoneId).toInstant());
+		model.addAttribute("targetDate", targetDate);
+    	
     	return "/seller/body/timeUpdateForm";  
     }
     

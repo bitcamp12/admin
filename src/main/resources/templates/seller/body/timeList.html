@@ -40,7 +40,7 @@
 					  <td th:text="${event.playTimeTableSeq}">1</td> <!-- 공연 ID (예시: 1) -->
 					  <td th:text="${event.play.name}">예시 공연명 1</td> <!-- 공연명 -->
 					  <td th:text="${event.theater.name}">예시 공연명 1</td> <!-- 공연명 -->
-					  <td th:text="${event.targetDate}">A타입</td> <!-- 공연 타입 -->
+					  <td th:text="${#temporals.format(event.targetDate, 'yyyy-MM-dd')}"></td>
 					  <td th:text="${event.startTime}">유아름, 양준모, 조정석</td> <!-- 출연자 -->
 					  <td th:text="${event.endTime}">2024-12-25 ~ 2024-12-25</td> <!-- 공연 날짜 -->
 					  <td th:text="${event.startDisTime}">14:00 - 16:00</td> <!-- 공연 시간 -->
