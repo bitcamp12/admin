@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원 관리</title>
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+</head>
+<body>
+	<div class="container">
+		<div class="title">기대평 관리</div>
+
+		<!-- 검색 -->
+		<div class="search-bar">
+			<input type="text" id="search" placeholder="검색">
+			<button onclick="performSearch()">검색</button>
+		</div>
+
+		<!-- 테이블 -->
+		<table>
+			<thead>
+				<tr>
+					<th>구분</th>
+					<th>아이디</th>
+					<th>작성자</th>
+					<th>공연명</th>
+					<th>내용</th>
+					<th>작성 날짜</th>
+					<th>삭제</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="reviewBefore : ${reviewBeforeList}">
+					<td th:text="${reviewBefore.reviewBeforeSeq}">1</td>
+					<td th:text="${reviewBefore.member.id}">gw7191</td>
+					<td th:text="${reviewBefore.member.name}">홍길동</td>
+					<td th:text="${reviewBefore.play.name}">겨울 왕국</td>
+					<td th:text="${reviewBefore.content}">추워요</td>
+					<td th:text="${#temporals.format(reviewBefore.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+					<td >
+						<button type="button"
+								class="custom-btn" 
+								data-bs-toggle="modal" 
+								data-bs-target="#confirmModal"
+								th:attr="data-seq=${reviewBefore.reviewBeforeSeq}">삭제</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<!-- 모달 -->
+		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="confirmModalLabel">기대평 삭제</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body">
+		        정말로 삭제하시겠습니까?
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
+		        <button type="button" class="custom-btn" id="confirmDeleteBtn">삭제</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		 <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		<!-- 페이징 -->
+		<div class="pagination">
+			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
+			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		</div>
+	</div>
+
+<script>
+//모달 열 때 seq 값을 전달
+$('#confirmModal').on('show.bs.modal', function(event) {
+	var button = $(event.relatedTarget); // 버튼을 클릭한 요소
+	var seq = button.data('seq'); // data-seq 값 가져오기
+	console.log(seq)
+	$('#confirmDeleteBtn').data('seq', seq); // 삭제 버튼에 seq 값을 저장
+});
+
+// 삭제 버튼 클릭 시 서버에 삭제 요청 보내기
+document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+	
+	var seq = $(this).data('seq'); // 저장된 seq 값을 가져오기
+
+	$('#confirmModal').modal('hide');
+
+    // 배경 회색 제거
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.remove();  // 배경을 수동으로 제거
+    }
+	// AJAX로 삭제 요청 보내기
+	fetch(`/api/reviewBefores/${seq}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => {
+		if (response.ok) {
+			showModal('기대평이 삭제되었습니다.');
+			 loadBodyForm('reviewBeforeList');
+		} else {
+			showModal('기대평이 삭제가 실패했습니다.');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		alert('삭제 요청 중 오류가 발생했습니다.');
+	});
+});
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
+</script>
+</body>
+</html>

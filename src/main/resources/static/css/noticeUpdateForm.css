@@ -1,0 +1,76 @@
+/* 제목 입력 필드 */
+.mb-3{
+	margin : 30px 0;
+}
+.mb-3 label {
+	margin-left: 5px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #5f4b8b;
+}
+
+.mb-3 input,
+.mb-3 textarea {
+	width: 100%;
+	margin: 10px 0;
+	padding: 12px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	font-size: 14px;
+}
+
+.mb-3 input:focus,
+.mb-3 textarea:focus {
+	border-color: #BE97EC;
+	outline: none;
+}
+
+/* 버튼 스타일 */
+.form-footer {
+	display: flex;
+	justify-content: center;
+	gap: 10px;
+	margin-top: 40px;
+}
+
+.form-footer .btn {
+	padding: 10px 20px;
+	font-size: 16px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.form-footer .btn-primary {
+	background-color: #BE97EC;
+	color: white;
+	border: none;
+}
+
+.form-footer .btn-primary:hover {
+	background-color: #7745a2;
+}
+
+.form-footer .btn-secondary {
+	background-color: #f0f0f0;
+	color: #5f4b8b;
+	border: 1px solid #ddd;
+}
+
+.form-footer .btn-secondary:hover {
+	background-color: #ddd;
+}
+
+.form-footer .btn:focus {
+	outline: none;
+	box-shadow: 0 0 0 3px rgba(184, 97, 235, 0.5);
+}
+
+/* 이미지 미리보기 스타일 */
+.image-preview {
+	max-width: 100%;
+	max-height: 300px;
+	margin-top: 20px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}

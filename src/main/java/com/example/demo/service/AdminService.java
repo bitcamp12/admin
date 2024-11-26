@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dao.AdminDAO;
 import com.example.demo.dao.MemberDAO;
 import com.example.demo.dto.MemberDTO;
+import com.example.demo.entity.Admin;
+import com.example.demo.repository.AdminRepository;
 
 @Service
 public class AdminService {
@@ -13,5 +15,12 @@ public class AdminService {
 	@Autowired
 	private AdminDAO adminDAO;
 	
+	@Autowired
+	private AdminRepository adminRepository;
+
+	public Admin findByLoginIdAndPassword(String id, String password) {
+		// TODO Auto-generated method stub
+		return adminRepository.findByLoginIdAndPassword(id,password);
+	}
 
 }

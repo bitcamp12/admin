@@ -3,114 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <title>공연 정보 등록</title>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script th:src="@{/static/js/common_bootstrap.js}"></script>
-<script th:src="@{/static/js/playRegisterForm.js}"></script>
-<script th:src="@{/static/js/writeForm.js}"></script>
-<script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="UTF-8"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+<link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
 </head>
 <body>
-<div class="container mt-5">
-        <form class="row g-3 needs-validation" novalidate>
+<div class="container">
+		<div class="title">공연 정보 등록</div>
+        <form method = "post" class="row g-3 needs-validation" id="playRegisterForm" novalidate>
             <!-- 공연명 -->
             <div class="mb-3">
                 <label for="play_name" class="form-label">공연명</label>
-                <input type="text" class="form-control" id="play_name" placeholder="공연명을 입력하세요" required>
+                <input type="text" class="form-control" id="play_name" name= "play_name" placeholder="공연명을 입력하세요" required>
                 <div class="invalid-feedback">공연명을 입력해 주세요.</div>
             </div>
             
             <!-- 공연 시작 및 종료 날짜 -->
-            <div class="mb-3 row">
+            <div class="mb-3 row" style="padding : 0">
                 <div class="col">
-                    <label for="start_date" class="form-label">공연시작날짜</label>
+                    <label for="start_date" class="form-label">공연 기간 시작일</label>
                     <input type="date" class="form-control" id="start_date" style="width: 250px;" required>
                     <div class="invalid-feedback">공연 시작 날짜를 입력해 주세요.</div>
                 </div>
                 <div class="col">
-                    <label for="end_date" class="form-label">공연종료날짜</label>
+                    <label for="end_date" class="form-label">공연 기간 종료일</label>
                     <input type="date" class="form-control" id="end_date" style="width: 250px;" required>
                     <div class="invalid-feedback">공연 종료 날짜를 입력해 주세요.</div>
-                    <div id="max_date_invalid-feedback"> </div>
+                    <div id="end_date_invalid-feedback"> </div>
                 </div>
             </div>
 
-            <!-- 관람일 -->
-			<!--
-            <div class="mb-3">
-                <label for="performanceDate" class="form-label">관람일</label>
-                <div class="input-group">
-                    <button type="button" class="btn btn-outline-secondary">날짜 선택</button>
-                    <input type="date" class="form-control" id="performanceDate" required>
-                    <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
-                </div>
-            </div>
-			-->
-			
-            <!-- 할인시작, 할인종료 -->
-            <div class="mb-3 row">
-                <div class="col">
-                    <label for="start_time" class="form-label">할인시작</label>
-                    <input type="time" class="form-control" id="start_time" required>
-                    <div class="invalid-feedback">할인 시작 시간을 입력해 주세요.</div>
-                </div>
-                <div class="col">
-                    <label for="end_time" class="form-label">할인종료</label>
-                    <input type="time" class="form-control" id="end_time" required>
-                    <div class="invalid-feedback">할인 종료 시간을 입력해 주세요.</div>
-                    <div id="end_time_invalid-feedback"> </div>
-                </div>
-            </div>
-
-            <!-- 최소할인율, 최대할인율 -->
-            <div class="mb-3 row">
-                <div class="col">
-                    <label for="minDiscount" class="form-label">최소할인율</label>
-                    <input type="number" class="form-control" id="minDiscountInput" min="0" max="99" placeholder="%" required>
-                    <div class="invalid-feedback">최소 할인율을 입력해 주세요.</div>
-                    <div id="min_discount_invalid-feedback"> </div>
-                </div>
-                <div class="col">
-                    <label for="maxDiscount" class="form-label">최대할인율</label>
-                    <input type="number" class="form-control" id="maxDiscountInput" min="0" max="99" placeholder="%" required>
-                    <div class="invalid-feedback">최대 할인율을 입력해 주세요.</div>
-                    <div id="max_discount_invalid-feedback"> </div>
-                </div>
-            </div>
-
-            <!-- 공연 위치 등록 -->
+            <!-- 공연 위치 등록 - 우편 API-->
+            <!-- 
             <div class="mb-3 row">
                 <div class="col-auto">
-                    <label for="zipcode" class="form-label">우편번호</label>
+                    <label for="zipcode" class="form-label">공연장 등록</label>
                     <div class="input-group">
-                        <input type="text" class="form-control" id="zipcode" placeholder="우편번호 입력" style="width: 150px;" required>
+                        <input type="text" class="form-control" id="postcode" name="postcode" placeholder="우편번호" style="width: 100px;" required>
                         <div class="invalid-feedback">우편번호를 입력해 주세요.</div>
-                        <button type="button" class="btn btn-outline-secondary">주소 찾기</button>
+                    	<input type="button"  class="btn btn-outline-secondary" onclick="daumPostCodeSearch()" value="우편번호 찾기"><br>
                     </div>
                 </div>
                 <div class="col">
                     <label for="address" class="form-label">상세주소</label>
-                    <input type="text" class="form-control" id="address" placeholder="상세주소 입력" required>
+                    <input type="text" name="address" class="form-control" id="address" placeholder="상세주소 입력" required>
                     <div class="invalid-feedback">상세 주소를 입력해 주세요.</div>
                 </div>
             </div>
+            -->
 
-            <!-- 상영관 타입 등록 -->
+            <!-- 총 출연진 등록 -->
             <div class="mb-3">
-                <label for="venueSelect" class="form-label">상영관 타입 선택</label>
-                <select class="form-select" id="venueSelect" required>
-                    <option selected disabled value="">상영관을 선택하세요</option>
-                    <option value="venue1">A타입</option>
-                    <option value="venue2">B타입</option>
-                    <option value="venue3">C타입</option>
-                </select>
-                <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
-            </div>
-
-            <!-- 출연진 등록 -->
-            <div class="mb-3">
-                <label for="performanceName" class="form-label">출연진</label>
-                <input type="text" class="form-control" id="performanceName" placeholder="출연진을 입력하세요." required>
+                <label for="total_actor" class="form-label">총 출연진</label>
+                <input type="text" class="form-control" id="total_actor" name="total_actor" placeholder="출연진을 입력하세요." required>
                 <div class="invalid-feedback">출연진을 입력해 주세요.</div>
             </div>
 
@@ -120,7 +64,8 @@
                 <input type="file" class="form-control" id="posterUpload" accept="image/*" onchange="previewImage()" required>
                 <div class="invalid-feedback">공연 포스터를 업로드해 주세요.</div>
             </div>
-
+            
+            <!-- 공연포스터 이미지 미리보기 -->
             <div class="mb-3 text-center">
                 <img id="posterPreview" class="rounded-custom" src="" alt="이미지 미리보기" style="display: none; max-width: 100%; height: auto; margin-top: 10px;">
                 <div id="posterPreviewMsg"></div>
@@ -128,56 +73,98 @@
 
             <!-- 네이버 스마트에디터 2.0 API -->
             <div id="smarteditor">
-                <textarea name="editorTxt" id="editorTxt" row="40" cols="10" style="width: 100%; height: 500px;" placeholder="내용을 입력해주세요." required></textarea>
-                <div class="invalid-feedback">내용을 입력해 주세요.</div>
+                <textarea name="description" id="editorTxt" rows="40" cols="10" style="width: 100%; height: 500px;" placeholder="내용을 입력해주세요." required></textarea>
             </div>
 
-            <div class="mb-3 text-center">
-                <!-- 등록 버튼 -->
-                <button class="btn btn-primary" type="submit">등록</button>
-                <!-- 다시 입력 버튼 -->
-                <button type="reset" class="btn btn-secondary">다시입력</button>
-            </div>
+           <div class="form-footer">
+				<button type="submit" class="btn btn-primary">등록</button>
+				<button type="button" onclick="loadBodyForm('playList')" class="btn btn-primary">목록</button>	
+			</div>
         </form>
+         <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
-
+</body>
 <script type="text/javascript">
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
-</script>
+var oEditors = [];
+document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
+	event.preventDefault(); // 기본 제출 방지
+	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+	//폼 데이터- 제목, 내용, 이미지 등록
+	const name = document.getElementById('play_name').value;
+	const startTime = document.getElementById('start_date').value;
+	const endTime = document.getElementById('end_date').value;
+	const description =document.getElementById('editorTxt').value;
+	const totalActor =document.getElementById('total_actor').value;
+	const image =document.getElementById('posterUpload').files[0];
 
-<script type="text/javascript">
-function previewImage() {
-    const fileInput = document.getElementById('posterUpload');
-    const preview = document.getElementById('posterPreview');
-    
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
+	//폼데이터 객체
+	const formData = new FormData();
+	formData.append('name', name);
+	formData.append('startTime', startTime);
+	formData.append('endTime', endTime);
+	formData.append('startTime', startTime);
+	formData.append('description', description);
+	formData.append('totalActor', totalActor);
+	if (image) {
+		formData.append('image', image);
+	}
+	
+	//서버로 데이터 전송
+	fetch('/api/plays/playRegisterWrite', {
+		method : 'POST',
+		body : formData
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('서버 응답 중 에러 발생함')
+		}
+		return response.json();
+	})
+	.then(data => {
+		showModal('공연 정보 등록이 성공했습니다.');
+		loadBodyForm('playList'); //목록 페이지 이동
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		showModal('공연 정보 등록이 실패했습니다.');
+	});
+});
+
+
+
+function smartEditor() {
+	// 네이버 스마트 에디터 2.0 API 
+	
+    console.log("Naver SmartEditor");
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "editorTxt",
+        sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
+        fCreator: "createSEditor2"
+    });
 }
+
+$(document).ready(function() {
+    smartEditor();
+});
 </script>
 </body>
+<script th:src="@{/static/js/playRegisterForm.js}"></script>
+<script th:src="@{/static/js/writeForm.js}"></script>
 </html>

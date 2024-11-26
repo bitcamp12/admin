@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>공연 정보 수정</title>
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+<link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
+</head>
+<body>
+<div class="container">
+		<div class="title">공연 시간표 수정</div>
+        <form class="row g-3 needs-validation" novalidate>
+        	<div id = "timetableSeq" style="display:none;" th:text="${timetable.playTimeTableSeq}"></div>
+            <!-- 공연명 -->
+            <div class="mb-3">
+                <label for="play_name" class="form-label">공연명</label>
+				<!--<select class="form-select" id="play_name" name="play_seq" required>
+					    <option selected disabled value="">공연명을 선택하세요</option>
+					      DB 조회 후 동적 추가 
+					</select>
+				-->
+ 				<select class="form-select" id="play_name" required>
+				    <option selected disabled value="">공연명을 선택하세요</option>
+				    <option th:each="play : ${playList}" th:value="${play.playSeq}" th:text="${play.name}"
+				     th:selected="${play.playSeq == timetable.play.playSeq}"></option>
+				</select> 
+                <div class="invalid-feedback">공연명을 선택 해 주세요.</div>
+            </div>
+            
+            <!-- 관람일 -->
+            <div class="mb-3">
+                <label for="performanceDate" class="form-label">관람일</label>
+                <div class="input-group">
+                    <input type="date" class="form-control" name="target_date" 
+                    id="performanceDate" th:value="${#dates.format(targetDate, 'yyyy-MM-dd')}" required>
+                    <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
+                </div>
+            </div>
+
+            <!-- 공연시작, 공연종료 -->
+            <div class="mb-3 row" style="padding : 0">
+                <div class="col">
+                    <label for="start_time" class="form-label">공연 시작 시간</label>
+                    <input type="time" class="form-control" name="start_time" id="start_time" 
+                    th:value="${timetable.startTime}" required>
+                    <div class="invalid-feedback">공연 시작 시간을 입력해 주세요.</div>
+                </div>
+                <div class="col">
+                    <label for="end_time" class="form-label">공연 종료 시간</label>
+                    <input type="time" class="form-control" name="end_time" id="end_time" 
+                     th:value="${timetable.endTime}" required>
+                    <div class="invalid-feedback">공연 종료 시간을 입력해 주세요.</div>
+                    <div id="end_time_invalid-feedback"> </div>
+                </div>
+            </div>
+			
+            <!-- 할인시작, 할인종료 -->
+            <div class="mb-3 row" style="padding : 0">
+                <div class="col">
+                    <label for="start_dis_time" class="form-label">할인 시작 시간</label>
+                    <input type="time" class="form-control" name="start_dis_time"  
+                    id="start_dis_time" th:value="${timetable.startDisTime}" required>
+                    <div class="invalid-feedback">할인 시작 시간을 입력해 주세요.</div>
+                </div>
+                <div class="col">
+                    <label for="end_dis_time" class="form-label">할인 종료 시간</label>
+                    <input type="time" class="form-control" name="end_dis_time" 
+                    id="end_dis_time" th:value="${timetable.endDisTime}" required>
+                    <div class="invalid-feedback">할인 종료 시간을 입력해 주세요.</div>
+                    <div id="end_dis_time_invalid-feedback"> </div>
+                </div>
+            </div>
+            
+            <!-- 최소할인율, 최대할인율 -->
+            <div class="mb-3 row" style="padding : 0">
+                <div class="col">
+                    <label for="minDiscount" class="form-label">최소 할인율</label>
+                    <input type="number" class="form-control" id="minDiscountInput" 
+                    name="min_rate" min="0" max="99" placeholder="%"  th:value="${timetable.minRate}" required>
+                    <div class="invalid-feedback">최소 할인율을 입력해 주세요.</div>
+                    <div id="min_discount_invalid-feedback"> </div>
+                </div>
+                <div class="col">
+                    <label for="maxDiscount" class="form-label">최대 할인율</label>
+                    <input type="number" class="form-control" id="maxDiscountInput" name="max_rate"
+                     min="0" max="99" placeholder="%" th:value="${timetable.maxRate}" required>
+                    <div class="invalid-feedback">최대 할인율을 입력해 주세요.</div>
+                    <div id="max_discount_invalid-feedback"> </div>
+                </div>
+            </div>
+
+           <!-- 상영관 타입 등록 -->
+            <div class="mb-3">
+                <label for="theater" class="form-label">상영관 타입 선택</label>
+                <select class="form-select" id="theater" name="theater" required>
+                    <option selected disabled value="">상영관을 선택하세요</option>
+					 <option th:each="theater : ${theaterList}" th:value="${theater.theaterSeq}" th:text="${theater.name}"
+				     th:selected="${theater.theaterSeq == timetable.theater.theaterSeq}"></option>
+                </select>
+                <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
+            </div>
+		    
+		    <div class="invalid-feedback">공연명을 선택 해주세요.</div>
+            <div class="form-footer">
+				<button id = "enroll" type="button" class="btn btn-primary">수정</button>
+					<button type = "button" onclick="loadBodyForm('timeList')" class="btn btn-primary">목록</button>			
+			</div>
+        </form>
+    </div>
+
+<script type="text/javascript">
+//버튼 클릭 이벤트 리스너
+document.getElementById('enroll').addEventListener('click', function(event) {
+  event.preventDefault(); // 기본 동작 방지 (form submit 방지 등)
+    var form = this;
+
+    // 브라우저 기본 유효성 검사
+    /*
+    if (!form.checkValidity()) {
+        form.classList.add('was-validated'); // 부트스트랩 유효성 스타일 추가
+        return; // 유효성 실패 시 중단
+    }
+	*/
+	
+    // 유효성 통과 후 AJAX 요청
+    var formData = {
+		playSeq: document.getElementById('play_name').value,
+		theaterSeq: document.getElementById('theater').value,
+		startTime: document.getElementById('start_time').value,
+		endTime: document.getElementById('end_time').value,
+		startDisTime: document.getElementById('start_dis_time').value,
+		endDisTime: document.getElementById('end_dis_time').value,
+		minRate: document.getElementById('minDiscountInput').value,
+		maxRate: document.getElementById('maxDiscountInput').value,
+		targetDate: document.getElementById('performanceDate').value
+    };
+	console.log(formData);
+	var seq = document.getElementById('timetableSeq').innerText;
+    $.ajax({
+        type: 'put',
+        url: '/api/playTimeTables/'+seq,
+        data: JSON.stringify(formData),
+        contentType: 'application/json; charset=utf-8',
+        success: function() { 
+        	showModal('공연 시간표가 수정되었습니다.');
+        	loadBodyForm('timeList')
+        },
+        error: function(error) {
+        	showModal('공연 시간표가 수정이 실패되었습니다.');
+        }
+    });
+});
+/*
+//공연명 불러오기
+function timeRegisterFormSelect(){
+	$.ajax({
+	    type: 'post',
+	    url: '/api/playTimeTables/timeRegisterFormSelect',
+	    success: function(response) {
+	    	response.forEach(function(play) {
+	    		$('#play_name').append(
+	    			`<option value="${play.play_seq}">${play.name}</option>`
+	    		)
+	    	})
+	    },
+	    error: function(error) {
+	        console.log('데이터를 불러오는 중 에러 발생:', error);
+	    }
+	});
+}
+
+//상영관 불러오기
+function theaterListSelect(){
+	$.ajax({
+	    type: 'post',
+	    url: '/api/theaters/theaterListSelect',
+	    success: function(response) {
+	    	response.forEach(function(theater) {
+	    		$('#theater').append(
+	    			`<option value="${theater.theater_seq}">${theater.name}</option>`
+	    		)
+	    	})
+	    },
+	    error: function(error) {
+	        console.log('데이터를 불러오는 중 에러 발생:', error);
+	    }
+	});
+}
+
+$(document).ready(function() {
+	timeRegisterFormSelect(); //공연명 불러오기
+	theaterListSelect(); // 상영관 불러오기
+});
+*/
+</script>
+<script th:src="@{/static/js/playRegisterForm.js}"></script>
+<script th:src="@{/static/js/writeForm.js}"></script>
+</body>
+</html>

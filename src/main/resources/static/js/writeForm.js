@@ -1,9 +1,4 @@
 $(document).ready(function() {
-    smartEditor();
-	
-	// 입력 필드에 이벤트 리스너 추가
-	document.getElementById('minDiscountInput').addEventListener('input', limitDiscountInput);
-	document.getElementById('maxDiscountInput').addEventListener('input', limitDiscountInput);
 
 	// 할인율 유효성 체크
 	$('#maxDiscountInput').focusout(validateDiscounts);
@@ -16,40 +11,78 @@ $(document).ready(function() {
 	// 공연시간 유효성 체크
 	$('#start_time').focusout(validateTime);
 	$('#end_time').focusout(validateTime);
-
+	
+	// 할인시간 유효성 체크
+	$('#start_dis_time').focusout(validateDisTime);
+	$('#end_dis_time').focusout(validateDisTime);
 });
 
 
+// 날짜 유효성 체크
 function validateDate() {
 	const start_date = document.getElementById('start_date').value; 
 	const end_date = document.getElementById('end_date').value; 
 	
-	const maxDateInput = document.getElementById('end_date');
-	const maxDateFeedback = document.getElementById('max_date_invalid-feedback');
+	const endDateInput = document.getElementById('end_date');
+	const endDateFeedback = document.getElementById('end_date_invalid-feedback');
 	
 	if (start_date >= end_date || end_date == null || end_date === "" ) {
 			// 오류 메시지를 추가하고 'is-invalid' 클래스 추가
-			maxDateFeedback.classList.add('is-invalid');
-			maxDateFeedback.classList.add('invalid-feedback');
+			endDateFeedback.classList.add('is-invalid');
+			endDateFeedback.classList.add('invalid-feedback');
 			
 			if(end_date != null && end_date != "") {
-				maxDateFeedback.innerHTML = '공연 시작 날짜보다 빠릅니다.';
+				endDateFeedback.innerHTML = '공연 시작 날짜보다 빠릅니다.';
 			}
 
 			// 입력 필드에도 'is-invalid' 클래스 추가
-			maxDateInput.classList.add('is-invalid');
+			endDateInput.classList.add('is-invalid');
 			$('#end_date').val(''); // 입력 값을 비웁니다.
 		} else {
 			// 오류 메시지 초기화 및 'is-invalid' 클래스 제거
-			maxDateFeedback.innerHTML = ''; // 메시지 비우기
-			maxDateFeedback.classList.remove('is-invalid');
+			endDateFeedback.innerHTML = ''; // 메시지 비우기
+			endDateFeedback.classList.remove('is-invalid');
 			
 			// 입력 필드의 'is-invalid' 클래스 제거 및 'is-valid' 클래스 추가
-			maxDateInput.classList.remove('is-invalid');
-			maxDateInput.classList.add('is-valid');
+			endDateInput.classList.remove('is-invalid');
+			endDateInput.classList.add('is-valid');
 		}
 }
 
+
+// 할인시간 유효성 체크
+function validateDisTime() {
+	const start_dis_time = document.getElementById('start_dis_time').value; 
+	const end_dis_time = document.getElementById('end_dis_time').value; 
+
+	const endDisTimeInput = document.getElementById('end_dis_time');
+	const endDisTimeFeedback = document.getElementById('end_dis_time_invalid-feedback');
+
+	if (start_dis_time >= end_dis_time || end_dis_time == null || end_dis_time === "" ) {
+			// 오류 메시지를 추가하고 'is-invalid' 클래스 추가
+			endDisTimeFeedback.classList.add('is-invalid');
+			endDisTimeFeedback.classList.add('invalid-feedback');
+			
+			if(end_dis_time != null && end_dis_time != "") {
+				endDisTimeFeedback.innerHTML = '할인 시작 시간보다 빠릅니다.';
+			}
+
+			// 입력 필드에도 'is-invalid' 클래스 추가
+			endDisTimeInput.classList.add('is-invalid');
+			$('#end_dis_time').val(''); // 입력 값을 비웁니다.
+		} else {
+			// 오류 메시지 초기화 및 'is-invalid' 클래스 제거
+			endDisTimeFeedback.innerHTML = ''; // 메시지 비우기
+			endDisTimeFeedback.classList.remove('is-invalid');
+			
+			// 입력 필드의 'is-invalid' 클래스 제거 및 'is-valid' 클래스 추가
+			endDisTimeInput.classList.remove('is-invalid');
+			endDisTimeInput.classList.add('is-valid');
+		}
+}
+
+
+// 공연시간 유효성 체크
 function validateTime() {
 	const start_time = document.getElementById('start_time').value; 
 	const end_time = document.getElementById('end_time').value; 
@@ -63,7 +96,7 @@ function validateTime() {
 			endTimeFeedback.classList.add('invalid-feedback');
 			
 			if(end_time != null && end_time != "") {
-				endTimeFeedback.innerHTML = '할인 시작 시간보다 빠릅니다.';
+				endTimeFeedback.innerHTML = '공연 시작 시간보다 빠릅니다.';
 			}
 
 			// 입력 필드에도 'is-invalid' 클래스 추가
@@ -130,59 +163,4 @@ function validateDiscounts() {
 };
 
 
-// 네이버 스마트 에디터 2.0 적용
-let oEditors = [];
 
-function smartEditor() {
-    console.log("Naver SmartEditor");
-    nhn.husky.EZCreator.createInIFrame({
-        oAppRef: oEditors,
-        elPlaceHolder: "editorTxt",
-        sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
-        fCreator: "createSEditor2"
-    });
-}
-
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-	
-
-})();
-
-
-
-function previewImage() {
-    const fileInput = document.getElementById('posterUpload');
-    const preview = document.getElementById('posterPreview');
-    
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-}
-
-function discountValidate() {
-
-	
-}
