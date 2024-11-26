@@ -13,7 +13,7 @@ import com.example.demo.dto.PlayTimeTableDTO;
 public interface PlayTimeTableDAO {
 
 	@Insert("INSERT INTO PLAY_TIME_TABLE (play_seq, theater_seq, start_time, end_time, start_dis_time, end_dis_time, min_rate, max_rate, target_date)"
-							+ " VALUES(#{play_seq}, #{theater_seq}, #{start_time}, #{end_time}, #{start_dis_time}, #{end_dis_time}, #{min_rate}, #{max_rate}, #{target_date})")
+							+ " VALUES(#{playSeq}, #{theaterSeq}, #{startTime}, #{endTime}, #{startDisTime}, #{endDisTime}, #{minRate}, #{maxRate}, #{targetDate})")
 	public void timeRegisterWrite(PlayTimeTableDTO playTimeTableDTO);
 
 	@Select("SELECT play_seq, name, start_time, end_time FROM PLAY ORDER BY START_TIME")
