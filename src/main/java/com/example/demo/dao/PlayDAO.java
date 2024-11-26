@@ -14,11 +14,11 @@ import com.example.demo.dto.SellerDTO;
 @Mapper
 public interface PlayDAO {
 	
-	@Insert("INSERT INTO PLAY (NAME, START_TIME, END_TIME, DESCRIPTION, ADDRESS, total_actor)"
-			+ " VALUES(#{play_name}, #{start_date}, #{end_date}, #{description}, #{address}, #{total_actor})")
+	@Insert("INSERT INTO PLAY (NAME, START_TIME, END_TIME, DESCRIPTION, ADDRESS, total_actor, image_original_file_name, image_file_name)"
+			+ " VALUES(#{name}, #{startTime}, #{endTime}, #{description}, #{address}, #{totalActor}, #{imageOriginalFileName}, #{imageFileName})")
 	public void playRegisterWrite(PlayDTO playDTO);
 	
 	
-	@Select("SELECT play_seq as playSeq, name, start_time as startDate, end_time as endDate, description, total_actor as totalActor FROM PLAY ORDER BY END_TIME DESC")
+	@Select("SELECT * FROM PLAY ORDER BY END_TIME DESC")
 	public List<PlayDTO> getPlayList();
 }

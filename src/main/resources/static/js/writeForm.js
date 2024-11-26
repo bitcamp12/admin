@@ -164,22 +164,3 @@ function validateDiscounts() {
 
 
 
-// 포스터 이미지 미리보기 
-function previewImage() {
-    const fileInput = document.getElementById('posterUpload');
-    const preview = document.getElementById('posterPreview');
-    
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-}

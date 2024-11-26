@@ -9,7 +9,7 @@
 <body>
 <div class="container">
 		<div class="title">공연 정보 등록</div>
-        <form class="row g-3 needs-validation" id="playRegisterForm" novalidate>
+        <form method = "post" class="row g-3 needs-validation" id="playRegisterForm" novalidate>
             <!-- 공연명 -->
             <div class="mb-3">
                 <label for="play_name" class="form-label">공연명</label>
@@ -78,70 +78,74 @@
 
            <div class="form-footer">
 				<button type="submit" class="btn btn-primary">등록</button>
-				<button type="reset" class="btn btn-secondary"
-					onclick="noticeClearPreview()">초기화</button>
 				<button type="button" onclick="loadBodyForm('playList')" class="btn btn-primary">목록</button>	
 			</div>
         </form>
+         <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
 </body>
 <script type="text/javascript">
 var oEditors = [];
 document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
 	event.preventDefault(); // 기본 제출 방지
-
-    var form = this;
-
-    // 브라우저 기본 유효성 검사
-    /*
-    if (!form.checkValidity()) {
-        form.classList.add('was-validated'); // 부트스트랩 유효성 스타일 추가
-        return; // 유효성 실패 시 중단
-    }
-	*/
 	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
-	
-    // 유효성 통과 후 AJAX 요청
-    var formData = {
-        play_name: document.getElementById('play_name').value,
-        start_date: document.getElementById('start_date').value,
-        end_date: document.getElementById('end_date').value,
-        description: document.getElementById("editorTxt").value,
-        total_actor: document.getElementById('total_actor').value
-    };
+	//폼 데이터- 제목, 내용, 이미지 등록
+	const name = document.getElementById('play_name').value;
+	const startTime = document.getElementById('start_date').value;
+	const endTime = document.getElementById('end_date').value;
+	const description =document.getElementById('editorTxt').value;
+	const totalActor =document.getElementById('total_actor').value;
+	const image =document.getElementById('posterUpload').files[0];
 
-    $.ajax({
-        type: 'post',
-        url: '/api/plays/playRegisterWrite',
-        data: JSON.stringify(formData),
-        contentType: 'application/json; charset=utf-8',
-        success: function() {
-            location.href = '/secure/seller/index';
-        },
-        error: function(error) {
-            console.log('에러 발생:', error);
-        }
-    });
+	//폼데이터 객체
+	const formData = new FormData();
+	formData.append('name', name);
+	formData.append('startTime', startTime);
+	formData.append('endTime', endTime);
+	formData.append('startTime', startTime);
+	formData.append('description', description);
+	formData.append('totalActor', totalActor);
+	if (image) {
+		formData.append('image', image);
+	}
+	
+	//서버로 데이터 전송
+	fetch('/api/playTimeTables/playRegisterWrite', {
+		method : 'POST',
+		body : formData
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('서버 응답 중 에러 발생함')
+		}
+		return response.json();
+	})
+	.then(data => {
+		showModal('공연 정보 등록이 성공했습니다.');
+		loadBodyForm('playList'); //목록 페이지 이동
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		showModal('공연 정보 등록이 실패했습니다.');
+	});
 });
 
-function previewImage() {
-    const fileInput = document.getElementById('posterUpload');
-    const preview = document.getElementById('posterPreview');
-    
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-}
 
 
 function smartEditor() {

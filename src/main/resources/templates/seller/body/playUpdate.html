@@ -4,16 +4,17 @@
 <meta charset="UTF-8">
 <title>공연 정보 등록</title>
 <link rel="stylesheet" th:href="@{/static/css/common.css}">
-<link rel="stylesheet" th:href="@{/static/css/playRegisterForm.css}">
+<link rel="stylesheet" th:href="@{/static/css/playUpdate.css}">
 </head>
 <body>
 <div class="container">
 		<div class="title">공연 정보 수정</div>
-        <form class="row g-3 needs-validation" id="playRegisterForm" novalidate>
+        <form method = "post" class="row g-3 needs-validation" id="playRegisterForm" novalidate>
+            <div id = "seq" th:text="${play.playSeq}" style="display :none"></div>
             <!-- 공연명 -->
             <div class="mb-3">
                 <label for="play_name" class="form-label">공연명</label>
-                <input type="text" class="form-control" id="play_name" name= "play_name" placeholder="공연명을 입력하세요" required>
+                <input type="text" class="form-control" id="play_name" th:value="${play.name}" name= "play_name" placeholder="공연명을 입력하세요" required>
                 <div class="invalid-feedback">공연명을 입력해 주세요.</div>
             </div>
             
@@ -21,63 +22,67 @@
             <div class="mb-3 row" style="padding : 0">
                 <div class="col">
                     <label for="start_date" class="form-label">공연 기간 시작일</label>
-                    <input type="date" class="form-control" id="start_date" style="width: 250px;" required>
+                    <input type="date" class="form-control" id="start_date"   th:value="${#dates.format(startTime, 'yyyy-MM-dd')}"  style="width: 250px;" required>
                     <div class="invalid-feedback">공연 시작 날짜를 입력해 주세요.</div>
                 </div>
                 <div class="col">
                     <label for="end_date" class="form-label">공연 기간 종료일</label>
-                    <input type="date" class="form-control" id="end_date" style="width: 250px;" required>
+                    <input type="date" class="form-control" id="end_date" th:value="${#dates.format(endTime, 'yyyy-MM-dd')}" style="width: 250px;" required>
                     <div class="invalid-feedback">공연 종료 날짜를 입력해 주세요.</div>
                     <div id="end_date_invalid-feedback"> </div>
                 </div>
             </div>
 		    <!-- 상영관 타입 등록 -->
-            <div class="mb-3">
+       <!--      <div class="mb-3">
                 <label for="venueSelect" class="form-label">상영관 타입 선택</label>
                 <select class="form-select" id="venueSelect" required>
                     <option selected disabled value="">상영관을 선택하세요</option>
-                    <option value="venue1">A타입</option>
-                    <option value="venue2">B타입</option>
-                    <option value="venue3">C타입</option>
+                      <th:block th:each="theater : ${theaterList}">
+       					 <option th:value="${theater.theaterSeq}" th:text="${theater.name}">
+       					 </option>
+    				  </th:block>
                 </select>
                 <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
-            </div>
+            </div> -->
 
             <!-- 총 출연진 등록 -->
             <div class="mb-3">
                 <label for="total_actor" class="form-label">총 출연진</label>
-                <input type="text" class="form-control" id="total_actor" name="total_actor" placeholder="출연진을 입력하세요." required>
+                <input type="text" class="form-control" id="total_actor" th:value="${play.totalActor}" name="total_actor" placeholder="출연진을 입력하세요." required>
                 <div class="invalid-feedback">출연진을 입력해 주세요.</div>
             </div>
 
             <!-- 공연포스터 이미지 업로드 -->
             <div class="mb-3">
                 <label for="posterUpload" class="form-label">공연포스터 등록</label>
-                <input type="file" class="form-control" id="posterUpload" accept="image/*" onchange="previewImage()" required>
+                <input type="file" class="form-control" id="image" accept="image/*" onchange="previewImage(event)" required>
                 <div class="invalid-feedback">공연 포스터를 업로드해 주세요.</div>
+                
+                <div th:if="${play.imageFileName}">
+				    <img id="imagePreview" class="image-preview" th:src="'https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/' + ${play.imageFileName}" 
+				         alt="공연 이미지">
+				</div>
+				<div th:unless="${play.imageFileName}">
+					<img id="imagePreview" class="image-preview" style="display:none;" alt="이미지 미리보기">
+				</div>	
             </div>
-            
-            <!-- 공연포스터 이미지 미리보기 -->
-            <div class="mb-3 text-center">
-                <img id="posterPreview" class="rounded-custom" src="" alt="이미지 미리보기" style="display: none; max-width: 100%; height: auto; margin-top: 10px;">
-                <div id="posterPreviewMsg"></div>
-            </div>
+        
 
             <!-- 네이버 스마트에디터 2.0 API -->
             <div id="smarteditor">
-                <textarea name="description" id="editorTxt" rows="40" cols="10" style="width: 100%; height: 500px;" placeholder="내용을 입력해주세요." required></textarea>
+                <textarea name="description" id="editorTxt" rows="40" cols="10" style="width: 100%; height: 500px;"
+                th:text="${play.description}" placeholder="내용을 입력해주세요." required></textarea>
             </div>
 
            <div class="form-footer">
 				<button type="submit" class="btn btn-primary">수정</button>
-				<button type="reset" class="btn btn-secondary"
-					onclick="noticeClearPreview()">초기화</button>
 				<button type="button" onclick="loadBodyForm('playList')" class="btn btn-primary">목록</button>		
 			</div>
         </form>
     </div>
 </body>
 <script type="text/javascript">
+var oEditors = [];
 (function() {
     'use strict';
     window.addEventListener('load', function() {
@@ -95,7 +100,7 @@
 })();
 function smartEditor() {
 	// 네이버 스마트 에디터 2.0 API 
-	let oEditors = [];
+	
 	
     console.log("Naver SmartEditor");
     nhn.husky.EZCreator.createInIFrame({
@@ -104,11 +109,79 @@ function smartEditor() {
         sSkinURI: "/static/smarteditor/SmartEditor2Skin.html",
         fCreator: "createSEditor2"
     });
+    
+    const description = $('#editorTxt').text();
+    oEditors.getById["editorTxt"].exec("SET_IR", [description]);
 }
 
 $(document).ready(function() {
     smartEditor();
 });
+
+function previewImage() {
+    const fileInput = document.getElementById('posterUpload');
+    const preview = document.getElementById('posterPreview');
+    
+    const file = fileInput.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+    }
+}
+
+document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
+	event.preventDefault(); // 기본 제출 방지
+	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+	//폼 데이터- 제목, 내용, 이미지 등록
+	const seq = document.getElementById('seq').innerText;
+	const name = document.getElementById('play_name').value;
+	const startTime = document.getElementById('start_date').value;
+	const endTime = document.getElementById('end_date').value;
+	const description =document.getElementById('editorTxt').value;
+	const totalActor =document.getElementById('total_actor').value;
+	const image =document.getElementById('image').files[0];
+
+	//폼데이터 객체
+	const formData = new FormData();
+	formData.append('name', name);
+	formData.append('startTime', startTime);
+	formData.append('endTime', endTime);
+	formData.append('startTime', startTime);
+	formData.append('description', description);
+	formData.append('totalActor', totalActor);
+	if (image) {
+		formData.append('image', image);
+	}
+	
+	//서버로 데이터 전송
+	fetch('/api/plays/playUpdate/'+seq, {
+		method : 'POST',
+		body : formData
+	})
+	.then(response => {
+		if (!response.ok) {
+			throw new Error('서버 응답 중 에러 발생함')
+		}
+		return response.json();
+	})
+	.then(data => {
+		showModal('공연 정보 등록이 수정했습니다.');
+		loadBodyForm('playList'); //목록 페이지 이동
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		showModal('공연 정보 수정이 실패했습니다.');
+	});
+});
+
 </script>
 <script th:src="@{/static/js/playUpdate.js}"></script>
 <script th:src="@{/static/js/writeForm.js}"></script>

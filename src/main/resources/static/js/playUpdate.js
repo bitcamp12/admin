@@ -17,24 +17,7 @@ $(function(){
 	*/
 });
 
-function previewImage() {
-    const fileInput = document.getElementById('posterUpload');
-    const preview = document.getElementById('posterPreview');
-    
-    const file = fileInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            preview.src = e.target.result;
-            preview.style.display = 'block';
-        }
-        reader.readAsDataURL(file);
-        document.getElementById("posterPreviewMsg").innerHTML = "<p style='color: grey;'> 포스터 미리보기 </p>";
-    } else {
-        preview.src = '';
-        preview.style.display = 'none';
-    }
-}
+
 
 (function() {
     'use strict';
@@ -51,3 +34,18 @@ function previewImage() {
         });
     }, false);
 })();
+function previewImage(event) {
+	const input = event.target;
+	const preview = document.getElementById('imagePreview');
+
+	if (input.files && input.files[0]) {
+		const reader = new FileReader();
+
+		reader.onload = function(e) {
+			preview.src = e.target.result;
+			preview.style.display = 'block'; // 미리보기 이미지 보이게 설정
+		};
+
+		reader.readAsDataURL(input.files[0]);
+	}
+}
