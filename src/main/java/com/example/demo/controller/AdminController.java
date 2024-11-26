@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.lang.ProcessBuilder.Redirect;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,10 +49,19 @@ public class AdminController {
     	System.out.println(name);
     	if("ADMIN".equals(role) && name != null) {
     		model.addAttribute("name", name);
+    		return "admin/index";  // index.html 템플릿을 렌더링
+    	}else {
+    		return "redirect:/secure/login";
     	}
-        return "admin/index";  // index.html 템플릿을 렌더링
+        
     }
     
+	@GetMapping("/logout")
+	public String logout() {
+		httpSession.invalidate();
+    	return "redirect:/secure/login";
+    }
+	
     @GetMapping("/memberList")
 	public String memberList(Model model) {
     	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
