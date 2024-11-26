@@ -44,8 +44,16 @@ public class SellerController {
     	String name = (String) httpSession.getAttribute("name");
     	if("SELLER".equals(role) && name != null) {
     		model.addAttribute("name", name);
+    		return "seller/index";  // index.html 템플릿을 렌더링
+    	}else {
+    		return "redirect:/secure/login";
     	}
-        return "seller/index";  // index.html 템플릿을 렌더링
+    }
+	
+	@GetMapping("/logout")
+	public String logout() {
+		httpSession.invalidate();
+    	return "redirect:/secure/login";
     }
     
     // 공연정보등록
