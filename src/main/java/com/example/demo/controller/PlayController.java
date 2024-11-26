@@ -21,6 +21,8 @@ import com.example.demo.repository.PlayRepository;
 import com.example.demo.service.PlayService;
 import com.example.demo.util.ApiResponse;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping(value = "/api/plays")
 public class PlayController {
@@ -33,6 +35,9 @@ public class PlayController {
 
 	@Autowired
 	private NCPObjectStorageService objectStorageService;
+	
+	@Autowired
+	HttpSession httpSession;
 
 	@PostMapping("/playRegisterWrite")
 	public ResponseEntity<ApiResponse<Void>> playRegisterWrite(@RequestParam("name") String name,
@@ -48,7 +53,8 @@ public class PlayController {
 			playDTO.setEndTime(endTime);
 			playDTO.setDescription(description);
 			playDTO.setTotalActor(totalActor);
-
+			int seq = (int) httpSession.getAttribute("memberSeq");
+			playDTO.setMemberSeq(seq);
 			if (image != null && !image.isEmpty()) {
 				// 이미지 파일 저장 및 파일명 생성
 				System.out.println(objectStorageService);
@@ -59,6 +65,7 @@ public class PlayController {
 			playService.playRegisterWrite(playDTO);
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(500, "ok", null));
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "fail", null));
 		}
 	}
