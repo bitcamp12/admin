@@ -20,5 +20,11 @@ public class MemberDTO {
     private String snsToken;       // SNS 토큰
     private String role;             // 역할 (ENUM)
     private LocalDateTime registerDate; // 가입 날짜
+    
+    //paging 관련 필드
+    private int page = 1;       // 현재 페이지 번호(기본 = 1페이지)
+    private int size = 5;      // 페이지당 포함되는 데이터
+    private int totalPages;     // 전체 페이지 수
+    private long totalElements; // 전체 데이터 수
 
 }
