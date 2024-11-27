@@ -55,4 +55,7 @@ public class Play {
 
     @Column(name = "total_actor", length = 300)
     private String totalActor;
+    
+    @Column(name = "age_limit", length = 100)
+    private String ageLimit;
 }
