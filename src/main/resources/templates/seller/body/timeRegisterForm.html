@@ -9,18 +9,18 @@
 <body>
 <div class="container">
 		<div class="title">공연 시간표 등록</div>
-        <form class="row g-3 needs-validation" novalidate>
+        <form method="post" class="row g-3 needs-validation" novalidate>
             <!-- 공연명 -->
             <div class="mb-3">
                 <label for="play_name" class="form-label">공연명</label>
-					<select class="form-select" id="play_name" name="play_name" required>
+				<!-- 	<select class="form-select" id="play_name" name="play_name" required>
 					    <option selected disabled value="">공연명을 선택하세요</option>
-					    <!--  DB 조회 후 동적 추가 -->
-					</select>
-<!-- 				<select class="form-select" id="play_name" required th:field="*{playName}">
-				    <option selected disabled value="">공연명을 선택하세요</option>
-				    <option th:each="play : ${playList}" th:value="${play.id}" th:text="${play.name}"></option>
-				</select> -->
+					     DB 조회 후 동적 추가
+					</select> -->
+				<select class="form-select" id="play_name" required >
+			 	    <option selected disabled value="">공연명을 선택하세요</option>
+				    <option th:each="play : ${playList}" th:value="${play.playSeq}" th:text="${play.name}"></option>
+			 	</select> 
                 <div class="invalid-feedback">공연명을 선택 해 주세요.</div>
             </div>
             
@@ -28,7 +28,8 @@
             <div class="mb-3">
                 <label for="performanceDate" class="form-label">관람일</label>
                 <div class="input-group">
-                    <input type="date" class="form-control" name="target_date" id="target_date" required>
+                    <input type="date" class="form-control" name="target_date" id="target_date" required
+                    th:value="${#dates.format(targetDate, 'yyyy-MM-dd')}">
                     <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
                 </div>
             </div>
@@ -84,24 +85,40 @@
                 <label for="theater" class="form-label">상영관 타입 선택</label>
                 <select class="form-select" id="theater" name="theater" required>
                     <option selected disabled value="">상영관을 선택하세요</option>
-					<!--  DB 조회 후 동적 추가 -->
+					<option th:each="theater : ${theaterList}" th:value="${theater.theaterSeq}" th:text="${theater.name}"></option>
                 </select>
                 <div class="invalid-feedback">상영관 타입을 선택해 주세요.</div>
             </div>
 
             <div class="form-footer">
-				<button type="submit" class="btn btn-primary">등록</button>
-				<button type="reset" class="btn btn-secondary"
-					onclick="noticeClearPreview()">초기화</button>
+				<button id="enroll" class="btn btn-primary">등록</button>
 				<button type="button" onclick="loadBodyForm('timeList')" class="btn btn-primary">목록</button>		
 			</div>
         </form>
+          <!-- Modal -->
+		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		      </div>
+		      <div class="modal-body" id="modalMessage">
+		        <!-- 메시지가 동적으로 들어갑니다 -->
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
     </div>
 
 <script type="text/javascript">
-document.getElementById('timeRegisterForm').addEventListener('submit', function(event) {
-	event.preventDefault(); // 기본 제출 방지
 
+// 버튼 클릭 이벤트 리스너
+document.getElementById('enroll').addEventListener('click', function(event) {
+  event.preventDefault(); // 기본 동작 방지 (form submit 방지 등)
     var form = this;
 
     // 브라우저 기본 유효성 검사
@@ -114,32 +131,33 @@ document.getElementById('timeRegisterForm').addEventListener('submit', function(
 	
     // 유효성 통과 후 AJAX 요청
     var formData = {
-		play_seq: document.getElementById('play_name').value,
-		theater_seq: document.getElementById('theater').value,
-		start_time: document.getElementById('start_time').value,
-		end_time: document.getElementById('end_time').value,
-		start_dis_time: document.getElementById('start_dis_time').value,
-		end_dis_time: document.getElementById('end_dis_time').value,
-		min_rate: document.getElementById('minDiscountInput').value,
-		max_rate: document.getElementById('maxDiscountInput').value,
-		target_date: document.getElementById('target_date').value
+		playSeq: document.getElementById('play_name').value,
+		theaterSeq: document.getElementById('theater').value,
+		startTime: document.getElementById('start_time').value,
+		endTime: document.getElementById('end_time').value,
+		startDisTime: document.getElementById('start_dis_time').value,
+		endDisTime: document.getElementById('end_dis_time').value,
+		minRate: document.getElementById('minDiscountInput').value,
+		maxRate: document.getElementById('maxDiscountInput').value,
+		targetDate: document.getElementById('target_date').value
     };
-
+	console.log(formData);
     $.ajax({
         type: 'post',
         url: '/api/playTimeTables/timeRegisterWrite',
         data: JSON.stringify(formData),
         contentType: 'application/json; charset=utf-8',
         success: function() {
-            location.href = '/secure/seller/index';
+            //location.href = '/secure/seller/index';
+        	showModal('공연 시간표가 등록되었습니다.');
+        	loadBodyForm('timeList')
         },
         error: function(error) {
             console.log('DB 업로드 중 에러 발생:', error);
         }
     });
 });
-
-
+/*
 //공연명 불러오기
 function timeRegisterFormSelect(){
 	$.ajax({
@@ -180,8 +198,16 @@ $(document).ready(function() {
 	timeRegisterFormSelect(); //공연명 불러오기
 	theaterListSelect(); // 상영관 불러오기
 });
+*/
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
 </script>
-<script th:src="@{/static/js/playRegisterForm.js}"></script>
 <script th:src="@{/static/js/writeForm.js}"></script>
 </body>
 </html>

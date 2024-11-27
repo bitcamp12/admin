@@ -32,6 +32,7 @@
 			</div>
 			<div class="flex items-center">
 			<span class="mr-3 text-gray-600" th:text="${name} + ' 님'"></span> 
+			<span class="mr-3 text-gray-600 cursor-pointer" onclick="location.href='/secure/admin/logout'">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;로그아웃&nbsp;&nbsp;</span>
 			<img
 					src="/static/images/default-profile.png" alt="Profile"
 					class="w-10 h-10 rounded-full border-2 border-purple-100">
@@ -100,6 +101,8 @@
 	</div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{/static/js/common_bootstrap.js}"></script>
 	<script th:src="@{/static/js/seller_index.js}"></script>
 	<script>
 document.addEventListener('DOMContentLoaded', function(){
@@ -132,8 +135,7 @@ function showModal(message) {
     Modal.show();
 }
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script th:src="@{/static/js/common_bootstrap.js}"></script>
+
 <script type="text/javascript" th:src="@{/static/smarteditor/js/HuskyEZCreator.js}" charset="UTF-8"></script>
 </body>
 </html>
