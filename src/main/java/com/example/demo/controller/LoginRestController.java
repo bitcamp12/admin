@@ -64,6 +64,7 @@ public class LoginRestController {
 				httpSession.setAttribute("role", "SELLER");
 				httpSession.setAttribute("name", result.getName());
 				httpSession.setAttribute("id", id);
+				httpSession.setAttribute("memberSeq", result.getMemberSeq());
 				return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "success", null));
 			}
 			else {
