@@ -28,35 +28,20 @@
 	                    <th>예매번호</th>
 	                    <th>예매일</th>
 	                    <th>좌석번호</th>
-	                    <th>결제금액</th>
 	                    <th>취소가능여부</th>
 	                </tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>example1</td>
-						<td>누가 죄인인가</td>
-						<td>2024.12.25 17:00</td>
-						<td>A타입</td>
-						<td>14513</td>
-						<td>2024.12.25 16:35</td>
-						<td>A01</td>
-						<td>11500원</td>
+					<tr th:each="book : ${bookList}">
+						<td th:text="${book.member.id}">이름</td>
+						<td th:text="${book.playTimeTable.play.name}">1</td>
+						<td th:text="${book.playTimeTable.targetDate}">1</td>
+						<td th:text="${book.playTimeTable.theater.name}">1</td>
+						<td th:text="${book.bookSeq}">1</td>
+						<td th:text="${book.payDate}">1</td>
+						<td th:text="${book.bookedX + book.bookedY}">1</td>
 						<td ><button type="button"
 								class="custom-btn">가능</button>
-						</td>
-					</tr>
-							<tr>
-						<td>example1</td>
-						<td>누가 죄인인가</td>
-						<td>2024.12.25 17:00</td>
-						<td>A타입</td>
-						<td>14513</td>
-						<td>2024.12.25 16:35</td>
-						<td>A01</td>
-						<td>11500원</td>
-						<td ><button type="button"
-								class="custom-btn-disable">확정</button>
 						</td>
 					</tr>
 					<!-- 추가 행은 필요에 따라 추가 -->
@@ -67,5 +52,6 @@
 			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
 		</div>
 	</div>
+<script th:src="@{/static/js/book.js}"></script>
 </body>
 </html>

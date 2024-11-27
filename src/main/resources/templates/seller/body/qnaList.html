@@ -21,49 +21,49 @@
 			<table>
 				<thead >
 				<tr>
+                    <th>문의번호</th>
                     <th>사용자ID</th>
                     <th>공연명</th>
-                    <th>공연일</th>
-                    <th>좌석번호</th>
                     <th>문의날짜</th>
-                    <th>답변여부</th>
-                    <th>문의내용</th>
+                    <th style="width: 40%;">문의제목</th>
+                    <th>처리여부</th>
                     <th>답변</th>
                 </tr>
 				</thead>
 				<tbody>
-				<tr>
-                    <td>example1</td>
-			       	<td> 누가 죄인인가 </td>
-                    <td> 2024.12.25 17:00 </td>
-                    <td> A01 </td>
-                    <td> 2024.12.25 16:35 </td>
-                    <td class="text-center">
-						  <div class="form-switch form-check d-flex justify-content-center">
-						    <label class="form-check-label" for="toggle2"></label>
-						    <input class="form-check-input" type="checkbox" id="toggle2">
-						  </div>
-					</td>
-                    <td> 확인부탁드립니안데 티켓이 발권되지 않습니다 확인부탁드립니탁드립니다. </td>
-                  <td ><button type="button"
-								class="custom-btn">답변</button>
+				<tr th:each="qna : ${qnaList}">
+					<td th:text="${qna.qnaSeq}">문의번호</td>
+					<td th:text="${qna.member.id}">사용자ID</td>
+					<td th:text="${qna.play.name}">공연명</td>
+					<td th:text="${qna.createdDate}">작성일</td>
+					<td th:text="${qna.title}">제목</td>
+					<td> 작업중 </td>
+                  	<td ><button id="qnaReplyBtn" type="button"
+                  				data-seq="${qna.qnaSeq}"
+                  				data-bs-toggle="modal" 
+								data-bs-target="#confirmModal"
+								class="custom-btn"
+								th:onclick="|loadBodyForm('qnaDetail/${qna.qnaSeq}')|"
+								>답변</button>
 					</td>
                 </tr>
                 <tr>
+                    <td>1651</td>
                     <td>example1</td>
 			       	<td> 누가 죄인인가 </td>
                     <td> 2024.12.25 17:00 </td>
-                    <td> A01 </td>
-                    <td> 2024.12.25 16:35 </td>
+                    <td> 문의합니다 </td>
                    	<td class="text-center">
 						  <div class="form-switch form-check d-flex justify-content-center">
 						    <label class="form-check-label" for="toggle1"></label>
 						    <input class="form-check-input" type="checkbox" id="toggle1">
 						  </div>
 					</td>
-                    <td> 안녕하세요 좌석을 예매했는데 티켓이 발권되지 않습니다. 확인부탁드립니다. </td>
-              		<td ><button type="button"
-								class="custom-btn">답변</button>
+              		<td ><button id="qnaReplyBtn" type="button"
+								data-bs-toggle="modal" 
+								data-bs-target="#confirmModal"
+								class="custom-btn"
+								>답변</button>
 					</td>
                 </tr>
 					<!-- 추가 행은 필요에 따라 추가 -->
@@ -74,5 +74,120 @@
 			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
 		</div>
 	</div>
+	
+
+	<!-- Modal -->
+	<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="confirmModalLabel">Q&A 답변 </h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+            <div class="mb-3">
+                <label for="play_name" class="form-label">공연명</label>
+                <input type="text" class="form-control" id="play_name" name= "play_name" placeholder="공연명" readonly>
+            </div>
+            <div class="mb-3 row">
+                <label for="play_name" class="form-label">작성자</label>
+                <input type="text" class="form-control" id="author" name= "author" placeholder="작성자" readonly>
+            </div>
+            <div class="mb-3 row">
+ 	           <div class="col">
+	                <label for="play_name" class="form-label">작성일</label>
+	                <input type="text" class="form-control" id="author" name= "author" placeholder="작성자" readonly
+	                 th:text="${qnaDetail.createdDate}"> 
+	           </div>
+            </div>
+            <div class="mb-3">
+            	<div class="col">
+	                <label for="play_name" class="form-label">Q&A 내용</label>
+	                <textarea class="form-control" id="content" name= "content" rows="4" placeholder="Q&A 내용" readonly> </textarea>
+            	</div>
+            </div>
+            <div class="mb-3">
+                <label for="play_name" class="form-label">답변 작성 </label>
+                <textarea  class="form-control" id="reply" name= reply rows="3" placeholder="답변 내용을 입력하세요" required > </textarea>
+                <div class="invalid-feedback">답변 내용을 입력해 주세요.</div>
+            </div>
+          </div>
+	      <div class="modal-footer">
+	        <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
+	        <button type="button" class="custom-btn" id="confirmBtn">답변</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+<script>
+$('#confirmBtn').on('show.bs.modal', function(event) {
+	var button = $(event.relatedTarget); // 버튼을 클릭한 요소
+	var seq = button.data('seq'); // data-seq 값 가져오기
+	console.log(seq)
+	$('#confirmBtn').data('seq', seq); // 삭제 버튼에 seq 값을 저장
+});
+
+// 삭제 버튼 클릭 시 서버에 삭제 요청 보내기
+document.getElementById('confirmBtn').addEventListener('click', function() {
+	
+	var seq = $(this).data('seq'); // 저장된 seq 값을 가져오기
+
+	$('#confirmModal').modal('hide');
+
+    // 배경 회색 제거
+    var backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+        backdrop.remove();  // 배경을 수동으로 제거
+    }
+	// AJAX로 삭제 요청 보내기
+	fetch(`/api/qnas/${seq}`, {
+		method: 'DELETE',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+	.then(response => {
+		if (response.ok) {
+			showModal('답변이 등록 되었습니다.');
+			 loadBodyForm('playList');
+		} else {
+			showModal('답변 등록이 실패했습니다.');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+		showModal('답변 등록이 실패했습니다.');
+	});
+});
+function showModal(message) {
+    // 메시지를 동적으로 설정
+    document.getElementById('modalMessage').textContent = message;
+
+    // 부트스트랩 모달 띄우기
+    const Modal = new bootstrap.Modal(document.getElementById('Modal'));
+    Modal.show();
+}
+
+document.querySelectorAll('#qnaReplyBtn').forEach(button => {
+    button.addEventListener('click', function () {
+        const qnaSeq = this.getAttribute('data-seq'); // 버튼의 data-seq 속성 값 가져오기
+
+        // 서버로 AJAX 요청
+        fetch(`/secure/seller/qnaDetail/${qnaSeq}`)
+            .then(response => response.json())
+            .then(data => {
+                // 모달에 데이터 삽입
+                document.getElementById('play_name').value = data.playName;
+                document.getElementById('memberName').value = data.memberId;
+                document.getElementById('content').value = data.content;
+                document.getElementById('confirmModalLabel').textContent = `Q&A 답변 (${data.qnaSeq})`;
+            })
+            .catch(error => {
+                console.error('데이터를 가져오는 중 오류 발생:', error);
+                alert('Q&A 데이터를 가져오지 못했습니다.');
+            });
+    });
+});
+</script>
 </body>
 </html>
