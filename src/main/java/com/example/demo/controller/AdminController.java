@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import java.lang.ProcessBuilder.Redirect;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.dto.MemberDTO;
 import com.example.demo.entity.Notice;
 import com.example.demo.entity.ReviewAfter;
 import com.example.demo.entity.ReviewBefore;
@@ -68,8 +67,12 @@ public class AdminController {
 	
     @GetMapping("/memberList")
 	public String memberList(Model model) {
-    	List<MemberDTO> members = memberService.getAllMembers();
-    	model.addAttribute("members", members);
+    	Map<String, Object> members = memberService.getMembersWithPaging(1);
+    	model.addAttribute("members", members.get("members"));
+    	model.addAttribute("memberPaging", members.get("memberPaging"));
+    	model.addAttribute("currentPage", members.get("currentPage"));
+    	model.addAttribute("totalPages", members.get("totalPages"));
+    	model.addAttribute("totalCount", members.get("totalCount"));
         return "admin/body/memberList";  // index.html 템플릿을 렌더링
     }
     

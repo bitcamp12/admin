@@ -7,8 +7,10 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.bean.MemberPaging;
 import com.example.demo.dao.MemberDAO;
 import com.example.demo.dto.MemberDTO;
+import com.example.demo.repository.MemberRepository;
 
 @Service
 public class MemberService {
@@ -16,13 +18,18 @@ public class MemberService {
 	@Autowired
 	MemberDAO memberDAO;
 	
-	private static final int PAGE_SIZE = 5;
+	@Autowired //페이징 컴포넌트
+	private MemberPaging memberPaging;
 
+	private static final int PAGE_SIZE = 5; // 한 페이지당 표시할 회원 수
+	private static final int PAGE_BLOCK = 4; // 페이징처리 표시 개수
+	
+	//회원가입
 	public void signUp(MemberDTO memberDTO) {
 		memberDAO.signUp(memberDTO);
-	}
+	}	
 	
-	//secure/admin/index의 회원관리 첫 화면 표기 (전체 회원 조회)
+	//회원 목록 조회(페이징 없이) 
 	public List<MemberDTO> getAllMembers(int page){
 		return memberDAO.getMembersByPage((page-1) * PAGE_SIZE);
 	}
@@ -31,29 +38,30 @@ public class MemberService {
 	public Map<String, Object> getMembersWithPaging(int pageNo) {
 		Map<String, Object> result = new HashMap<>();
 
-		if (pageNo <1) {
+		if (pageNo < 1) {
 			pageNo = 1;
 		}
 		
 		int start = (pageNo - 1) * PAGE_SIZE; 	//페이지 시작 위치 계산 (pg당 5개씩)
-		long totalCount = memberDAO.getTotalCount();
-		int totalPages = (int) Math.ceil((double)totalCount / PAGE_SIZE);
 		
+		long totalItems = memberDAO.getTotalCount(); //전체 회원 수 조회
 		
-		if (pageNo > totalPages && totalPages > 0) {
-			pageNo = totalPages;
-			start = (pageNo - 1) * PAGE_SIZE;
-		}
-		
+		memberPaging.setCurrentPage(pageNo);
+		memberPaging.setPageBlock(PAGE_BLOCK);
+		memberPaging.setPageSize(PAGE_SIZE);
+		memberPaging.setTotalItems((int)totalItems);
+		memberPaging.makePagingHTML();
+				
 		//현재 페이지의 회원 목록 조회
 		List<MemberDTO> members = memberDAO.getMembersByPage(start);
 		
 		// 맵으로 결과 집어넣기
 		result.put("members", members);
+		result.put("memberPaging", memberPaging);
 		result.put("currentPage", pageNo);
-		result.put("totalPages", totalPages);
-		result.put("totalCount", totalCount);
-		
+		result.put("totalPages", (int)Math.ceil((double)totalItems / PAGE_SIZE));
+		result.put("totalItems", totalItems);
+
 		return result;
 	}
 	
@@ -62,56 +70,51 @@ public class MemberService {
 		Map<String, Object> result = new HashMap<>();
 		
 		try {
-			//키워드 null 체크
+			// 검색어가 없을 때 전체 목록 그냥 반환하기
 			if (keyword == null || keyword.trim().isEmpty()) {
 				return getMembersWithPaging(pageNo); // 키워드 없을 경우 일반 목록 
 			}
 			
-			// 페이지 번호 유효성 검사
-			if (pageNo <1) {
-				pageNo = 1;
-			}
+			if (pageNo < 1) pageNo = 1;
 			
-			 int start = (pageNo - 1) * PAGE_SIZE;
-	            long totalCount = memberDAO.getSearchCount(keyword);
-	            int totalPages = (int) Math.ceil((double)totalCount / PAGE_SIZE);
-	            
-	            // 검색 결과가 없는 경우 처리
-	            if (totalCount == 0) {
-	                result.put("members", List.of());
-	                result.put("currentPage", 1);
-	                result.put("totalPages", 0);
-	                result.put("totalCount", 0);
-	                result.put("keyword", keyword);
-	                return result;
-	            }
-	            
-	            // 페이지 번호가 총 페이지 수를 초과하는 경우 처리
-	            if (pageNo > totalPages) {
-	                pageNo = totalPages;
-	                start = (pageNo - 1) * PAGE_SIZE;
-	            }
-	            
-	            List<MemberDTO> members = memberDAO.searchMembersByPage(keyword, start);
-	            
-	            result.put("members", members);
-	            result.put("currentPage", pageNo);
-	            result.put("totalPages", totalPages);
-	            result.put("totalCount", totalCount);
-	            result.put("keyword", keyword);
-	            
-	        } catch (Exception e) {
-	            // 에러 로깅
-	            e.printStackTrace();
-	            // 에러 발생 시 빈 결과 반환
-	            result.put("error", "검색 중 오류가 발생했습니다.");
-	            result.put("members", List.of());
-	            result.put("currentPage", 1);
-	            result.put("totalPages", 0);
-	            result.put("totalCount", 0);
-	            result.put("keyword", keyword);
-	        }
+			int start = (pageNo - 1) * PAGE_SIZE;
+			long totalItems = memberDAO.getSearchCount(keyword);
+			int totalPages = (int) Math.ceil((double)totalItems / PAGE_SIZE);
 	        
-	        return result;
-	    }
-	}
+			
+			// 페이지 번호가 총 페이지 수를 초과하는 경우
+	        if (pageNo > totalPages && totalPages > 0) {
+	        	pageNo = totalPages;
+	            start = (pageNo - 1) * PAGE_SIZE;
+            }
+	            
+	            	            
+	        memberPaging.setCurrentPage(pageNo);
+	        memberPaging.setPageBlock(PAGE_BLOCK);
+	        memberPaging.setPageSize(PAGE_SIZE);
+	        memberPaging.setTotalItems((int)totalItems);
+	        memberPaging.makePagingHTML();
+	            
+	        //검색 결과 조회
+	        List<MemberDTO> members = memberDAO.searchMembersByPage(keyword, start);
+	            
+	        result.put("members", members);
+	        result.put("memberPaging", memberPaging);
+	        result.put("pageNo", pageNo);
+	        result.put("totalPages", totalPages);
+	        result.put("totalItems", totalItems);
+	        result.put("keyword", keyword);
+	            
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("error", "검색 중 오류가 발생했습니다.");
+            result.put("members", List.of());
+            result.put("currentPage", 1);
+            result.put("totalPages", 0);
+            result.put("totalItems", 0);
+            result.put("keyword", keyword);
+    	}
+	        
+        return result;
+    }
+}
