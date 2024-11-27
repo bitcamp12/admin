@@ -14,6 +14,8 @@ public class QnaDTO {
 	private int qnaSeq;
 	private int playSeq;
 	private int memberSeq;
+	private String memberName;
+	private String playName;
 	private String title;
 	private String content;
 	private LocalDateTime createdDate;

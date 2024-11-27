@@ -39,12 +39,12 @@
 					<td th:text="${qna.title}">제목</td>
 					<td> 작업중 </td>
                   	<td ><button id="qnaReplyBtn" type="button"
-                  				data-seq="${qna.qnaSeq}"
+                  				th:data-seq="${qna.qnaSeq}"
                   				data-bs-toggle="modal" 
 								data-bs-target="#confirmModal"
-								class="custom-btn"
-								th:onclick="|loadBodyForm('qnaDetail/${qna.qnaSeq}')|"
-								>답변</button>
+								class="custom-btn">
+							답변
+						</button>
 					</td>
                 </tr>
                 <tr>
@@ -86,19 +86,22 @@
 	      </div>
 	      <div class="modal-body">
             <div class="mb-3">
-                <label for="play_name" class="form-label">공연명</label>
-                <input type="text" class="form-control" id="play_name" name= "play_name" placeholder="공연명" readonly>
+                <label for="playName" class="form-label">공연명</label>
+                <input type="text" class="form-control" id="playName" name= "playName" placeholder="공연명" readonly>
             </div>
             <div class="mb-3 row">
-                <label for="play_name" class="form-label">작성자</label>
-                <input type="text" class="form-control" id="author" name= "author" placeholder="작성자" readonly>
+                <label for="memberName" class="form-label">작성자</label>
+                <input type="text" class="form-control" id="memberName" name= "memberName" placeholder="작성자" readonly>
             </div>
             <div class="mb-3 row">
  	           <div class="col">
-	                <label for="play_name" class="form-label">작성일</label>
-	                <input type="text" class="form-control" id="author" name= "author" placeholder="작성자" readonly
-	                 th:text="${qnaDetail.createdDate}"> 
+	                <label for="createdDate" class="form-label">작성일</label>
+	                <input type="text" class="form-control" id="createdDate" name= "createdDate" placeholder="작성자" readonly> 
 	           </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="title" class="form-label">제목</label>
+                <input type="text" class="form-control" id="title" name= "title" placeholder="작성자" readonly>
             </div>
             <div class="mb-3">
             	<div class="col">
@@ -107,8 +110,8 @@
             	</div>
             </div>
             <div class="mb-3">
-                <label for="play_name" class="form-label">답변 작성 </label>
-                <textarea  class="form-control" id="reply" name= reply rows="3" placeholder="답변 내용을 입력하세요" required > </textarea>
+                <label for="replyContent" class="form-label">답변 작성 </label>
+                <textarea  class="form-control" id="replyContent" name= replyContent rows="3" placeholder="답변 내용을 입력하세요" required > </textarea>
                 <div class="invalid-feedback">답변 내용을 입력해 주세요.</div>
             </div>
           </div>
@@ -168,26 +171,29 @@ function showModal(message) {
     Modal.show();
 }
 
-document.querySelectorAll('#qnaReplyBtn').forEach(button => {
-    button.addEventListener('click', function () {
-        const qnaSeq = this.getAttribute('data-seq'); // 버튼의 data-seq 속성 값 가져오기
-
-        // 서버로 AJAX 요청
-        fetch(`/secure/seller/qnaDetail/${qnaSeq}`)
-            .then(response => response.json())
-            .then(data => {
-                // 모달에 데이터 삽입
-                document.getElementById('play_name').value = data.playName;
-                document.getElementById('memberName').value = data.memberId;
-                document.getElementById('content').value = data.content;
-                document.getElementById('confirmModalLabel').textContent = `Q&A 답변 (${data.qnaSeq})`;
-            })
-            .catch(error => {
-                console.error('데이터를 가져오는 중 오류 발생:', error);
-                alert('Q&A 데이터를 가져오지 못했습니다.');
-            });
-    });
-});
+$(document).on('click', '#qnaReplyBtn', function() {
+    const qnaSeq =  $(this).data('seq'); // data-seq 가져오기
+    console.log('선택된 QnA ID:', qnaSeq); // 디버깅	
+    
+    
+	$.ajax({
+		type: 'GET',
+		url : `/api/qnas/qnaDetail/${qnaSeq}`,
+		contentType : 'application/json',
+		success : function(response) {
+			$('#playName').val(response.playName);
+			$('#memberName').val(response.memberName);
+			$('#createdDate').val(response.createdDate);
+			$('#title').val(response.title);
+			$('#content').val(response.content);
+		},
+		error : function (error) {
+			console.error('데이터를 가지고 오는데 실패했습니다.')
+		}
+		
+	});//ajax
+});//click qnaReplyBtn
+    	
 </script>
 </body>
 </html>

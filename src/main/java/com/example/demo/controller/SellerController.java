@@ -5,12 +5,16 @@ import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.dto.QnaDTO;
 import com.example.demo.entity.Play;
 import com.example.demo.entity.Qna;
 import com.example.demo.repository.PlayRepository;
@@ -119,15 +123,16 @@ public class SellerController {
     }
     
     // QnA 게시판 - 답변 뷰
-    @GetMapping("/qnaDetail")
-    public String qnaDetail(@PathVariable("qnaSeq") int qnaSeq, Model model) {
-    	Optional<Qna> qna = qnaRepository.findById(qnaSeq);
+    @GetMapping("/qnaDetail/{qnaSeq}")
+    @ResponseBody
+    public ResponseEntity<QnaDTO> qnaDetail(@PathVariable("qnaSeq") int qnaSeq) {
+    	QnaDTO qnaDTO = qnaService.getQnaDetail(qnaSeq);
     	
-    	if(qna.isPresent()) {
-    		model.addAttribute("qna", qna.get());
+    	if(qnaDTO != null) {
+    		return ResponseEntity.ok(qnaDTO); 
+    	} else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     	}
-
-    	return "/seller/body/qnaDetail";
     }
     
     // QnA 게시판 - 답변 등록
