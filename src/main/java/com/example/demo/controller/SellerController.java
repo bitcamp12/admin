@@ -2,19 +2,27 @@ package com.example.demo.controller;
 
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.dto.QnaDTO;
 import com.example.demo.entity.Play;
+import com.example.demo.entity.Qna;
 import com.example.demo.repository.PlayRepository;
 import com.example.demo.repository.PlayTimeTableRepository;
-import com.example.demo.repository.TheaterRepository;
+import com.example.demo.repository.QnaRepository;
+import com.example.demo.repository.TheaterRepository;import com.example.demo.service.BookService;
 import com.example.demo.service.PlayService;
+import com.example.demo.service.QnaService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -31,6 +39,15 @@ public class SellerController {
 	
 	@Autowired
 	private TheaterRepository theaterRepository;
+	
+	@Autowired
+	private QnaRepository qnaRepository;
+	
+	@Autowired
+	private QnaService qnaService;
+	
+	@Autowired
+	private BookService bookService;
 	
 	@Autowired
 	private PlayTimeTableRepository playTimeTableRepository;
@@ -87,7 +104,6 @@ public class SellerController {
     // 공연정보리스트
     @GetMapping("/playList")
     public String playList(Model model) {
-    	
     	model.addAttribute("playList", playService.getPlayList());
     	return "/seller/body/playList";  
     }
@@ -95,13 +111,34 @@ public class SellerController {
     // 예매정보관리
     @GetMapping("/bookList")
     public String bookList(Model model) {
-    	return "/seller/body/bookList";  
+    	model.addAttribute("bookList", bookService.getBookList());
+    	return "/seller/body/bookList";
     }
     
     // QnA 게시판
     @GetMapping("/qnaList")
     public String qnaList(Model model) {
+    	model.addAttribute("qnaList", qnaService.getQnaList());
     	return "/seller/body/qnaList";  
+    }
+    
+    // QnA 게시판 - 답변 뷰
+    @GetMapping("/qnaDetail/{qnaSeq}")
+    @ResponseBody
+    public ResponseEntity<QnaDTO> qnaDetail(@PathVariable("qnaSeq") int qnaSeq) {
+    	QnaDTO qnaDTO = qnaService.getQnaDetail(qnaSeq);
+    	
+    	if(qnaDTO != null) {
+    		return ResponseEntity.ok(qnaDTO); 
+    	} else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    	}
+    }
+    
+    // QnA 게시판 - 답변 등록
+    @GetMapping("/qnaWrite")
+    public String qnaWrite(@PathVariable("qnaSeq") int qnaSeq, Model model) {
+    	return "/seller/body/qnaWrite";
     }
     
     // 공연 시간 등록
