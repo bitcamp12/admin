@@ -21,5 +21,9 @@ public class BookService {
 	public List<Book> getBookList() {
 		return bookRepository.findAll();
 	}
+
+	public void bookDelete(int bookSeqInt) {
+		bookDAO.bookDelete(bookSeqInt);
+	}
 	
 }

@@ -24,9 +24,6 @@ $(document).on('click', '#qnaReplyBtn', function() {
 	qnaYn = ""; // 클릭할 때마다 값 초기화
 	qnaYn = $(this).data('name');
 	
-	console.log(qnaYn);
-
-	
 	$.ajax({
 		type: 'GET',
 		url : `/api/qnas/qnaDetail/${qnaSeq}`,
@@ -66,7 +63,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-		    	showModal('답변이 수정되었습니다.');
+				showModal("답변이 수정되었습니다.");
 				refresh();
 			},
 			error : function (error) {
@@ -89,7 +86,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-		    	showModal('답변이 등록되었습니다.');
+				showModal("답변이 등록되었습니다.");
 				refresh();
 			},
 			error : function (error) {

@@ -35,7 +35,7 @@
 					<td th:text="${qna.qnaSeq}">문의번호</td>
 					<td th:text="${qna.memberId}">사용자ID</td>
 					<td th:text="${qna.playName}">공연명</td>
-					<td th:text="${qna.createdDate}">작성일</td>
+					<td th:text="${#temporals.format(qna.createdDate, 'yyyy-MM-dd')}">작성일</td>
 					<td th:text="${qna.title}">제목</td>
                    	<td class="text-center">
 						  <div class="form-switch form-check d-flex justify-content-center">
