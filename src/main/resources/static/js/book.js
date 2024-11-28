@@ -41,7 +41,7 @@ $(document).on('click', '#refundConfirmBtn', function() {
 	bookSeq =  $(this).data('seq'); // data-seq 가져오기
 	
 	console.log("bookSeq : " + bookSeq);
-	
+	closeModal();
 	$.ajax({
 		type: 'POST',
 		url : '/api/books/bookDelete?bookSeq=' + bookSeq,
@@ -76,5 +76,6 @@ function closeModal() {
     $(".modal-backdrop").remove();
 
     // Body 상태 초기화
-    $("body").removeClass("modal-open").removeAttr("style");
+    //$("body").removeClass("modal-open").removeAttr("style");
+	$('body').css('overflow', 'auto'); // 스크롤 복구
 }
