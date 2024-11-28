@@ -110,7 +110,7 @@ function refresh() {
 
 function closeModal() {
     // 모달 닫기
-    $(".confirmModal").modal("hide");
+    //$(".confirmModal").modal("hide");
 
     // Backdrop 제거
     $(".modal-backdrop").remove();
