@@ -27,6 +27,7 @@
 	                    <th>공연장</th>
 	                    <th>예매번호</th>
 	                    <th>예매일</th>
+	                    <th>결제 금액</th>
 	                    <th>좌석번호</th>
 	                    <th>취소가능여부</th>
 	                </tr>
@@ -39,6 +40,7 @@
 						<td th:text="${book.playTimeTable.theater.name}">1</td>
 						<td th:text="${book.bookSeq}" data-seq="${book.bookSeq}">1</td>
 						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">작성일</td>
+						<td th:text="${book.totalPrice}">1</td>
 						<td th:text="${book.bookedX + ', ' + book.bookedY}">1</td>
 						<td ><button type="button" id="refundBtn"
 									 th:attr="data-seq=${book.bookSeq}"
@@ -92,6 +94,7 @@
 		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
 		      </div>
 		    </div>
+		  </div>
 		  </div>
 <script th:src="@{/static/js/book.js}"></script>
 </body>
