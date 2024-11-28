@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import java.lang.ProcessBuilder.Redirect;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import com.example.demo.entity.ReviewBefore;
 import com.example.demo.repository.NoticeRepository;
 import com.example.demo.repository.ReviewAfterRepository;
 import com.example.demo.repository.ReviewBeforeRepository;
+import com.example.demo.service.MemberService;
 import com.example.demo.service.NoticeService;
 
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +26,9 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping(value="/secure/admin")
 public class AdminController {
-    
+	@Autowired
+    private MemberService memberService;
+
 	@Autowired
 	private NoticeService noticeService;
 	
@@ -64,7 +67,12 @@ public class AdminController {
 	
     @GetMapping("/memberList")
 	public String memberList(Model model) {
-    	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+    	Map<String, Object> members = memberService.getMembersWithPaging(1);
+    	model.addAttribute("members", members.get("members"));
+    	model.addAttribute("memberPaging", members.get("memberPaging"));
+    	model.addAttribute("currentPage", members.get("currentPage"));
+    	model.addAttribute("totalPages", members.get("totalPages"));
+    	model.addAttribute("totalCount", members.get("totalCount"));
         return "admin/body/memberList";  // index.html 템플릿을 렌더링
     }
     

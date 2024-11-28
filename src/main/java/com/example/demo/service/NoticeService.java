@@ -32,7 +32,8 @@ public class NoticeService {
 	@Transactional
 	public void registerNotice(NoticeDTO noticeDTO) {
 
-		// 중복 코드 noticeDTO.setHide("N"); // 기본적으로 숨김 처리 NO
+		noticeDTO.setHide("N"); // 기본적으로 표기되도록 - 숨김NO 상태
+
 		int result = noticeDAO.insertNotice(noticeDTO);
 
 		if (result != 1) {
