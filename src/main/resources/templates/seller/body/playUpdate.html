@@ -32,6 +32,27 @@
                     <div id="end_date_invalid-feedback"> </div>
                 </div>
             </div>
+            
+            	<!-- 러닝타임 -->
+            <div class="mb-3">
+                <label for="runningTime" class="form-label">공연 시간</label>
+                <input type="number" class="form-control" th:value="${play.runningTime}" id="runningTime" name= "runningTime" placeholder="공연 시간을 입력하세요" required>
+                <div class="invalid-feedback">공연 시간을 입력해 주세요.</div>
+            </div>
+            
+            <!-- 가격 -->
+            <div class="mb-3">
+                <label for="price" class="form-label">가격</label>
+                <input type="number" class="form-control" id="price" name= "price" th:value="${play.price}" placeholder="가격을 입력하세요" required>
+                <div class="invalid-feedback">가격을 입력해 주세요.</div>
+            </div>
+            
+                  <!-- 가격 -->
+            <div class="mb-3">
+                <label for="ageLimit" class="form-label">연령 제한</label>
+                <input type="text" class="form-control" id="ageLimit" name= "ageLimit" th:value="${play.ageLimit}" placeholder="연령 제한을 입력하세요" required>
+                <div class="invalid-feedback">연령 제한을 입력하세요.</div>
+            </div>
 		    <!-- 상영관 타입 등록 -->
        <!--      <div class="mb-3">
                 <label for="venueSelect" class="form-label">상영관 타입 선택</label>
@@ -75,7 +96,7 @@
             </div>
 
            <div class="form-footer">
-				<button type="submit" class="btn btn-primary">수정</button>
+				<button id = "enroll" type="button" class="btn btn-primary">수정</button>
 				<button type="button" onclick="loadBodyForm('playList')" class="btn btn-primary">목록</button>		
 			</div>
         </form>
@@ -137,7 +158,7 @@ function previewImage() {
     }
 }
 
-document.getElementById('playRegisterForm').addEventListener('submit', function(event) {
+document.getElementById('enroll').addEventListener('click', function(event) {
 	event.preventDefault(); // 기본 제출 방지
 	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
 	//폼 데이터- 제목, 내용, 이미지 등록
@@ -147,6 +168,9 @@ document.getElementById('playRegisterForm').addEventListener('submit', function(
 	const endTime = document.getElementById('end_date').value;
 	const description =document.getElementById('editorTxt').value;
 	const totalActor =document.getElementById('total_actor').value;
+	const price =document.getElementById('price').value;
+	const ageLimit =document.getElementById('ageLimit').value;
+	const runningTime =document.getElementById('runningTime').value;
 	const image =document.getElementById('image').files[0];
 
 	//폼데이터 객체
@@ -157,10 +181,13 @@ document.getElementById('playRegisterForm').addEventListener('submit', function(
 	formData.append('startTime', startTime);
 	formData.append('description', description);
 	formData.append('totalActor', totalActor);
+	formData.append('price', price);
+	formData.append('ageLimit', ageLimit);
+	formData.append('runningTime', runningTime);
 	if (image) {
 		formData.append('image', image);
 	}
-	
+	console.log('/api/plays/playUpdate/'+seq);
 	//서버로 데이터 전송
 	fetch('/api/plays/playUpdate/'+seq, {
 		method : 'POST',

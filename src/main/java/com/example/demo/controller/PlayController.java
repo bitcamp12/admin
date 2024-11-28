@@ -43,6 +43,9 @@ public class PlayController {
 	public ResponseEntity<ApiResponse<Void>> playRegisterWrite(@RequestParam("name") String name,
 			@RequestParam("startTime") LocalDate startTime, @RequestParam("endTime") LocalDate endTime,
 			@RequestParam("description") String description, @RequestParam("totalActor") String totalActor,
+			@RequestParam("runningTime") int runningTime,
+			@RequestParam("price") int price,
+			@RequestParam("ageLimit") String ageLimit,
 			@RequestParam(name = "image" , required = false) MultipartFile image) {
 
 		try {
@@ -53,6 +56,9 @@ public class PlayController {
 			playDTO.setEndTime(endTime);
 			playDTO.setDescription(description);
 			playDTO.setTotalActor(totalActor);
+			playDTO.setPrice(price);
+			playDTO.setAgeLimit(ageLimit);
+			playDTO.setRunningTime(runningTime);
 			int seq = (int) httpSession.getAttribute("memberSeq");
 			playDTO.setMemberSeq(seq);
 			if (image != null && !image.isEmpty()) {
@@ -85,7 +91,10 @@ public class PlayController {
 			@PathVariable("playSeq") int playSeq,
 			@RequestParam("name") String name,
 			@RequestParam("startTime") LocalDate startTime, @RequestParam("endTime") LocalDate endTime,
-			@RequestParam("description") String description, @RequestParam("totalActor") String totalActor,
+			@RequestParam("description") String description,
+			@RequestParam("runningTime") int runningTime,
+			@RequestParam("price") int price,
+			@RequestParam("ageLimit") String ageLimit, @RequestParam("totalActor") String totalActor,
 			@RequestParam(name = "image" , required = false) MultipartFile image) {
 
 		try {
@@ -95,7 +104,9 @@ public class PlayController {
 			play.setEndTime(endTime.atStartOfDay());
 			play.setDescription(description);
 			play.setTotalActor(totalActor);
-
+			play.setPrice(price);
+			play.setAgeLimit(ageLimit);
+			play.setRunningTime(runningTime);
 			if (image != null && !image.isEmpty()) {
 				// 이미지 파일 저장 및 파일명 생성
 				System.out.println(objectStorageService);

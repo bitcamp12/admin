@@ -46,7 +46,7 @@ $(document).on('click', '#confirmBtn', function() {
     const replyContent = document.getElementById('replyContent').value;
 
     if(!replyContent.trim()) {
-    	('답변 내용을 입력하세요.');
+    	showModal('답변 내용을 입력하세요.');
     	return;
     }
     
