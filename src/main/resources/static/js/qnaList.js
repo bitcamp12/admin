@@ -49,7 +49,7 @@ $(document).on('click', '#confirmBtn', function() {
     const replyContent = document.getElementById('replyContent').value;
 
     if(!replyContent.trim()) {
-    	alert('답변 내용을 입력하세요.');
+    	showModal('답변 내용을 입력하세요.');
     	return;
     }
     
@@ -66,7 +66,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-		    	alert('답변이 수정되었습니다.');
+		    	showModal('답변이 수정되었습니다.');
 				refresh();
 			},
 			error : function (error) {
@@ -89,7 +89,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-		    	alert('답변이 등록되었습니다.');
+		    	showModal('답변이 등록되었습니다.');
 				refresh();
 			},
 			error : function (error) {
