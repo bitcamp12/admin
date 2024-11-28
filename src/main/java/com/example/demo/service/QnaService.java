@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +20,15 @@ public class QnaService {
 	@Autowired
 	private QnaRepository qnaRepository;
 	
-	public List<Qna> getQnaList() {
-		return qnaRepository.findAll();
+	public List<QnaDTO> getQnaList() {
+		List<Qna> qnaList = qnaRepository.findAllWithReply();
+		List<QnaDTO> qnaDTOList = new ArrayList<>();
+		
+		for(Qna qna : qnaList) {
+			qnaDTOList.add(new QnaDTO(qna));
+		}
+		
+		return qnaDTOList;
 	}
 
 	public QnaDTO getQnaDetail(int qnaSeq) {

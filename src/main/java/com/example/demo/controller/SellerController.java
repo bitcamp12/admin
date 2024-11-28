@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,7 +119,8 @@ public class SellerController {
     // QnA 게시판
     @GetMapping("/qnaList")
     public String qnaList(Model model) {
-    	model.addAttribute("qnaList", qnaService.getQnaList());
+    	List<QnaDTO> qnaList = qnaService.getQnaList();
+    	model.addAttribute("qnaList", qnaList);
     	return "/seller/body/qnaList";  
     }
     
