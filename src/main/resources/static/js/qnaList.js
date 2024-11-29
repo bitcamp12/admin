@@ -46,11 +46,7 @@ $(document).on('click', '#confirmBtn', function() {
     const replyContent = document.getElementById('replyContent').value;
 
     if(!replyContent.trim()) {
-<<<<<<< HEAD
     	('답변 내용을 입력하세요.');
-=======
-    	showModal('답변 내용을 입력하세요.');
->>>>>>> 0b7765c6e51b9afc7461c32719e92bcd9c348b20
     	return;
     }
     
@@ -67,11 +63,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-<<<<<<< HEAD
-				showModal("답변이 수정되었습니다.");
-=======
 		    	showModal('답변이 수정되었습니다.');
->>>>>>> 0b7765c6e51b9afc7461c32719e92bcd9c348b20
 				refresh();
 			},
 			error : function (error) {
@@ -94,11 +86,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-<<<<<<< HEAD
 				showModal("답변이 등록되었습니다.");
-=======
-		    	showModal('답변이 등록되었습니다.');
->>>>>>> 0b7765c6e51b9afc7461c32719e92bcd9c348b20
 				refresh();
 			},
 			error : function (error) {
@@ -122,7 +110,7 @@ function refresh() {
 
 function closeModal() {
     // 모달 닫기
-    $(".confirmModal").modal("hide");
+    //$(".confirmModal").modal("hide");
 
     // Backdrop 제거
     $(".modal-backdrop").remove();

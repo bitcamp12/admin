@@ -4,6 +4,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import com.example.demo.dto.MemberDTO;
 
 @Mapper
@@ -50,4 +52,10 @@ public interface MemberDAO {
             "FROM member " +
             "ORDER BY member_seq DESC")
     public List<MemberDTO> getAllMembers();
+
+    @Update("UPDATE member SET role = 'SELLER' WHERE member_seq = ${member_seq} ")
+	public void setSeller(int memberSeqInt);
+
+    @Update("UPDATE member SET role = 'USER' WHERE member_seq = ${member_seq} ")
+	public void cancelSeller(int memberSeqInt);
 }

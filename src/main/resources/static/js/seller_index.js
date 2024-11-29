@@ -1,6 +1,7 @@
 //타임리프 body 불러오기
 function loadClickEvent(elementId, url) {
     document.getElementById(elementId).addEventListener('click', function() {
+		$('body').css('overflow', 'auto'); // 스크롤 복구
         const mainContent = document.getElementById('mainContent');
         fetch('/secure/seller/'+elementId) // Fetch the content from the server
             .then(response => response.text())
@@ -27,6 +28,7 @@ function loadClickEvent(elementId, url) {
 }
 
 function loadBodyForm(elementId) {
+	//$('body').css('overflow', 'auto'); // 스크롤 복구
      const mainContent = document.getElementById('mainContent');
      fetch('/secure/seller/'+elementId) // Fetch the content from the server
          .then(response => response.text())
