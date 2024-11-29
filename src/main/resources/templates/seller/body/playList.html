@@ -25,7 +25,10 @@
 						<th>공연명</th>
 						<th>시작 기간</th>
 						<th>종료 기간</th>
+						<th>공연 시간</th>
 						<th>출연진</th>
+						<th>가격</th>
+						<th>연령 제한</th>
 						<th>수정</th>
 						<th>삭제</th>
 					</tr>
@@ -36,7 +39,10 @@
 						<td th:text="${play.name}">이름</td>
 						<td th:text="${play.startTime}">1</td>
 						<td th:text="${play.endTime}">1</td>
+						<td th:text="${play.runningTime}">1</td>
 						<td th:text="${play.totalActor}">1</td>
+						<td th:text="${play.price}">1</td>
+						<td th:text="${play.ageLimit}">1</td>
 						<td ><button type="button"
 								class="custom-btn" th:onclick="|loadBodyForm('playUpdate/${play.playSeq}')|">수정</button>
 						</td>
