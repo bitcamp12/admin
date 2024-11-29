@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.bean.MemberPaging;
 import com.example.demo.dao.MemberDAO;
 import com.example.demo.dto.MemberDTO;
+import com.example.demo.entity.Member;
 import com.example.demo.repository.MemberRepository;
 
 @Service
@@ -20,6 +21,9 @@ public class MemberService {
 	
 	@Autowired //페이징 컴포넌트
 	private MemberPaging memberPaging;
+	
+	@Autowired
+	private MemberRepository memberRepository;
 
 	private static final int PAGE_SIZE = 5; // 한 페이지당 표시할 회원 수
 	private static final int PAGE_BLOCK = 4; // 페이징처리 표시 개수
@@ -117,4 +121,17 @@ public class MemberService {
 	        
         return result;
     }
+
+	public List<Member> getSellerList() {
+		List<Member> sellerList = memberRepository.findAllSellerList();
+		return sellerList;
+	}
+
+	public void setSeller(int memberSeqInt) {
+		memberDAO.setSeller(memberSeqInt);
+	}
+
+	public void cancelSeller(int memberSeq) {
+		memberDAO.cancelSeller(memberSeq);
+	}
 }

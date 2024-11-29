@@ -45,6 +45,22 @@ function performSearch(page = 1) {
             <td>${member.phone || '' }</td>
             <td>${member.gender || ''}</td>
             <td>${formatDate(member.registerDate)}</td>
+			<td>
+			    <button type="button" id="setSellerBtn"
+			            th:data-name="${member.role}"
+			            data-bs-target="#confirmModal"
+			            th:if="${member.role != 'SELLER'}"
+			            class="custom-btn">
+			        전환
+			    </button>
+			    <button type="button" id="cancelSellerBtn"
+			            th:data-name="${member.role}"
+			            data-bs-target="#cancelModal"
+			            th:if="${member.role == 'SELLER'}"
+			            class="custom-btn">
+			        전환취소
+			    </button>
+			</td>
 		`;
        	tbody.appendChild(row);
 	});

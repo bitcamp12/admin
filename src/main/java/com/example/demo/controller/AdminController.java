@@ -78,7 +78,7 @@ public class AdminController {
     
     @GetMapping("/sellerList")
  	public String sellerList(Model model) {
-     	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
+    	 model.addAttribute("sellerList", memberService.getSellerList());
          return "admin/body/sellerList";  // index.html 템플릿을 렌더링
      }
     

@@ -46,7 +46,7 @@ $(document).on('click', '#confirmBtn', function() {
     const replyContent = document.getElementById('replyContent').value;
 
     if(!replyContent.trim()) {
-    	showModal('답변 내용을 입력하세요.');
+    	('답변 내용을 입력하세요.');
     	return;
     }
     
@@ -63,7 +63,7 @@ $(document).on('click', '#confirmBtn', function() {
 				content : replyContent
 			}),
 			success : function(response) {
-				showModal("답변이 수정되었습니다.");
+		    	showModal('답변이 수정되었습니다.');
 				refresh();
 			},
 			error : function (error) {

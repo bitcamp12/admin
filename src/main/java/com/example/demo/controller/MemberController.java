@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.MemberDTO;
@@ -66,4 +67,21 @@ public class MemberController {
                     .body(new ApiResponse<>(500, "회원 검색 실패: " + e.getMessage(), null));
         }
     }
+    
+    @PostMapping("/setSeller")
+    @ResponseBody
+    public void setSeller(@RequestParam(value="memberSeq") String memberSeq) {
+        int memberSeqInt = Integer.parseInt(memberSeq);
+
+    	memberService.setSeller(memberSeqInt);
+    }
+    
+    @PostMapping("/cancelSeller")
+    @ResponseBody
+    public void cancelSeller(@RequestParam(value="memberSeq") String memberSeq) {
+        int memberSeqInt = Integer.parseInt(memberSeq);
+
+    	memberService.cancelSeller(memberSeqInt);
+    }
+    
 }

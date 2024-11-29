@@ -27,8 +27,8 @@
 	                    <th>공연장</th>
 	                    <th>예매번호</th>
 	                    <th>예매일</th>
-	                    <th>결제 금액</th>
 	                    <th>좌석번호</th>
+	                    <th>결제 금액</th>
 	                    <th>취소가능여부</th>
 	                </tr>
 				</thead>
@@ -39,9 +39,9 @@
 						<td th:text="${#temporals.format(book.playTimeTable.targetDate, 'yyyy-MM-dd')}">작성일</td>
 						<td th:text="${book.playTimeTable.theater.name}">1</td>
 						<td th:text="${book.bookSeq}" data-seq="${book.bookSeq}">1</td>
-						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">작성일</td>
-						<td th:text="${book.totalPrice}">1</td>
+						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">예매일</td>
 						<td th:text="${book.bookedX + ', ' + book.bookedY}">1</td>
+						<td th:text="${book.totalPrice}">결제금액</td>
 						<td ><button type="button" id="refundBtn"
 									 th:attr="data-seq=${book.bookSeq}"
 						             th:disabled="${T(java.time.LocalDate).now().compareTo(book.playTimeTable.targetDate.toLocalDate()) >= 0}"
@@ -60,7 +60,7 @@
 		</div>
 	</div>
 	
-		<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+	<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -79,23 +79,23 @@
 	    </div>
 	  </div>
 	</div>
-	 <!-- Modal -->
-		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		      </div>
-		      <div class="modal-body" id="modalMessage">
-		        <!-- 메시지가 동적으로 들어갑니다 -->
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
-		      </div>
-		    </div>
-		  </div>
-		  </div>
+	<!-- Modal -->
+	<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body" id="modalMessage">
+	        <!-- 메시지가 동적으로 들어갑니다 -->
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+	      </div>
+	    </div>
+	  </div>
+  	</div>
 <script th:src="@{/static/js/book.js}"></script>
 </body>
 </html>
