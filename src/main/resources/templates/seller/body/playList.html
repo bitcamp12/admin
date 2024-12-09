@@ -8,7 +8,12 @@
 <body>
 	<div class="container">
 		<div class="title">공연 목록</div>
+		<!-- 검색 -->
 		<div class="search-bar">
+			<input type="text" th:value="${keyword}" id="search" placeholder="공연 제목 검색">
+			<button onclick="memberPaging(1)">검색</button>
+		</div>
+		<!-- <div class="search-bar">
 			<input type="text" placeholder="검색">
 			<button type="button">검색</button>
 			<select class="form-select w-auto col-md-4" aria-label="정렬">
@@ -16,8 +21,7 @@
 					<option value="2">공연명↓</option>
 					<option value="3">최신등록순</option>
 					<option value="4">할인율순</option>
-			</select>
-		</div>
+			</select> -->
 			<table>
 				<thead>
 					<tr>
@@ -37,8 +41,8 @@
 					<tr th:each="play : ${playList}">
 						<td th:text="${play.playSeq}">1</td>
 						<td th:text="${play.name}">이름</td>
-						<td th:text="${play.startTime}">1</td>
-						<td th:text="${play.endTime}">1</td>
+						<td th:text="${#temporals.format(play.startTime, 'yyyy-MM-dd')}">공연 시작</td>
+						<td th:text="${#temporals.format(play.endTime, 'yyyy-MM-dd')}">공연 종료</td>
 						<td th:text="${play.runningTime}">1</td>
 						<td th:text="${play.totalActor}">1</td>
 						<td th:text="${play.price}">1</td>
@@ -58,9 +62,8 @@
 					<!-- 추가 행은 필요에 따라 추가 -->
 				</tbody>
 			</table>
-		<div class="pagination">
-			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
-			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		<div>
+			<div th:if="${paging != null}" class="pagination" th:utext="${paging}"></div>
 		</div>
 		<div class="text-end">
 			<a class="btn" onclick="loadBodyForm('playRegisterForm')">공연 정보 등록</a>
@@ -149,6 +152,15 @@ function showModal(message) {
     // 부트스트랩 모달 띄우기
     const Modal = new bootstrap.Modal(document.getElementById('Modal'));
     Modal.show();
+}
+
+function memberPaging(page){
+	if($('#search').val() == '')
+		loadBodyForm('playList?page=' + (page-1));
+	else {
+		let value = $('#search').val();
+		loadBodyForm('playList?value='+value+"&page=" + (page-1));
+	}
 }
 </script>
 </body>

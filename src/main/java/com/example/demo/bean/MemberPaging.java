@@ -8,8 +8,8 @@ import lombok.Data;
 @Data
 public class MemberPaging {
 	private int currentPage;
-	private int pageBlock;	 // 페이징 UI에서 보여질 그룹화 처리시킬 페이징 개수
-	private int pageSize;	 // 한 페이지당 보여지는 데이터 수 
+	private int pageBlock = 4;	 // 페이징 UI에서 보여질 그룹화 처리시킬 페이징 개수
+	private int pageSize = 5;	 // 한 페이지당 보여지는 데이터 수 
 	private int totalItems;  // 전체 데이터 개수
 	private StringBuffer pagingHTML; //페이징 UI를 HTML로 생성 위한 StringBuffer 객체
 	

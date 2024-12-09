@@ -8,7 +8,12 @@
 <body>
 	<div class="container">
 		<div class="title">예매 관리</div>
+		<!-- 검색 -->
 		<div class="search-bar">
+			<input type="text" th:value="${keyword}" id="search" placeholder="예매 번호로 검색">
+			<button onclick="memberPaging(1)">검색</button>
+		</div>
+		<!-- <div class="search-bar">
 			<input type="text" placeholder="검색">
 			<button type="button">검색</button>
 			<select class="form-select w-auto col-md-4" aria-label="정렬">
@@ -16,20 +21,19 @@
 					<option value="2">공연명↓</option>
 					<option value="3">최신등록순</option>
 					<option value="4">할인율순</option>
-			</select>
-		</div>
+			</select> -->
 			<table>
 				<thead >
 					 <tr>
 	                    <th>사용자ID</th>
 	                    <th>공연명</th>
 	                    <th>공연일</th>
-	                    <th>공연장</th>
 	                    <th>예매번호</th>
 	                    <th>예매일</th>
 	                    <th>좌석번호</th>
 	                    <th>결제 금액</th>
 	                    <th>취소가능여부</th>
+	                    <th>상태</th>
 	                </tr>
 				</thead>
 				<tbody>
@@ -37,7 +41,6 @@
 						<td th:text="${book.member.id}">이름</td>
 						<td th:text="${book.playTimeTable.play.name}">1</td>
 						<td th:text="${#temporals.format(book.playTimeTable.targetDate, 'yyyy-MM-dd')}">작성일</td>
-						<td th:text="${book.playTimeTable.theater.name}">1</td>
 						<td th:text="${book.bookSeq}" data-seq="${book.bookSeq}">1</td>
 						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">예매일</td>
 						<td th:text="${book.bookedX + ', ' + book.bookedY}">1</td>
@@ -50,15 +53,15 @@
 									 data-bs-target="#confirmModal"
 									 class="custom-btn"> </button>
 						</td>
+						<td th:text="${book.paymentStatus}">상태</td>
 					</tr>
 					<!-- 추가 행은 필요에 따라 추가 -->
 				</tbody>
 			</table>
-		<div class="pagination">
-			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
-			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		<div>
+			<div th:if="${paging != null}" class="pagination" th:utext="${paging}"></div>
 		</div>
-	</div>
+		
 	
 	<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
@@ -96,6 +99,17 @@
 	    </div>
 	  </div>
   	</div>
+  	</div>
 <script th:src="@{/static/js/book.js}"></script>
+<script type="text/javascript">
+function memberPaging(page){
+	if($('#search').val() == '')
+		loadBodyForm('bookList?page=' + (page-1));
+	else {
+		let value = $('#search').val();
+		loadBodyForm('bookList?value='+value+"&page=" + (page-1));
+	}
+}
+</script>
 </body>
 </html>
