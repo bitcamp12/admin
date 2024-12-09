@@ -28,12 +28,12 @@
 	                    <th>사용자ID</th>
 	                    <th>공연명</th>
 	                    <th>공연일</th>
-	                    <th>공연장</th>
 	                    <th>예매번호</th>
 	                    <th>예매일</th>
 	                    <th>좌석번호</th>
 	                    <th>결제 금액</th>
 	                    <th>취소가능여부</th>
+	                    <th>상태</th>
 	                </tr>
 				</thead>
 				<tbody>
@@ -41,7 +41,6 @@
 						<td th:text="${book.member.id}">이름</td>
 						<td th:text="${book.playTimeTable.play.name}">1</td>
 						<td th:text="${#temporals.format(book.playTimeTable.targetDate, 'yyyy-MM-dd')}">작성일</td>
-						<td th:text="${book.playTimeTable.theater.name}">1</td>
 						<td th:text="${book.bookSeq}" data-seq="${book.bookSeq}">1</td>
 						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">예매일</td>
 						<td th:text="${book.bookedX + ', ' + book.bookedY}">1</td>
@@ -54,6 +53,7 @@
 									 data-bs-target="#confirmModal"
 									 class="custom-btn"> </button>
 						</td>
+						<td th:text="${book.paymentStatus}">상태</td>
 					</tr>
 					<!-- 추가 행은 필요에 따라 추가 -->
 				</tbody>
