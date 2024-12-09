@@ -118,3 +118,4 @@ function closeModal() {
     // Body 상태 초기화
     $("body").removeClass("modal-open").removeAttr("style");
 }
+
