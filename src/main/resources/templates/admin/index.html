@@ -118,17 +118,16 @@ document.addEventListener('DOMContentLoaded', function(){
     
 	 
      // 첫 화면 보여줄 내용
-     loadBodyForm('memberList');
+     loadBodyForm('memberList?page=0');
 
 	 //클릭 이벤트 설정
-	 loadClickEvent('memberList');
-     loadClickEvent('sellerList');
-	 loadClickEvent('noticeList');
-	 loadClickEvent('reviewBeforeList');
-	 loadClickEvent('reviewAfterList');
-	 loadClickEvent('chatting');
-	 loadClickEvent('analysis');
-	 loadClickEvent('noticeUpdateForm');
+	 loadClickEvent('memberList', 'memberList');
+     loadClickEvent('sellerList', 'sellerList');
+	 loadClickEvent('noticeList', 'noticeList');
+	 loadClickEvent('reviewBeforeList', 'reviewBeforeList');
+	 loadClickEvent('reviewAfterList', 'reviewAfterList');
+	 loadClickEvent('chatting', 'chatting');
+	 loadClickEvent('analysis', 'analysis');
 });
 
 </script>

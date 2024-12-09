@@ -2,7 +2,6 @@ package com.example.demo.dto;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Column;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
