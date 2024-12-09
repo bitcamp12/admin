@@ -116,14 +116,14 @@ document.addEventListener('DOMContentLoaded', function(){
         sidebar.classList.toggle('nav-hidden');
     });
     
-     loadBodyForm('playList');
+     loadBodyForm('playList?page=0');
 	 
 	 //클릭 이벤트 설정
-	 loadClickEvent('playList');
-	 loadClickEvent('bookList');
-	 loadClickEvent('timeList');
-	 loadClickEvent('qnaList');
-	 loadClickEvent('playRegisterForm');
+	 loadClickEvent('playList','playList');
+	 loadClickEvent('bookList','bookList');
+	 loadClickEvent('timeList','timeList');
+	 loadClickEvent('qnaList','qnaList');
+	 loadClickEvent('playRegisterForm','playRegisterForm');
 });
 
 function showModal(message) {
