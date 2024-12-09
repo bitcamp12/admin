@@ -11,10 +11,13 @@
 	<div class="container">
 		<div class="title">회원 관리</div>
 
-		<div class="search-bar">
+	 	<div class="search-bar">
 			<input type="text" id="search" placeholder="검색">
 			<button onclick="performSearch(1)">검색</button>
-		</div>
+		</div> 
+		
+	
+		
 
 		<table>
 			<thead>
@@ -59,7 +62,8 @@
 		</table>
 
 	<div th:if="${memberPaging != null}" class="pagination" th:utext="${memberPaging.pagingHTML}"></div>
-	</div>
+	
+	
 	<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -84,7 +88,6 @@
 	      <div class="modal-header">
 	        <h5 class="modal-title">일반 회원으로 전환</h5>
 	           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	        </button>
 	      </div>
 	      <div class="modal-body">
 	        <p>전환 취소 처리하시겠습니까? </p>
@@ -114,6 +117,9 @@
 	    </div>
 	  </div>
   	</div>
+	
+	</div>
+	
 	
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:src="@{/static/js/member_search1.js}"></script>

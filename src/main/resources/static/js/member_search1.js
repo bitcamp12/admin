@@ -196,6 +196,7 @@ function formatDate(dateString) {
     });
 }
 
+
 // 페이지 로드 시 초기 데이터 로드
 $(document).ready(function() {
     loadPage(1);
