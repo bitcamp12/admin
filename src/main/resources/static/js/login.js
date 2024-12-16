@@ -42,25 +42,43 @@ function login(userType) {
 
 		// 입력이 모두 유효하면 로그인 처리
 		if (valid) {
+			/*
 			const data = {
 				id : $username.val(),
 				password : $password.val()
 			};
+			*/
+			const data = new FormData();
+			data.append('username', $username.val());
+			data.append('password', $password.val());
+
 			$.ajax({
 					//회원가입 진행
 					type: 'post',
-					url : '/api/secure/login/'+userType,
-					data : JSON.stringify(data),
-					contentType: 'application/json',
-					success : function(data) {
+					url : '/api/secure/login/' + userType,
+					data : data,
+					processData: false, // 데이터를 쿼리 문자열로 변환하지 않음
+					contentType: false, // contentType을 설정하지 않음 (multipart/form-data로 자동 처리됨)
+					success : function(response){
+						alert('성공');
+						window.location.href = '/secure/'+userType+'/index';
+					},
+					error : function(xhr) {
+						$matchError.show();
+					}
+				});
+			}
+	}
+}
+					
+/*					success : function(data) {						
 						location.href='/secure/'+userType+'/index';
 					},
 					error : function(e) {
 						$matchError.show();
 			   		}
-			    }); // ajax
-		} else {
-			return;
-		}
-	}//active if문
-}
+			    });
+			} else {
+				return;
+			}
+		}*/
