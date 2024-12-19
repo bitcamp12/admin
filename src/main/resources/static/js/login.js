@@ -39,15 +39,31 @@ function login(userType) {
 		} else {
 			$passwordError.hide();
 		}
+		/*
+		// 입력이 모두 유효하면 로그인 처리
+		   if (valid) {
+		     const loginData = {
+		       username: $username.val(),
+		       password: $password.val()
+		     };
 
+		     $.ajax({
+		       type: 'POST',
+		       url: '/api/secure/login/' + userType,
+		       contentType: 'application/json',
+		       data: JSON.stringify(loginData),
+		       success: function (response) {
+		         alert('성공');
+		         window.location.href = '/secure/' + userType + '/index';
+		       },
+		       error: function (xhr, status, error) {
+		         $matchError.show();
+		       }
+		     });
+			 */
 		// 입력이 모두 유효하면 로그인 처리
 		if (valid) {
-			/*
-			const data = {
-				id : $username.val(),
-				password : $password.val()
-			};
-			*/
+			
 			const data = new FormData();
 			data.append('username', $username.val());
 			data.append('password', $password.val());
@@ -55,7 +71,7 @@ function login(userType) {
 			$.ajax({
 					//회원가입 진행
 					type: 'post',
-					url : '/api/secure/login/' + userType,
+					url : '/api/secure/login',
 					data : data,
 					processData: false, // 데이터를 쿼리 문자열로 변환하지 않음
 					contentType: false, // contentType을 설정하지 않음 (multipart/form-data로 자동 처리됨)
@@ -64,6 +80,7 @@ function login(userType) {
 						window.location.href = '/secure/'+userType+'/index';
 					},
 					error : function(xhr) {
+						alert('로그인 실패');
 						$matchError.show();
 					}
 				});
@@ -71,14 +88,3 @@ function login(userType) {
 	}
 }
 					
-/*					success : function(data) {						
-						location.href='/secure/'+userType+'/index';
-					},
-					error : function(e) {
-						$matchError.show();
-			   		}
-			    });
-			} else {
-				return;
-			}
-		}*/

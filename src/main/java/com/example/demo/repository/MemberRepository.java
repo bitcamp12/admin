@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ import com.example.demo.entity.Member.Role;
 //JPA용 Repository
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Integer> {
+	//id와 role을 기준으로 Member를 조회하는 메서드 추가
+	Optional<Member> findByIdAndRole(String id, String role);
 
 	@Query("select m from Member m where m.id = :id and m.password = :password and m.role ='SELLER'")
 	Member findByLoginIdAndPassword(@Param("id")String id, @Param("password")String password);
@@ -30,5 +33,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 	Page<Member> findByRoleAndNameContaining(Role seller, String value, Pageable pageable);
 
 	long countByRoleAndNameContaining(Role seller, String value);
+
+	Optional<Member> findByRoleAndId(Role seller, String username);
 
 }

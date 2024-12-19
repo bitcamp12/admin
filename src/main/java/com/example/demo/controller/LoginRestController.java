@@ -1,28 +1,14 @@
+/*
 package com.example.demo.controller;
 
-import java.util.Collections;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.LoginDTO;
-import com.example.demo.entity.Admin;
-import com.example.demo.entity.Member;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.SellerService;
-import com.example.demo.util.ApiResponse;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -45,7 +31,7 @@ public class LoginRestController {
 	@Autowired
 	SellerService sellerService;
 	
-	/*
+
 	@PostMapping("/login/admin")
 	public ResponseEntity<ApiResponse<Void>> AdminLogin(@RequestBody LoginDTO loginDTO) {
 		try {
@@ -81,29 +67,29 @@ public class LoginRestController {
 				
 		}
 	}
-	*/
-//	@PostMapping("/login/admin")
-//	public ResponseEntity<ApiResponse<Void>> AdminLogin(@RequestBody LoginDTO loginDTO) {
-//       
-//		String id = loginDTO.getId();
-//		String password = loginDTO.getPassword();
-//		try {
-//			Admin result = adminService.findByLoginIdAndPassword(id,password);
-//			if(result != null) {
-//				httpSession.setAttribute("role", "ADMIN");
-//				httpSession.setAttribute("id", id);
-//				httpSession.setAttribute("name", result.getName());
-//				return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "success", null));
-//			}
-//			else {
-//				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse<>(401, "wrong password", null));
-//			}
-//			
-//		}catch(Exception e) {
-//			e.printStackTrace();
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "serve error", null));
-//		}	
-//    }
+
+	@PostMapping("/login/admin")
+	public ResponseEntity<ApiResponse<Void>> AdminLogin(@RequestBody LoginDTO loginDTO) {
+       
+		String id = loginDTO.getId();
+		String password = loginDTO.getPassword();
+		try {
+			Admin result = adminService.findByLoginIdAndPassword(id,password);
+			if(result != null) {
+				httpSession.setAttribute("role", "ADMIN");
+				httpSession.setAttribute("id", id);
+				httpSession.setAttribute("name", result.getName());
+				return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "success", null));
+			}
+			else {
+				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ApiResponse<>(401, "wrong password", null));
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "serve error", null));
+		}	
+    }
 	
 	@PostMapping("/login/seller")
 	public ResponseEntity<ApiResponse<Void>> SellerLogin(@RequestBody LoginDTO loginDTO) {
@@ -147,3 +133,4 @@ public class LoginRestController {
     }
 
 }
+*/
