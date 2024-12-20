@@ -216,9 +216,10 @@ function refresh() {
 function closeModal() {
     // 모달 닫기
     //$(".confirmModal").modal("hide");
-
-    // Backdrop 제거
-    $(".modal-backdrop").remove();
+	var backdrop = document.querySelector('.modal-backdrop');
+	   if (backdrop) {
+	       backdrop.remove();  // 배경을 수동으로 제거
+	   }
 
     // Body 상태 초기화
     //$("body").removeClass("modal-open").removeAttr("style");

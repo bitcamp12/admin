@@ -1,6 +1,9 @@
 package com.example.demo.config;
 
+import java.time.Duration;
+
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,13 +14,15 @@ public class WebConfig implements WebMvcConfigurer {
 	/**
      * 정적 리소스 핸들러 설정
      */
-    @Override
+	@Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // 정적 리소스 매핑
-        registry.addResourceHandler("/static/**") // URL 경로
-                .addResourceLocations("classpath:/static/"); // 실제 리소스 경로
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/")
+                .setCacheControl(CacheControl.maxAge(Duration.ofHours(1)));
+        
+        registry.addResourceHandler("/favicon.ico")
+                .addResourceLocations("classpath:/static/images/");
     }
-
     /**
      * CORS 설정
      */

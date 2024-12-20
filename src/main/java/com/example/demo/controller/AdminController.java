@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +30,6 @@ import com.example.demo.service.NoticeService;
 import com.example.demo.service.ReviewAfterService;
 import com.example.demo.service.ReviewBeforeService;
 import com.example.demo.service.SellerService;
-
-import jakarta.servlet.http.HttpSession;
 
 // Admin = 사이트 관리자
 @Controller
@@ -60,40 +60,32 @@ public class AdminController {
 	@Autowired
 	private ReviewAfterRepository reviewAfterRepository;
 	
-	@Autowired
-	HttpSession httpSession;
+//	@Autowired
+//	HttpSession httpSession;
 	
     @GetMapping("/index")
 	public String index(Model model) {
-    	//관리자 정보 추후 추가하기 model 어트리뷰트..//	
-    	String role = (String) httpSession.getAttribute("role");
-    	String name = (String) httpSession.getAttribute("name");
-    	System.out.println(name);
-    	if("ADMIN".equals(role) && name != null) {
-    		model.addAttribute("name", name);
-    		return "admin/index";  // index.html 템플릿을 렌더링
-    	}else {
-    		return "redirect:/secure/login";
+    	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    	
+    	if (authentication != null && authentication.isAuthenticated()) {
+    		String username = authentication.getName();
+    		model.addAttribute("name", username);
     	}
-        
+
+    	return "admin/index";  // index.html 템플릿을 렌더링
     }
-    
-	@GetMapping("/logout")
-	public String logout() {
-		httpSession.invalidate();
-    	return "redirect:/secure/login";
-    }
-	
+   
     @GetMapping("/memberList")
-	public String memberList(Model model) {
-    	Map<String, Object> members = memberService.getMembersWithPaging(1);
-    	model.addAttribute("members", members.get("members"));
-    	model.addAttribute("memberPaging", members.get("memberPaging"));
-    	model.addAttribute("currentPage", members.get("currentPage"));
-    	model.addAttribute("totalPages", members.get("totalPages"));
-    	model.addAttribute("totalCount", members.get("totalCount"));
-        return "admin/body/memberList";  // index.html 템플릿을 렌더링
-    }
+	public String memberList(Model model) {	
+	    	Map<String, Object> members = memberService.getMembersWithPaging(1);
+	    	model.addAttribute("members", members.get("members"));
+	    	model.addAttribute("memberPaging", members.get("memberPaging"));
+	    	model.addAttribute("currentPage", members.get("currentPage"));
+	    	model.addAttribute("totalPages", members.get("totalPages"));
+	    	model.addAttribute("totalCount", members.get("totalCount"));
+	
+	    	return "admin/body/memberList";  // index.html 템플릿을 렌더링
+	    }
  
     @GetMapping("/sellerList")
  	public String sellerList(

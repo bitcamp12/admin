@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.MemberDTO;
 import com.example.demo.entity.Member;
+import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.service.MemberService;
 import com.example.demo.util.ApiResponse;
 
@@ -26,6 +28,13 @@ public class MemberController {
 	@Autowired
 	MemberService memberService;
 	
+	@Autowired
+	MemberRepository memberRepository;
+	
+	
+	@Autowired
+	AdminRepository adminRepository;
+	
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<Member>> signUp(@RequestBody MemberDTO memberDTO) {
         System.out.println("Received data: " + memberDTO);
@@ -33,11 +42,12 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "success", null));
     }
 
+    /*
 	@PostMapping("login")
 	public String login(Model model) {
         return "login";  
     }
-
+	*/
 	
 	
 	// 회원 목록 조회 (페이징)
@@ -84,4 +94,29 @@ public class MemberController {
     	memberService.cancelSeller(memberSeqInt);
     }
     
+
+//	@GetMapping("/test")
+//	public ResponseEntity<String> aa() {
+//		
+////		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+////		 String name = authentication.getName();
+//
+//		 
+//	 
+//		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+//
+//	        String rawPassword = "dd";
+//	        String encryptedPassword = encoder.encode(rawPassword);
+//		Member member = new Member();
+//		member.setId("dd");
+//		member.setPassword(encryptedPassword);
+//		member.setName("dd");
+//		member.setEmail("dd@naver.com");
+//		member.setPhone("010-0000-0000");
+//		member.setRole(Member.Role.SELLER);
+//		
+//		memberRepository.save(member);
+//		
+//		return null;
+//    }
 }
