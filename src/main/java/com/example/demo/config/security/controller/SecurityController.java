@@ -15,7 +15,7 @@ public class SecurityController {
     // 로그인 페이지 보여주기
     @GetMapping("/secure/login")
     public String login() {
-        return "/login";  // login.html 템플릿 반환
+        return "login";  // login.html 템플릿 반환
     }
     /*
     // 관리자 로그인 처리
