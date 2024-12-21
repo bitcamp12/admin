@@ -222,6 +222,6 @@ function closeModal() {
 	   }
 
     // Body 상태 초기화
-    //$("body").removeClass("modal-open").removeAttr("style");
+   // $("body").removeClass("modal-open").removeAttr("style");
 	$('body').css('overflow', 'auto'); // 스크롤 복구
 }

@@ -36,4 +36,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
 	Optional<Member> findByRoleAndId(Role seller, String username);
 
+	Member findById(String username);
+
 }

@@ -76,11 +76,10 @@ function login(userType) {
 					processData: false, // 데이터를 쿼리 문자열로 변환하지 않음
 					contentType: false, // contentType을 설정하지 않음 (multipart/form-data로 자동 처리됨)
 					success : function(response){
-						alert('성공');
+						alert('로그인이 성공하였습니다!');
 						window.location.href = '/secure/'+userType+'/index';
 					},
 					error : function(xhr) {
-						alert('로그인 실패');
 						$matchError.show();
 					}
 				});

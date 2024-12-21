@@ -67,7 +67,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		// 정적 리소스 접근 허용
             		.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-            		.requestMatchers( "/api/secure/login", "/secure/login", "/api/members/test", "/static/**", "/ccs/**", "/js/**", "/images/**").permitAll()
+            		.requestMatchers("/favicon.ico", "/api/secure/login", "/secure/login", "/api/members/test", "/static/**", "/ccs/**", "/js/**", "/images/**").permitAll()
                     .requestMatchers("/secure/admin/**").hasRole("ADMIN")
                     .requestMatchers("/secure/seller/**").hasRole("SELLER")
                     .anyRequest().authenticated()

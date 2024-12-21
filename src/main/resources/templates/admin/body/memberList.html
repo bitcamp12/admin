@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>회원 관리</title>
-	<link rel="stylesheet" th:href="@{/static/css/common.css}">
-	<link rel="stylesheet" th:href="@{/static/css/memberList.css}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>회원 관리</title>
+<link rel="stylesheet" th:href="@{/static/css/common.css}">
+<link rel="stylesheet" th:href="@{/static/css/memberList.css}">
 </head>
 <body>
 	<div class="container">
 		<div class="title">회원 관리</div>
 
-	 	<div class="search-bar">
+		<div class="search-bar">
 			<input type="text" id="search" placeholder="검색">
 			<button onclick="performSearch(1)">검색</button>
-		</div> 
-		
-	
-		
+		</div>
+
+
+
 
 		<table>
 			<thead>
@@ -33,94 +33,119 @@
 				</tr>
 			</thead>
 			<tbody id="memberTableBody">
-			    <tr th:each="member : ${members}">
-			        <td th:text="${member.memberSeq}"></td>
-			        <td th:text="${member.id}"></td>
-			        <td th:text="${member.name}"></td>
-			        <td th:text="${member.email}"></td>
-			        <td th:text="${member.phone}"></td>
-			        <td th:text="${member.gender}"></td>
-			        <td th:text="${#temporals.format(member.registerDate,'yyyy-MM-dd')}"></td>
-   					<td>
-					    <button type="button" id="setSellerBtn1"
-					    		th:attr="data-seq=${member.memberSeq}, data-name=${member.role}"
-					            data-bs-target="#confirmModal"
-					            th:if="${member.role != 'SELLER'}"
-					            class="custom-btn">
-					        전환
-					    </button>
-					    <button type="button" id="cancelSellerBtn1"
-					    		th:attr="data-seq=${member.memberSeq}, data-name=${member.role}"
-					            data-bs-target="#cancelModal"
-					            th:if="${member.role == 'SELLER'}"
-					            class="custom-btn">
-					        전환취소
-					    </button>
+				<tr th:each="member : ${members}">
+					<td th:text="${member.memberSeq}"></td>
+					<td th:text="${member.id}"></td>
+					<td th:text="${member.name}"></td>
+					<td th:text="${member.email}"></td>
+					<td th:text="${member.phone}"></td>
+					<td th:text="${member.gender}"></td>
+					<td
+						th:text="${#temporals.format(member.registerDate,'yyyy-MM-dd')}"></td>
+					<td>
+						<button type="button" id="setSellerBtn1"
+							th:attr="data-seq=${member.memberSeq}, data-name=${member.role}"
+							data-bs-target="#confirmModal" data-bs-toggle="modal"
+							th:if="${member.role != 'SELLER'}" class="custom-btn">
+							전환</button>
+						<button type="button" id="cancelSellerBtn1"
+							th:attr="data-seq=${member.memberSeq}, data-name=${member.role}"
+							data-bs-target="#cancelModal" data-bs-toggle="modal"
+							th:if="${member.role == 'SELLER'}" class="custom-btn">
+							전환취소</button>
 					</td>
-			    </tr>
+				</tr>
 			</tbody>
 		</table>
 
-	<div th:if="${memberPaging != null}" class="pagination" th:utext="${memberPaging.pagingHTML}"></div>
-	
-	
-	<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title">공연관계자 회원으로 전환</h5>
-		        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <p>전환 처리하시겠습니까? </p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="custom-btn" id="setSellerConfirmBtn">확인</button>
-		    <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
-	      </div>
-	    </div>
-	  </div>
+		<div th:if="${memberPaging != null}" class="pagination"
+			th:utext="${memberPaging.pagingHTML}"></div>
 	</div>
-	
-	<div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title">일반 회원으로 전환</h5>
-	           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body">
-	        <p>전환 취소 처리하시겠습니까? </p>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="custom-btn" id="cancelSellerConfirmBtn">확인</button>
-		    <button type="button" class="custom-btn-disable" data-bs-dismiss="modal">취소</button>
-	      </div>
-	    </div>
-	  </div>
+
+	<div class="modal fade" id="confirmModal" tabindex="-1"
+		aria-labelledby="confirmModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">공연관계자 회원으로 전환</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>전환 처리하시겠습니까?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="custom-btn-disable"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="custom-btn" id="setSellerConfirmBtn">확인</button>
+				</div>
+			</div>
+		</div>
 	</div>
-	
+
+	<div class="modal fade" id="cancelModal" tabindex="-1"
+		aria-labelledby="confirmModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">일반 회원으로 전환</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>전환 취소 처리하시겠습니까?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="custom-btn-disable"
+						data-bs-dismiss="modal">취소</button>
+					<button type="button" class="custom-btn"
+						id="cancelSellerConfirmBtn">확인</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<!-- Modal -->
-	<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	      </div>
-	      <div class="modal-body" id="modalMessage">
-	        <!-- 메시지가 동적으로 들어갑니다 -->
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-  	</div>
-	
+	<div class="modal fade" id="Modal" tabindex="-1"
+		aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="modalMessage">
+					<!-- 메시지가 동적으로 들어갑니다 -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
 	</div>
-	
-	
+
+	<!-- Modal -->
+	<div class="modal fade" id="Modal" tabindex="-1"
+		aria-labelledby="deleteSuccessLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteSuccessLabel">알림</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="modalMessage">
+					<!-- 메시지가 동적으로 들어갑니다 -->
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="custom-btn" data-bs-dismiss="modal">확인</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script th:src="@{/static/js/member_search1.js}"></script>
 
