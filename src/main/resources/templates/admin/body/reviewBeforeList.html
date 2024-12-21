@@ -12,8 +12,8 @@
 
 		<!-- 검색 -->
 		<div class="search-bar">
-			<input type="text" id="search" placeholder="검색">
-			<button onclick="performSearch()">검색</button>
+			<input type="text" th:value="${keyword}" id="search" placeholder="내용 검색">
+			<button onclick="memberPaging(1)">검색</button>
 		</div>
 
 		<!-- 테이블 -->
@@ -84,13 +84,20 @@
 		  </div>
 		</div>
 		<!-- 페이징 -->
-		<div class="pagination">
-			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
-			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		<div>
+			<div th:if="${paging != null}" class="pagination" th:utext="${paging}"></div>
 		</div>
 	</div>
 
 <script>
+function memberPaging(page){
+	if($('#search').val() == '')
+		loadBodyForm('reviewBeforeList?page=' + (page-1));
+	else {
+		let value = $('#search').val();
+		loadBodyForm('reviewBeforeList?value='+value+"&page=" + (page-1));
+	}
+}
 //모달 열 때 seq 값을 전달
 $('#confirmModal').on('show.bs.modal', function(event) {
 	var button = $(event.relatedTarget); // 버튼을 클릭한 요소
@@ -104,7 +111,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 	
 	var seq = $(this).data('seq'); // 저장된 seq 값을 가져오기
 
-	$('#confirmModal').modal('hide');
+	//$('#confirmModal').modal('hide');
 
     // 배경 회색 제거
     var backdrop = document.querySelector('.modal-backdrop');

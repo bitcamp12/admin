@@ -14,8 +14,8 @@ import com.example.demo.dto.SellerDTO;
 @Mapper
 public interface PlayDAO {
 	
-	@Insert("INSERT INTO PLAY (NAME,MEMBER_SEQ, START_TIME, END_TIME, DESCRIPTION, ADDRESS, total_actor, image_original_file_name, image_file_name)"
-			+ " VALUES(#{name},#{memberSeq}, #{startTime}, #{endTime}, #{description}, #{address}, #{totalActor}, #{imageOriginalFileName}, #{imageFileName})")
+	@Insert("INSERT INTO PLAY (NAME,MEMBER_SEQ, START_TIME, END_TIME, DESCRIPTION, ADDRESS, total_actor, image_original_file_name, image_file_name, running_time, price, age_limit)"
+			+ " VALUES(#{name},#{memberSeq}, #{startTime}, #{endTime}, #{description}, #{address}, #{totalActor}, #{imageOriginalFileName}, #{imageFileName}, #{runningTime}, #{price}, #{ageLimit})")
 	public void playRegisterWrite(PlayDTO playDTO);
 	
 	

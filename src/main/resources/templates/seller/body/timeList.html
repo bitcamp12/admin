@@ -8,7 +8,12 @@
 <body>
 	<div class="container">
 		<div class="title">공연 시간표 목록</div>
+		<!-- 검색 -->
 		<div class="search-bar">
+			<input type="text" th:value="${keyword}" id="search" placeholder="공연 시간표 번호 검색">
+			<button onclick="memberPaging(1)">검색</button>
+		</div>
+		<!-- <div class="search-bar">
 			<input type="text" placeholder="검색">
 			<button type="button">검색</button>
 			<select class="form-select w-auto col-md-4" aria-label="정렬">
@@ -17,7 +22,7 @@
 					<option value="3">최신등록순</option>
 					<option value="4">할인율순</option>
 			</select>
-		</div>
+		</div> -->
 			<table>
 				<thead >
 					<tr>
@@ -61,9 +66,8 @@
 					<!-- 추가 행은 필요에 따라 추가 -->
 				</tbody>
 			</table>
-		<div class="pagination">
-			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
-			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		<div>
+			<div th:if="${paging != null}" class="pagination" th:utext="${paging}"></div>
 		</div>
 		<div class="text-end">
 			<a class="btn" onclick="loadBodyForm('timeRegisterForm')">공연 시간표 등록</a>
@@ -86,7 +90,6 @@
 		    </div>
 		  </div>
 		</div>
-		
 		<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="deleteSuccessLabel" aria-hidden="true">
 		  <div class="modal-dialog">
 		    <div class="modal-content">
@@ -118,7 +121,7 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function()
 	
 	var seq = $(this).data('seq'); // 저장된 seq 값을 가져오기
 
-	$('#confirmModal').modal('hide');
+	//$('#confirmModal').modal('hide');
 
     // 배경 회색 제거
     var backdrop = document.querySelector('.modal-backdrop');
@@ -158,6 +161,15 @@ function showModal(message) {
     // 부트스트랩 모달 띄우기
     const Modal = new bootstrap.Modal(document.getElementById('Modal'));
     Modal.show();
+}
+
+function memberPaging(page){
+	if($('#search').val() == '')
+		loadBodyForm('timeList?page=' + (page-1));
+	else {
+		let value = $('#search').val();
+		loadBodyForm('timeList?value='+value+"&page=" + (page-1));
+	}
 }
 </script>
 </body>

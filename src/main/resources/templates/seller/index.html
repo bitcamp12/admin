@@ -32,7 +32,7 @@
 			</div>
 			<div class="flex items-center">
 			<span class="mr-3 text-gray-600" th:text="${name} + ' 님'"></span> 
-			<span class="mr-3 text-gray-600 cursor-pointer" onclick="location.href='/secure/admin/logout'">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;로그아웃&nbsp;&nbsp;</span>
+			<span class="mr-3 text-gray-600 cursor-pointer" onclick="location.href='/secure/logout'">&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;로그아웃&nbsp;&nbsp;</span>
 			<img
 					src="/static/images/default-profile.png" alt="Profile"
 					class="w-10 h-10 rounded-full border-2 border-purple-100">
@@ -67,11 +67,6 @@
 							<div class="nav-icon">
 								<i class="fas fa-chart-line"></i>
 							</div> <span class="menu-text ml-3 font-medium">QnA 관리</span>
-					</span></li>
-					<li><span id="timeUpdateForm" class="nav-item">
-							<div class="nav-icon">
-								<i class="fas fa-chart-line"></i>
-							</div> <span class="menu-text ml-3 font-medium">테스트</span>
 					</span></li>
 				</ul>
 			</div>
@@ -116,14 +111,13 @@ document.addEventListener('DOMContentLoaded', function(){
         sidebar.classList.toggle('nav-hidden');
     });
     
-     loadBodyForm('playList');
+     loadBodyForm('playList?page=0');
 	 
 	 //클릭 이벤트 설정
-	 loadClickEvent('playList');
-	 loadClickEvent('bookList');
-	 loadClickEvent('timeList');
-	 loadClickEvent('qnaList');
-	 loadClickEvent('timeUpdateForm');
+	 loadClickEvent('playList','playList');
+	 loadClickEvent('bookList','bookList');
+	 loadClickEvent('timeList','timeList');
+	 loadClickEvent('qnaList','qnaList');
 });
 
 function showModal(message) {

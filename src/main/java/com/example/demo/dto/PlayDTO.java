@@ -20,4 +20,7 @@ public class PlayDTO {
 	private String description;
 	private String address;
 	private String totalActor;
+	private int price;
+	private String ageLimit;
+    private int runningTime;
 }

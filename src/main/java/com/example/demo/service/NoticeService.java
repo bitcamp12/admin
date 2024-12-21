@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,7 +34,8 @@ public class NoticeService {
 	@Transactional
 	public void registerNotice(NoticeDTO noticeDTO) {
 
-		// 중복 코드 noticeDTO.setHide("N"); // 기본적으로 숨김 처리 NO
+		noticeDTO.setHide("N"); // 기본적으로 표기되도록 - 숨김NO 상태
+
 		int result = noticeDAO.insertNotice(noticeDTO);
 
 		if (result != 1) {
@@ -92,4 +95,26 @@ public class NoticeService {
 		noticeRepository.save(notice);
 	}
 
+	// 공지사항 페이징 처리 (검색 없이)
+    public List<Notice> getNoticePaging(Pageable pageable) {
+        Page<Notice> pageResult = noticeRepository.findAll(pageable); // 모든 공지사항 페이징
+        return pageResult.getContent(); // 페이징된 결과 목록 반환
+    }
+
+    // 전체 공지사항 개수 반환
+    public long getTotalCount() {
+        return noticeRepository.count();
+    }
+
+    // 검색 키워드를 기준으로 전체 공지사항 개수 반환
+    public long getTotalCountKeyword(String value) {
+        return noticeRepository.countByTitleContaining(value); // 제목에 키워드가 포함된 공지사항 개수 반환
+    }
+
+    // 검색 키워드를 기준으로 공지사항 페이징 처리
+    public List<Notice> getNoticePagingKeyword(Pageable pageable, String value) {
+        Page<Notice> pageResult = noticeRepository.findByTitleContaining(value, pageable); // 키워드로 검색하여 페이징 처리
+        return pageResult.getContent(); // 페이징된 결과 목록 반환
+    }
+    
 }

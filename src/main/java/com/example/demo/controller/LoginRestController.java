@@ -1,35 +1,73 @@
+/*
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.LoginDTO;
-import com.example.demo.entity.Admin;
-import com.example.demo.entity.Member;
+import com.example.demo.repository.AdminRepository;
 import com.example.demo.service.AdminService;
 import com.example.demo.service.SellerService;
-import com.example.demo.util.ApiResponse;
 
 import jakarta.servlet.http.HttpSession;
 
+@RestController
 @RequestMapping("/api/secure")
-@Controller
 public class LoginRestController {
 
 	@Autowired
-	AdminService adminService;
+	private AdminService adminService;
 	
+	@Autowired
+	private AdminRepository adminRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private HttpSession httpSession;
+
 	@Autowired
 	SellerService sellerService;
 	
-	@Autowired
-	HttpSession httpSession;
-	
+
+	@PostMapping("/login/admin")
+	public ResponseEntity<ApiResponse<Void>> AdminLogin(@RequestBody LoginDTO loginDTO) {
+		try {
+			System.out.println("Login 시도 1 - ID: " + loginDTO.getId());
+			
+			Admin admin = adminService.findByLoginIdAndPassword(loginDTO.getId(),loginDTO.getPassword());
+			
+			if(admin != null) {
+				System.out.println("Login 성공 for ID: " + loginDTO.getId());
+				Authentication authentication= new UsernamePasswordAuthenticationToken(
+					admin.getId(),
+					admin.getPassword(),
+					Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
+				);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+				
+				//세션에 필요한 정보 저장
+				httpSession.setAttribute("role", "ADMIN");
+				httpSession.setAttribute("id", admin.getId());
+				httpSession.setAttribute("name", admin.getName());
+
+				return ResponseEntity.ok(new ApiResponse<>(200, "success", null));
+			}else {
+				System.out.println("Login 실패 - 유효하지 않은 credentials");
+			}
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(new ApiResponse<>(401, "wrong password", null));
+		} catch(Exception e) {
+			System.out.println("Login 에러: " + e.getMessage());
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse<>(500, "server error", null));
+				
+		}
+	}
+
 	@PostMapping("/login/admin")
 	public ResponseEntity<ApiResponse<Void>> AdminLogin(@RequestBody LoginDTO loginDTO) {
        
@@ -76,5 +114,23 @@ public class LoginRestController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "serve error", null));
 		}	
     }
+	
+	@PostMapping("/test")
+	public ResponseEntity<String> aa() {
+		  BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+	        String rawPassword = "aa";
+	        String encryptedPassword = encoder.encode(rawPassword);
+		Admin admin = new Admin();
+		admin.setId("aa");
+		admin.setPassword(encryptedPassword);
+		admin.setName("aa");
+		admin.setAdminSeq(10000);
+		
+		adminRepository.save(admin);
+		
+		return null;
+    }
 
 }
+*/

@@ -1,8 +1,9 @@
 //타임리프 body 불러오기
-function loadClickEvent(elementId) {
-    document.getElementById(elementId).addEventListener('click', function() {
+function loadClickEvent(button, url) {
+    document.getElementById(button).addEventListener('click', function() {
+		$('body').css('overflow', 'auto'); // 스크롤 복구
         const mainContent = document.getElementById('mainContent');
-        fetch('/secure/admin/'+elementId) // Fetch the content from the server
+        fetch('/secure/admin/'+url) // Fetch the content from the server
             .then(response => response.text())
             .then(html => {
               mainContent.innerHTML = html; // Update the main content
@@ -27,6 +28,7 @@ function loadClickEvent(elementId) {
 }
 
 function loadBodyForm(elementId) {
+	$('body').css('overflow', 'auto'); // 스크롤 복구
      const mainContent = document.getElementById('mainContent');
      fetch('/secure/admin/'+elementId) // Fetch the content from the server
          .then(response => response.text())

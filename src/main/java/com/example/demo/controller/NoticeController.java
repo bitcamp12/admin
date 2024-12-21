@@ -49,8 +49,8 @@ public class NoticeController {
 				System.out.println(image);
 				noticeDTO.setImageFileName(imageFileName);
 				noticeDTO.setImageOriginalFileName(image.getOriginalFilename());
-			};
-
+			}			
+			System.out.println(image);
 			// 공지사항 등록
 			noticeService.registerNotice(noticeDTO);
 

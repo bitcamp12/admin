@@ -12,10 +12,12 @@
 	
 		<div class="title">공지사항 목록</div>
 		
+		<!-- 검색 -->
 		<div class="search-bar">
-			<input type="text" id="search" placeholder="검색">
-			<button onclick="performSearch()">검색</button>
+			<input type="text" th:value="${keyword}" id="search" placeholder="제목 검색">
+			<button onclick="memberPaging(1)">검색</button>
 		</div>
+		
 		<table>
 			<thead>
 				<tr>
@@ -43,16 +45,15 @@
 		                    <label class="form-check-label" th:for="'toggle' + ${notice.noticeSeq}"></label>
 		                    <input class="form-check-input" type="checkbox" 
 		                           th:id="'toggle' + ${notice.noticeSeq}" 
-		                          th:checked="${notice.hide == T(com.example.demo.entity.Notice.HideStatus).Y ? 'checked' : null}"
+		                          th:checked="${notice.hide.equals(T(com.example.demo.entity.Notice.HideStatus).Y) ? 'checked' : null}"
 		                           th:onclick="|toggleHideStatus(${notice.noticeSeq}, this)|">
 		                </div>
 		            </td>
 		        </tr>
 			</tbody>
 		</table>
-		<div class="pagination">
-			<a href="#">이전</a> <a href="#">1</a> <a href="#" class="active">2</a>
-			<a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">다음</a>
+		<div>
+			<div th:if="${paging != null}" class="pagination" th:utext="${paging}"></div>
 		</div>
 		<div class="text-end">
 			<a class="btn" onclick="loadBodyForm('noticeWriteForm')">글쓰기</a>
@@ -101,6 +102,14 @@ function showModal(message) {
     // 부트스트랩 모달 띄우기
     const Modal = new bootstrap.Modal(document.getElementById('Modal'));
     Modal.show();
+}
+function memberPaging(page){
+	if($('#search').val() == '')
+		loadBodyForm('noticeList?page=' + (page-1));
+	else {
+		let value = $('#search').val();
+		loadBodyForm('noticeList?value='+value+"&page=" + (page-1));
+	}
 }
 </script>
 </body>
