@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.example.demo.config.security.handler.CustomAuthFailureHandler;
 import com.example.demo.config.security.handler.CustomAuthSuccessHandler;
@@ -41,6 +42,15 @@ public class SecurityConfig {
 //    @Lazy
 //    private SellerAuthenticationProvider sellerAuthenticationProvider;
     
+    public void addCorsMappings(CorsRegistry registry) {
+        // 특정 경로에 대한 CORS 설정
+        registry.addMapping("/**") // 모든 경로에 대해 CORS 설정
+                .allowedOrigins("http://localhost:8080", "http://223.130.153.17:8080") // 허용할 오리진
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+                .allowedHeaders("*") // 모든 헤더 허용
+                .allowCredentials(true); // 자격 증명 포함 허용
+    }
+
     @Bean 
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
