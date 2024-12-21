@@ -31,7 +31,7 @@ public class AdminUserDetailsService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		//1. DB에서 관리자 정보를 찾음
 		System.out.println("사이트 관리자 아이디 : "+username);
-		/*
+	
 		Optional<Admin> admin = adminRepository.findById(username);
 		System.out.println("exist");
 		if (admin.isPresent()) {
@@ -43,7 +43,7 @@ public class AdminUserDetailsService implements UserDetailsService {
 				    .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN")))
 					.build();
 		}
-		*/
+
 		Optional<Member> seller = memberRepository.findByRoleAndId(Member.Role.SELLER,username);
 		
 		

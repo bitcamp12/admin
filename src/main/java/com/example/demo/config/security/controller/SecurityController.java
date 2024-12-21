@@ -34,6 +34,14 @@ public class SecurityController {
     }
     
     
+    // 로그인 페이지 보여주기
+    @GetMapping("/test2")
+    @ResponseBody
+    public List<Member> test2() {
+    	List<Member> member = MemberRepository.findAll();
+        return member; // login.html 템플릿 반환
+    }
+    
     /*
     // 관리자 로그인 처리
     @PostMapping("/api/secure/login/admin")
