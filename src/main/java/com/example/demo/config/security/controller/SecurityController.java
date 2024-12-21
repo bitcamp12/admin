@@ -1,8 +1,14 @@
 package com.example.demo.config.security.controller;
 
+import java.util.List;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.example.demo.entity.Member;
+import com.example.demo.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +18,22 @@ public class SecurityController {
 
     private final AuthenticationManager authenticationManager;
 
+    private final MemberRepository MemberRepository;
     // 로그인 페이지 보여주기
     @GetMapping("/secure/login")
     public String login() {
         return "login";  // login.html 템플릿 반환
     }
+    
+    // 로그인 페이지 보여주기
+    @GetMapping("/test")
+    @ResponseBody
+    public List<Member> test() {
+    	List<Member> member = MemberRepository.findAll();
+        return member; // login.html 템플릿 반환
+    }
+    
+    
     /*
     // 관리자 로그인 처리
     @PostMapping("/api/secure/login/admin")
