@@ -12,12 +12,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import com.example.demo.config.security.handler.CustomAuthFailureHandler;
 import com.example.demo.config.security.handler.CustomAuthSuccessHandler;
 import com.example.demo.config.security.provider.AdminAuthenticationProvider;
 import com.example.demo.config.security.service.AdminUserDetailsService;
+
+import jakarta.servlet.DispatcherType;
 
 
 @Configuration
@@ -65,6 +66,7 @@ public class SecurityConfig {
             .csrf(crsf -> crsf.disable()) // CSRF 비활성화
             .authorizeHttpRequests(auth -> auth
             		// 정적 리소스 접근 허용
+            		.dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
             		.requestMatchers( "/api/secure/login", "/secure/login", "/api/members/test", "/static/**", "/ccs/**", "/js/**", "/images/**").permitAll()
                     .requestMatchers("/secure/admin/**").hasRole("ADMIN")
                     .requestMatchers("/secure/seller/**").hasRole("SELLER")
