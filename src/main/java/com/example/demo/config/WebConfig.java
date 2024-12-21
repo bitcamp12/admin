@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     /**
      * CORS 설정
      */
-	/*
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // 모든 경로에 대해 허용
@@ -35,5 +35,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*") // 모든 헤더 허용
                 .allowCredentials(true); // 쿠키 포함 여부
     }
-    */
+
 }

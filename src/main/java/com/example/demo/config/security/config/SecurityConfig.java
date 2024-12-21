@@ -65,8 +65,7 @@ public class SecurityConfig {
             .csrf(crsf -> crsf.disable()) // CSRF 비활성화
             .authorizeHttpRequests(auth -> auth
             		// 정적 리소스 접근 허용
-            		.requestMatchers("/static/**", "/ccs/**", "/js/**", "/images/**").permitAll()
-                	.requestMatchers( "/secure/login", "/api/members/test").permitAll()
+            		.requestMatchers( "/api/secure/login", "/secure/login", "/api/members/test", "/static/**", "/ccs/**", "/js/**", "/images/**").permitAll()
                     .requestMatchers("/secure/admin/**").hasRole("ADMIN")
                     .requestMatchers("/secure/seller/**").hasRole("SELLER")
                     .anyRequest().authenticated()
@@ -75,7 +74,6 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/secure/login")
                 .loginProcessingUrl("/api/secure/login")
-                .defaultSuccessUrl("/secure/admin/index", true)
                 .failureHandler(authFailureHandler)
                 .successHandler(authSuccessHandler)
                 .permitAll()
