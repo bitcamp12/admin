@@ -25,13 +25,9 @@ repositories {
 
 dependencies {
     // Spring Data JPA 의존성 (JPA를 통한 데이터베이스 연동)
-    implementation('org.springframework.boot:spring-boot-starter-data-jpa') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-    }
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
       // Spring Web 모듈 의존성 (웹 애플리케이션 개발)
-    implementation('org.springframework.boot:spring-boot-starter-web') {
-        exclude group: 'commons-logging', module: 'commons-logging'
-    }
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     
     // Spring Security 라이브러리
     implementation 'org.springframework.boot:spring-boot-starter-security'
