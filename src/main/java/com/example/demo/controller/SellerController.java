@@ -78,7 +78,7 @@ public class SellerController {
     		model.addAttribute("name", username);
     	}
 		
-		return "/seller/index"; // index.html 템플릿을 렌더링
+		return "seller/index"; // index.html 템플릿을 렌더링
 	}
 
 //	@GetMapping("/logout")
@@ -90,7 +90,7 @@ public class SellerController {
 	// 공연정보등록
 	@GetMapping("/playRegisterForm")
 	public String playReg(Model model) {
-		return "/seller/body/playRegisterForm";
+		return "seller/body/playRegisterForm";
 	}
 
 	// 공연정보수정
@@ -112,7 +112,7 @@ public class SellerController {
 			model.addAttribute("startTime", startTime);
 			model.addAttribute("endTime", endTime);
 		}
-		return "/seller/body/playUpdate";
+		return "seller/body/playUpdate";
 	}
 
 	@GetMapping("/playList")
@@ -139,7 +139,7 @@ public class SellerController {
 		model.addAttribute("playList", playList);
 		model.addAttribute("paging", memberPaging.getPagingHTML());
 
-		return "/seller/body/playList"; // index.html 템플릿을 렌더링
+		return "seller/body/playList"; // index.html 템플릿을 렌더링
 	}
 	
 	
