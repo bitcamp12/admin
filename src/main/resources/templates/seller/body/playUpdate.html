@@ -90,8 +90,8 @@
         
 
             <!-- 네이버 스마트에디터 2.0 API -->
-            <div id="smarteditor">
-                <textarea name="description" id="editorTxt" rows="40" cols="10" style="width: 100%; height: 500px;"
+            <div class="mb-3">
+                <textarea name="description" id="description" rows="40" cols="10" style="width: 100%; height: 500px;"
                 th:text="${play.description}" placeholder="내용을 입력해주세요." required></textarea>
             </div>
 
@@ -119,6 +119,7 @@ var oEditors = [];
         });
     }, false);
 })();
+/*
 function smartEditor() {
 	// 네이버 스마트 에디터 2.0 API 
 	
@@ -138,7 +139,7 @@ function smartEditor() {
 $(document).ready(function() {
     smartEditor();
 });
-
+*/
 function previewImage() {
     const fileInput = document.getElementById('posterUpload');
     const preview = document.getElementById('posterPreview');
@@ -160,13 +161,13 @@ function previewImage() {
 
 document.getElementById('enroll').addEventListener('click', function(event) {
 	event.preventDefault(); // 기본 제출 방지
-	oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
+	//oEditors.getById["editorTxt"].exec("UPDATE_CONTENTS_FIELD", []);
 	//폼 데이터- 제목, 내용, 이미지 등록
 	const seq = document.getElementById('seq').innerText;
 	const name = document.getElementById('play_name').value;
 	const startTime = document.getElementById('start_date').value;
 	const endTime = document.getElementById('end_date').value;
-	const description =document.getElementById('editorTxt').value;
+	const description =document.getElementById('description').value;
 	const totalActor =document.getElementById('total_actor').value;
 	const price =document.getElementById('price').value;
 	const ageLimit =document.getElementById('ageLimit').value;
