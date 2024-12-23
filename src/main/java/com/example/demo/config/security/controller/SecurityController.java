@@ -28,6 +28,12 @@ public class SecurityController {
     @GetMapping("/secure/login")
     public String login() {
         return "login";  // login.html 템플릿 반환
+    }  
+    // 로그인 페이지 보여주기
+    
+    @GetMapping({"/", ""})
+    public String index() {
+        return "login";  // login.html 템플릿 반환
     }
     
     // 로그인 페이지 보여주기
