@@ -22,6 +22,13 @@ public class WebConfig implements WebMvcConfigurer {
         
         registry.addResourceHandler("/favicon.ico")
                 .addResourceLocations("classpath:/static/images/");
+        
+		/*
+		 * // Webjars 설정 추가 registry.addResourceHandler("/webjars/**")
+		 * .addResourceLocations("classpath:/META-INF/resources/webjars/")
+		 * .setCacheControl(CacheControl.maxAge(Duration.ofHours(1)))
+		 * .resourceChain(false);
+		 */
     }
     /**
      * CORS 설정

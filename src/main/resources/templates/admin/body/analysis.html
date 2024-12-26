@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>방문자 분석</title>
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/analysis.css}">
+    <!-- Google Charts 라이브러리 로드 -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">방문자 분석</div>
+
+        <div class="stats-summary">
+            <div class="stats-card">
+                <h3>전체 방문자 수</h3>
+                <div class="stats-value" th:text="${totalVisitors} + '명'"></div>
+            </div>
+            <div class="stats-card">
+                <h3>최고 인기 시간대</h3>
+                <div class="stats-value" th:text="${peakHour != null ? peakHour.hour_of_day + '시 (' + peakHour.visit_count + '명)' : '데이터 없음'}"></div>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2>시간대별 방문자 분포</h2>
+            <div id="hourlyChart" style="width: 100%; height: 400px;"></div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>시간대</th>
+                            <th>방문자 수</th>
+                            <th>비율</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="stat : ${hourlyStats}">
+                            <td th:text="${stat.hour_of_day} + '시'"></td>
+                            <td th:text="${stat.visit_count} + '명'"></td>
+                            <td th:text="${#numbers.formatDecimal(stat.visit_count * 100.0 / totalVisitors, 1, 1)} + '%'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="stats-section">
+            <h2>요일별 방문자 분포</h2>
+            <div id="dailyChart" style="width: 100%; height: 400px;"></div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>요일</th>
+                            <th>방문자 수</th>
+                            <th>비율</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="stat : ${dailyStats}">
+                            <td th:with="dayName=${
+                                stat.day_of_week == 'MON' ? '월요일' :
+                                stat.day_of_week == 'TUE' ? '화요일' :
+                                stat.day_of_week == 'WED' ? '수요일' :
+                                stat.day_of_week == 'THU' ? '목요일' :
+                                stat.day_of_week == 'FRI' ? '금요일' :
+                                stat.day_of_week == 'SAT' ? '토요일' : '일요일'
+                            }" th:text="${dayName}"></td>
+                            <td th:text="${stat.visit_count} + '명'"></td>
+                            <td th:text="${#numbers.formatDecimal(stat.visit_count * 100.0 / totalVisitors, 1, 1)} + '%'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // Thymeleaf 데이터를 JavaScript 변수로 변환
+        var hourlyStats = /*[[${hourlyStats}]]*/ [];
+        var dailyStats = /*[[${dailyStats}]]*/ [];
+
+        // Google Charts 초기화 및 차트 그리기
+        google.charts.load('current', {'packages':['corechart'], 'language': 'ko'});
+        
+        // 차트 그리기 함수들
+        function drawHourlyChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '시간');
+            data.addColumn('number', '방문자 수');
+
+            hourlyStats.forEach(function(stat) {
+                data.addRow([stat.hour_of_day + '시', stat.visit_count]);
+            });
+
+            var options = {
+                title: '시간대별 방문자 수',
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['#BE97EC'],
+                backgroundColor: { fill:'transparent' },
+                chartArea: {width: '80%', height: '70%'},
+                vAxis: {
+                    minValue: 0,
+                    gridlines: {color: '#f3f3f3'}
+                },
+                hAxis: {
+                    gridlines: {color: '#f3f3f3'}
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('hourlyChart'));
+            chart.draw(data, options);
+        }
+
+        function drawDailyChart() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', '요일');
+            data.addColumn('number', '방문자 수');
+
+            var dayMapping = {
+                'MON': '월요일',
+                'TUE': '화요일',
+                'WED': '수요일',
+                'THU': '목요일',
+                'FRI': '금요일',
+                'SAT': '토요일',
+                'SUN': '일요일'
+            };
+
+            dailyStats.forEach(function(stat) {
+                data.addRow([dayMapping[stat.day_of_week], stat.visit_count]);
+            });
+
+            var options = {
+                title: '요일별 방문자 수',
+                curveType: 'function',
+                legend: { position: 'bottom' },
+                colors: ['#BE97EC'],
+                backgroundColor: { fill:'transparent' },
+                chartArea: {width: '80%', height: '70%'},
+                vAxis: {
+                    minValue: 0,
+                    gridlines: {color: '#f3f3f3'}
+                },
+                hAxis: {
+                    gridlines: {color: '#f3f3f3'}
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('dailyChart'));
+            chart.draw(data, options);
+        }
+
+        // Google Charts 로드 완료 후 차트 그리기
+        google.charts.setOnLoadCallback(function() {
+            try {
+                drawHourlyChart();
+                drawDailyChart();
+                
+                // 창 크기 변경 시 차트 다시 그리기
+                window.addEventListener('resize', function() {
+                    drawHourlyChart();
+                    drawDailyChart();
+                });
+            } catch(e) {
+                console.error('차트 그리기 오류:', e);
+            }
+        });
+    </script>
+</body>
+</html>
