@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>방문자 분석</title>
+    <!-- CSS 파일 로드 -->
+    <link rel="stylesheet" th:href="@{/static/css/common.css}">
+    <link rel="stylesheet" th:href="@{/static/css/analysis.css}">
+    <!-- Chart.js CDN으로 변경 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="title">방문자 분석</div>
+
+        <!-- 통계 요약 카드 -->
+        <div class="stats-summary">
+            <div class="stats-card">
+                <h3>전체 방문자 수</h3>
+                <div class="stats-value" th:text="${totalVisitors} + '명'"></div>
+            </div>
+            <div class="stats-card">
+                <h3>최고 인기 시간대</h3>
+                <div class="stats-value" th:text="${peakHour != null ? peakHour.hour_of_day + '시 (' + peakHour.visit_count + '명)' : '데이터 없음'}"></div>
+            </div>
+        </div>
+
+        <!-- 시간대별 방문자 차트 -->
+        <div class="stats-section">
+            <h2>시간대별 방문자 분포</h2>
+            <div class="chart-container">
+                <canvas id="hourlyChart"></canvas>
+            </div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>시간대</th>
+                            <th>방문자 수</th>
+                            <th>비율</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="stat : ${hourlyStats}">
+                            <td th:text="${stat.hour_of_day} + '시'"></td>
+                            <td th:text="${stat.visit_count} + '명'"></td>
+                            <td th:text="${#numbers.formatDecimal(stat.visit_count * 100.0 / totalVisitors, 1, 1)} + '%'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 요일별 방문자 차트 -->
+        <div class="stats-section">
+            <h2>요일별 방문자 분포</h2>
+            <div class="chart-container">
+                <canvas id="dailyChart"></canvas>
+            </div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>요일</th>
+                            <th>방문자 수</th>
+                            <th>비율</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="stat : ${dailyStats}">
+                            <td th:with="dayName=${
+                                stat.day_of_week == 'MON' ? '월요일' :
+                                stat.day_of_week == 'TUE' ? '화요일' :
+                                stat.day_of_week == 'WED' ? '수요일' :
+                                stat.day_of_week == 'THU' ? '목요일' :
+                                stat.day_of_week == 'FRI' ? '금요일' :
+                                stat.day_of_week == 'SAT' ? '토요일' : '일요일'
+                            }" th:text="${dayName}">
+                            </td>
+                            <td th:text="${stat.visit_count} + '명'"></td>
+                            <td th:text="${#numbers.formatDecimal(stat.visit_count * 100.0 / totalVisitors, 1, 1)} + '%'"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+       	const hourlyStats = /*[[${hourlyStats}]]*/ [];
+       	const dailyStats = /*[[${dailyStats}]]*/ [];
+        
+        console.log('Hourly Stats:', hourlyStats);
+        console.log('Daily Stats:', dailyStats);
+        console.log('asjfkdsjfkdsajfkdjsafjdsaflkfjdsalfjdsaflkdsa');
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // 차트 생성 전 캔버스 존재 확인
+            const hourlyCtx = document.getElementById('hourlyChart');
+            const dailyCtx = document.getElementById('dailyChart');
+
+            if (!hourlyCtx || !dailyCtx) {
+                console.error('차트 캔버스를 찾을 수 없습니다.');
+                return;
+            }
+
+            // 데이터 존재 확인
+            if (!hourlyStats || !dailyStats) {
+                console.error('차트 데이터가 없습니다.');
+                return;
+            }
+
+            // 시간대별 차트
+            new Chart(hourlyCtx, {
+                type: 'line',
+                data: {
+                    labels: hourlyStats.map(stat => `${stat.hour_of_day}시`),
+                    datasets: [{
+                        label: '방문자 수',
+                        data: hourlyStats.map(stat => stat.visit_count),
+                        borderColor: '#BE97EC',
+                        backgroundColor: 'rgba(190, 151, 236, 0.2)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 요일별 차트
+            new Chart(dailyCtx, {
+                type: 'line',
+                data: {
+                    labels: dailyStats.map(stat => stat.day_of_week),
+                    datasets: [{
+                        label: '방문자 수',
+                        data: dailyStats.map(stat => stat.visit_count),
+                        borderColor: '#BE97EC',
+                        backgroundColor: 'rgba(190, 151, 236, 0.2)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>    
+</body>
+</html>
