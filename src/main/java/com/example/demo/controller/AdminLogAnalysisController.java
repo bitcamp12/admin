@@ -26,8 +26,6 @@ public class AdminLogAnalysisController {
 			
 			// 방문자 통계 데이터 수집
             List<Map<String, Object>> hourlyStats = adminLogAnalysisService.getHourlyStats();
-            System.out.println("hourlyStats: " + hourlyStats);  // 데이터 확인하기
-            
             List<Map<String, Object>> dailyStats = adminLogAnalysisService.getDailyStats();
             long totalVisitors = adminLogAnalysisService.getTotalVisitorCount();
 
@@ -37,18 +35,10 @@ public class AdminLogAnalysisController {
                 return "admin/body/analysis";
             }
             
-            // 최고 인기 시간대 계산
-            Map<String, Object> peakHour = null;
-            long maxVisits = 0;
-            if (hourlyStats != null) {
-                for (Map<String, Object> stat : hourlyStats) {
-                    long visits = ((Number) stat.get("visit_count")).longValue();
-                    if (visits > maxVisits) {
-                        maxVisits = visits;
-                        peakHour = stat;
-                    }
-                }
-            }
+         // 최고 인기 시간대 계산 
+            Map<String, Object> peakHour = hourlyStats.stream()
+                .max((a, b) -> ((Number)a.get("visit_count")).intValue() - ((Number)b.get("visit_count")).intValue())
+                .orElse(null);
             
             System.out.println("=== Debug Logs ===");
             System.out.println("hourlyStats: " + hourlyStats);

@@ -25,6 +25,7 @@
    color: #BE97EC;
 }
 
+/* 통계 섹션 스타일 */
 .stats-section {
    background: white;
    border-radius: 10px;
@@ -43,16 +44,17 @@
 
 .chart-container {
     position: relative;
-    height: 400px !important;
-    min-height: 400px;
+    height: 400px;
     width: 100%;
     margin: 20px 0;
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* 테이블 스타일 */
 .stats-table {
    margin-top: 20px;
 }
@@ -82,6 +84,7 @@
    background-color: #f3e6ff;
 }
 
+/* 반응형 디자인 */
 @media (max-width: 768px) {
    .stats-summary {
        flex-direction: column;
@@ -90,13 +93,8 @@
    .stats-card {
        margin-bottom: 15px;
    }
-
-   .chart-container {
-       height: 300px !important;
-   }
 }
 
-canvas {
-    width: 100% !important;
-    height: 100% !important;
+.chart-container {
+    margin-bottom: 40px;
 }
