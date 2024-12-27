@@ -18,6 +18,7 @@ import com.example.demo.entity.PlayTimeTable;
 import com.example.demo.repository.PlayRepository;
 import com.example.demo.repository.PlayTimeTableRepository;
 import com.example.demo.repository.TheaterRepository;
+import com.example.demo.service.ApiService;
 import com.example.demo.service.PlayTimeTableService;
 import com.example.demo.util.ApiResponse;
 
@@ -38,10 +39,13 @@ public class PlayTimeTableController {
 	@Autowired
 	TheaterRepository theaterRepository;
 	
+	@Autowired
+	private ApiService apiService;
 	// 공연 시간 정보 입력 
     @PostMapping("/timeRegisterWrite")
     public void timeRegisterWrite(@RequestBody PlayTimeTableDTO playTimeTableDTO) {
     	playTimeTableService.timeRegisterWrite(playTimeTableDTO);
+    	apiService.getApiData("/api/plays/cacheRefresh");
     }
     
     // 공연 정보 조회
@@ -54,6 +58,7 @@ public class PlayTimeTableController {
     public ResponseEntity<ApiResponse<Void>> deleteTimeTable(@PathVariable("playTimeSeq") int playTimeSeq) {
     	try {
     		playTimeTableRepository.deleteById(playTimeSeq);
+        	apiService.getApiData("/api/plays/cacheRefresh");
     		return ResponseEntity.ok().body(new ApiResponse<>(200, "시간표가 삭제됨", null));
     	}
     	catch(Exception e) {
@@ -80,6 +85,7 @@ public class PlayTimeTableController {
     		playTimeTable.setPlay(playRepository.findById(playTimeTableDTO.getPlaySeq()).get());
     		playTimeTable.setTheater(theaterRepository.findById(playTimeTableDTO.getTheaterSeq()).get());
     		playTimeTableRepository.save(playTimeTable);
+        	apiService.getApiData("/api/plays/cacheRefresh");
     		return ResponseEntity.ok().body(new ApiResponse<>(200, "시간표가 수정됨", null));
     	}
     	catch(Exception e) {

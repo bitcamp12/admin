@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,7 @@ import com.example.demo.dto.PlayDTO;
 import com.example.demo.entity.Play;
 import com.example.demo.objectstorage.NCPObjectStorageService;
 import com.example.demo.repository.PlayRepository;
+import com.example.demo.service.ApiService;
 import com.example.demo.service.PlayService;
 import com.example.demo.util.ApiResponse;
 
@@ -35,6 +35,9 @@ public class PlayController {
 
 	@Autowired
 	private NCPObjectStorageService objectStorageService;
+	
+	@Autowired
+	private ApiService apiService;
 	
 	@Autowired
 	HttpSession httpSession;
@@ -69,7 +72,11 @@ public class PlayController {
 				playDTO.setImageOriginalFileName(image.getOriginalFilename());
 			}
 			playService.playRegisterWrite(playDTO);
-			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(500, "ok", null));
+			
+			apiService.getApiData("/api/plays/cacheRefresh");
+			
+			
+			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "ok", null));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "fail", null));
@@ -80,6 +87,7 @@ public class PlayController {
 	public ResponseEntity<ApiResponse<Void>> deletePlay(@PathVariable("playSeq") int playSeq) {
 		try {
 			playService.deleteById(playSeq);
+			apiService.getApiData("/api/plays/cacheRefresh");
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(200, "ok", null));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "fail", null));
@@ -116,6 +124,7 @@ public class PlayController {
 				play.setImageOriginalFileName(image.getOriginalFilename());
 			}
 			playRepository.save(play);
+			apiService.getApiData("/api/plays/cacheRefresh");
 			return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(500, "ok", null));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse<>(500, "fail", null));
