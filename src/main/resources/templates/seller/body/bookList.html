@@ -43,7 +43,7 @@
 						<td th:text="${#temporals.format(book.playTimeTable.targetDate, 'yyyy-MM-dd')}">작성일</td>
 						<td th:text="${book.bookSeq}" data-seq="${book.bookSeq}">1</td>
 						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">예매일</td>
-						<td th:text="${book.bookedX + ', ' + book.bookedY}">1</td>
+						<td th:text="${book.seatNum}">1</td>
 						<td th:text="${book.totalPrice}">결제금액</td>
 						<td ><button type="button" id="refundBtn"
 									 th:attr="data-seq=${book.bookSeq}"
@@ -53,7 +53,7 @@
 									 data-bs-target="#confirmModal"
 									 class="custom-btn"> </button>
 						</td>
-						<td th:text="${book.paymentStatus}">상태</td>
+						<td class="payStatus" th:text="${book.paymentStatus}">상태</td>
 					</tr>
 					<!-- 추가 행은 필요에 따라 추가 -->
 				</tbody>
