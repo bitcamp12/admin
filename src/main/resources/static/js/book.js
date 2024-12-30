@@ -57,6 +57,31 @@ function refresh() {
 }
 
 
+$(document).ready(function () {
+	// 결제 상태 값 한글로 변환.
+	payStatusConvert();
+});
+	
+
+// 결제 상태 값 한글로 변환
+function payStatusConvert() {
+	const payStatus = document.querySelectorAll("td.payStatus")
+	
+	payStatus.forEach(cell => {
+		if(cell.textContent.trim() === 'PAID') {
+			cell.textContent = '결제완료';
+		} else if(cell.textContent.trim() === 'PENDING') {
+			cell.textContent = '결제 전';
+		} else if(cell.textContent.trim() === 'REFUND REQUESTED') {
+			cell.textContent = '환불요청';
+		} else if(cell.textContent.trim() === 'REFUNDED') {
+			cell.textContent = '환불완료';
+		}
+		
+	})
+};	
+
+
 function closeModal() {
     // 모달 닫기
     //$(".confirmModal").modal("hide");
