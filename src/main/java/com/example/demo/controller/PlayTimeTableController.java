@@ -85,7 +85,9 @@ public class PlayTimeTableController {
     		playTimeTable.setPlay(playRepository.findById(playTimeTableDTO.getPlaySeq()).get());
     		playTimeTable.setTheater(theaterRepository.findById(playTimeTableDTO.getTheaterSeq()).get());
     		playTimeTableRepository.save(playTimeTable);
+
         	apiService.getApiData("/api/plays/cacheRefresh");
+
     		return ResponseEntity.ok().body(new ApiResponse<>(200, "시간표가 수정됨", null));
     	}
     	catch(Exception e) {
