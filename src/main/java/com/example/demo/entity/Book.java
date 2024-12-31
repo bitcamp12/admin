@@ -51,8 +51,8 @@ public class Book {
     @Column(name = "total_price")
     private int totalPrice;
     
-    @Column(name = "seat_num")
-    private int seatNum;
+    @Column(name = "seat_num", nullable = true)
+    private Integer seatNum;
     
     
     @Enumerated(EnumType.STRING) // Enum 타입을 문자열로 저장
