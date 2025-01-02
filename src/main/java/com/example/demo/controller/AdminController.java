@@ -74,10 +74,10 @@ public class AdminController {
     	
     	if (authentication != null && authentication.isAuthenticated()) {
     		String username = authentication.getName();
-    		Member member = memberRepository.findById(username);
-    		member.getMemberSeq();
+    		//Member member = memberRepository.findById(username);
+    		//member.getMemberSeq();
+    		model.addAttribute("name", username);
     	}
-
     	return "admin/index";  // index.html 템플릿을 렌더링
     }
    
