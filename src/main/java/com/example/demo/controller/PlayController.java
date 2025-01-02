@@ -33,9 +33,6 @@ public class PlayController {
 
 	
 	@Autowired
-	private MemberRepository memberRepository;
-	
-	@Autowired
 	private PlayService playService;
 	
 	@Autowired
@@ -73,18 +70,14 @@ public class PlayController {
 			playDTO.setPrice(price);
 			playDTO.setAgeLimit(ageLimit);
 			playDTO.setRunningTime(runningTime);
-
-			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	          int seq = 0;
-	          if (authentication != null && authentication.isAuthenticated()) {
-	             String username = authentication.getName();
-	             Member member = memberRepository.findById(username);
-	             seq = member.getMemberSeq();
-
-	          }
+			int seq = 0;
+			if (authentication != null && authentication.isAuthenticated()) {
+			    String username = authentication.getName();
+			    Member member = memberRepository.findById(username);
+			    seq = member.getMemberSeq();
+			}
 			
-
 			playDTO.setMemberSeq(seq);
 			if (image != null && !image.isEmpty()) {
 				// 이미지 파일 저장 및 파일명 생성
