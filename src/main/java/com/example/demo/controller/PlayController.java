@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.PlayDTO;
+import com.example.demo.entity.Member;
 import com.example.demo.entity.Play;
 import com.example.demo.objectstorage.NCPObjectStorageService;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PlayRepository;
 import com.example.demo.service.ApiService;
 import com.example.demo.service.PlayService;
@@ -32,6 +36,9 @@ public class PlayController {
 	
 	@Autowired
 	private PlayRepository playRepository;
+	
+	@Autowired
+	private MemberRepository memberRepository;
 
 	@Autowired
 	private NCPObjectStorageService objectStorageService;
@@ -62,7 +69,16 @@ public class PlayController {
 			playDTO.setPrice(price);
 			playDTO.setAgeLimit(ageLimit);
 			playDTO.setRunningTime(runningTime);
-			int seq = (int) httpSession.getAttribute("memberSeq");
+			
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	          int seq = 0;
+	          if (authentication != null && authentication.isAuthenticated()) {
+	             String username = authentication.getName();
+	             Member member = memberRepository.findById(username);
+	             seq = member.getMemberSeq();
+
+	          }
+			
 			playDTO.setMemberSeq(seq);
 			if (image != null && !image.isEmpty()) {
 				// 이미지 파일 저장 및 파일명 생성
