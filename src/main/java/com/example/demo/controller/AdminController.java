@@ -22,6 +22,7 @@ import com.example.demo.entity.Member;
 import com.example.demo.entity.Notice;
 import com.example.demo.entity.ReviewAfter;
 import com.example.demo.entity.ReviewBefore;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.NoticeRepository;
 import com.example.demo.repository.ReviewAfterRepository;
 import com.example.demo.repository.ReviewBeforeRepository;
@@ -58,6 +59,9 @@ public class AdminController {
 	private ReviewBeforeRepository reviewBeforeRepository;
 	
 	@Autowired
+	private MemberRepository memberRepository;
+	
+	@Autowired
 	private ReviewAfterRepository reviewAfterRepository;
 	
 //	@Autowired
@@ -65,11 +69,13 @@ public class AdminController {
 	
     @GetMapping("/index")
 	public String index(Model model) {
+    	
     	Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     	
     	if (authentication != null && authentication.isAuthenticated()) {
     		String username = authentication.getName();
-    		model.addAttribute("name", username);
+    		Member member = memberRepository.findById(username);
+    		member.getMemberSeq();
     	}
 
     	return "admin/index";  // index.html 템플릿을 렌더링

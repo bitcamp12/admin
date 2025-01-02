@@ -16,6 +16,8 @@
 table {
 	width: 100%;
 	border-collapse: collapse;
+	table-layout: fixed;
+	
 }
 
 table th, table td {
@@ -26,6 +28,7 @@ table th, table td {
 	padding: 15px;
 	text-align: center;
 	font-size: 14px;
+	  text-overflow: ellipsis;   /* 넘치는 부분을 '...'으로 표시 */
 }
 
 table th {
