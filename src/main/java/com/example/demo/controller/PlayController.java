@@ -70,15 +70,13 @@ public class PlayController {
 			playDTO.setPrice(price);
 			playDTO.setAgeLimit(ageLimit);
 			playDTO.setRunningTime(runningTime);
-			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	          int seq = 0;
-	          if (authentication != null && authentication.isAuthenticated()) {
-	             String username = authentication.getName();
-	             Member member = memberRepository.findById(username);
-	             seq = member.getMemberSeq();
-
-	          }
+			int seq = 0;
+			if (authentication != null && authentication.isAuthenticated()) {
+			    String username = authentication.getName();
+			    Member member = memberRepository.findById(username);
+			    seq = member.getMemberSeq();
+			}
 			
 			playDTO.setMemberSeq(seq);
 			if (image != null && !image.isEmpty()) {
