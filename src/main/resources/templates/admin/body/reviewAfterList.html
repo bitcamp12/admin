@@ -20,14 +20,14 @@
 		<table>
 			<thead>
 				<tr>
-					<th>구분</th>
-					<th>아이디</th>
-					<th>작성자</th>
-					<th>공연명</th>
-					<th>내용</th>
-					<th>별점</th>
-					<th>작성 날짜</th>
-					<th>삭제</th>
+					<th class="listNo">번호</th>
+					<th class="userId">아이디</th>
+					<th class="userId">작성자</th>
+					<th class="listPlaySubject">공연명</th>
+					<th class="listPlaySubject">내용</th>
+					<th class="userName">별점</th>
+					<th class="listDateTime">작성 날짜</th>
+					<th class="listBtn">삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -38,7 +38,7 @@
 					<td th:text="${reviewAfter.play.name}">겨울 왕국</td>
 					<td th:text="${reviewAfter.content}">추워요</td>
 					<td th:text="${reviewAfter.rating}">3</td>
-					<td th:text="${#temporals.format(reviewAfter.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+					<td th:text="${#temporals.format(reviewAfter.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
 					<td >
 						<button type="button"
 								class="custom-btn" 

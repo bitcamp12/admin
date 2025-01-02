@@ -26,18 +26,18 @@
 			<table>
 				<thead >
 				<tr>
-                    <th> 문의번호</th>
-                    <th> 사용자ID</th>
-                    <th> 공연명</th>
-                    <th> 문의날짜</th>
-                    <th style="width: 40%;"> 문의제목</th>
-                    <th> 처리여부</th>
-                    <th> 답변</th>
+                    <th class="listNo"> 문의번호</th>
+                    <th class="userId"> 사용자ID</th>
+                    <th class="listPlaySubject"> 공연명</th>
+                    <th class="listDate"> 문의날짜</th>
+                    <th > 문의제목</th> 
+                    <th class="listBtn"> 처리여부</th>
+                    <th class="listBtn"> 답변</th>
                 </tr>
 				</thead>
 				<tbody>
 				<tr th:each="qna : ${qnaList}">
-					<td th:text="${qna.qnaSeq}">문의번호</td>
+					<td th:text="${qna.qnaSeq}">번호</td>
 					<td th:text="${qna.memberId}">사용자ID</td>
 					<td th:text="${qna.playName}">공연명</td>
 					<td th:text="${#temporals.format(qna.createdDate, 'yyyy-MM-dd')}">작성일</td>
@@ -88,8 +88,7 @@
 	                <label for="createdDate" class="form-label">작성일</label>
 	                <input type="text" class="form-control" id="createdDate" name= "createdDate" placeholder="작성자" readonly> 
 	           </div>
-            </div>
-            <div class="mb-3 row">
+            </div>            <div class="mb-3 row">
                 <label for="title" class="form-label">제목</label>
                 <input type="text" class="form-control" id="title" name= "title" placeholder="작성자" readonly>
             </div>

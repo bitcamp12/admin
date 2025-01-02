@@ -20,13 +20,13 @@
 		<table>
 			<thead>
 				<tr>
-					<th>구분</th>
-					<th>아이디</th>
-					<th>작성자</th>
-					<th>공연명</th>
-					<th>내용</th>
-					<th>작성 날짜</th>
-					<th>삭제</th>
+					<th class="listNo">구분</th>
+					<th class="userId">아이디</th>
+					<th class="userId">작성자</th>
+					<th class="listPlaySubject">공연명</th>
+					<th class="listSubject">내용</th>
+					<th class="listDateTime">작성 날짜</th>
+					<th class="listBtn">삭제</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -36,7 +36,7 @@
 					<td th:text="${reviewBefore.member.name}">홍길동</td>
 					<td th:text="${reviewBefore.play.name}">겨울 왕국</td>
 					<td th:text="${reviewBefore.content}">추워요</td>
-					<td th:text="${#temporals.format(reviewBefore.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"></td>
+					<td th:text="${#temporals.format(reviewBefore.createdDate, 'yyyy-MM-dd HH:mm')}"></td>
 					<td >
 						<button type="button"
 								class="custom-btn" 
