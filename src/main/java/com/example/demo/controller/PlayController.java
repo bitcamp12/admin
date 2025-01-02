@@ -31,6 +31,10 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping(value = "/api/plays")
 public class PlayController {
 
+	
+	@Autowired
+	private MemberRepository memberRepository;
+	
 	@Autowired
 	private PlayService playService;
 	
@@ -69,6 +73,7 @@ public class PlayController {
 			playDTO.setPrice(price);
 			playDTO.setAgeLimit(ageLimit);
 			playDTO.setRunningTime(runningTime);
+
 			
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 	          int seq = 0;
@@ -79,6 +84,7 @@ public class PlayController {
 
 	          }
 			
+
 			playDTO.setMemberSeq(seq);
 			if (image != null && !image.isEmpty()) {
 				// 이미지 파일 저장 및 파일명 생성

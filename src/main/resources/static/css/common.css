@@ -16,7 +16,12 @@
 table {
 	width: 100%;
 	border-collapse: collapse;
+<<<<<<< HEAD
+	table-layout: fixed;
+	
+=======
 	table-layout: fixed; /* 테이블 셀의 고정된 너비 */
+>>>>>>> d16776d168d120cd9db0c6a7cd05b6c694df8fb2
 }
 
 table th, table td {
@@ -26,6 +31,9 @@ table th, table td {
 	padding: 15px;
 	text-align: center;
 	font-size: 14px;
+<<<<<<< HEAD
+	  text-overflow: ellipsis;   /* 넘치는 부분을 '...'으로 표시 */
+=======
     
 }
 
@@ -34,6 +42,7 @@ table td {
 	    text-overflow: ellipsis; /* 넘칠 경우 말줄임 표시 */
 	
 	
+>>>>>>> d16776d168d120cd9db0c6a7cd05b6c694df8fb2
 }
 
 table th {
