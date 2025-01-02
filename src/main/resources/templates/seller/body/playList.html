@@ -25,16 +25,16 @@
 			<table>
 				<thead>
 					<tr>
-						<th>번호</th>
-						<th>공연명</th>
-						<th>시작 기간</th>
-						<th>종료 기간</th>
-						<th>공연 시간</th>
+						<th class="listNo">번호</th>
+						<th class="listPlaySubject">공연명</th>
+						<th class="payAmount">시작기간</th>
+						<th class="payAmount">종료기간</th>
+						<th class="gender">공연시간</th>
 						<th>출연진</th>
-						<th>가격</th>
-						<th>연령 제한</th>
-						<th>수정</th>
-						<th>삭제</th>
+						<th class="payAmount">가격</th>
+						<th class="restrictAge">연령제한</th>
+						<th class="listBtn">수정</th>
+						<th class="listBtn">삭제</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -45,7 +45,7 @@
 						<td th:text="${#temporals.format(play.endTime, 'yyyy-MM-dd')}">공연 종료</td>
 						<td th:text="${play.runningTime}">1</td>
 						<td th:text="${play.totalActor}">1</td>
-						<td th:text="${play.price}">1</td>
+						<td class="payAmount" th:text="${play.price}">1</td>
 						<td th:text="${play.ageLimit}">1</td>
 						<td ><button type="button"
 								class="custom-btn" th:onclick="|loadBodyForm('playUpdate/${play.playSeq}')|">수정</button>
@@ -113,6 +113,11 @@ $('#confirmModal').on('show.bs.modal', function(event) {
 	$('#confirmDeleteBtn').data('seq', seq); // 삭제 버튼에 seq 값을 저장
 });
 
+
+$(document).ready(function () {
+	payAmountDisplay();
+});
+
 // 삭제 버튼 클릭 시 서버에 삭제 요청 보내기
 document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
 	
@@ -162,6 +167,26 @@ function memberPaging(page){
 		loadBodyForm('playList?value='+value+"&page=" + (page-1));
 	}
 }
+
+function payAmountDisplay() {
+	const payAmount = document.querySelectorAll("td.payAmount")
+	
+	for (let i = 0; i < payAmount.length; i++) {
+	    const cell = payAmount[i];
+	    const rawContent = cell.textContent.trim(); // 공백 제거
+	    const sanitizedContent = rawContent.replace(/[^0-9]/g, ""); // 숫자만 남기기
+	    const amount = parseInt(sanitizedContent, 10); // 숫자로 변환
+
+	    if (!isNaN(amount)) {
+	        const formattedAmount = new Intl.NumberFormat("ko-KR").format(amount) + "원";
+	        cell.textContent = formattedAmount; // 포맷된 값으로 변경
+	    } else {
+	        console.warn("Invalid amount:", rawContent); // 디버깅용
+	    }
+	}
+};	
+	
+
 </script>
 </body>
 </html>

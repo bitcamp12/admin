@@ -16,17 +16,24 @@
 table {
 	width: 100%;
 	border-collapse: collapse;
+	table-layout: fixed; /* 테이블 셀의 고정된 너비 */
 }
 
 table th, table td {
 	/*   white-space: normal;   줄바꿈을 허용 */
 	white-space: nowrap; /* 줄바꿈 방지 */
-	overflow: hidden;    /* 내용이 길 경우 숨김 */
 	border: 1px solid #ccc;
 	padding: 15px;
 	text-align: center;
 	font-size: 14px;
-    text-overflow: ellipsis; /* 넘칠 경우 말줄임 표시 */
+    
+}
+
+table td {
+		overflow: hidden;    /* 내용이 길 경우 숨김 */
+	    text-overflow: ellipsis; /* 넘칠 경우 말줄임 표시 */
+	
+	
 }
 
 table th {
@@ -41,6 +48,58 @@ table tr:nth-child(even) {
 table tr:hover {
     background-color: #f3e6ff; /* 마우스를 올렸을 때 연한 보라색으로 변경 */
 }
+
+table th.listNo {
+	width: 80px;
+}
+
+table th.userId {
+	width: 130px;
+}
+
+table th.userName {
+	width: 80px;
+}
+table th.userEmail {
+	width: 170px;
+}
+table th.telNo {
+	width: 100px;
+}
+table th.gender {
+	width: 80px;
+}
+table th.listDate {
+	width: 110px;
+}
+table th.listDateTime {
+	width: 150px;
+}
+table th.listTime {
+	width: 90px;
+}
+table th.listBtn {
+	width: 100px;
+}
+table th.listSubject {
+	width: 350px;
+}
+table th.listNoticeDate {
+	width: 200px;
+}
+table th.listPlaySubject {
+	width: 200px;
+}
+table th.payAmount {
+	width: 120px;
+}
+table th.listActor {
+	width: 200px;
+}
+table th.restrictAge {
+	width: 120px;
+}
+
 
 .search-bar {
 	display: flex;
