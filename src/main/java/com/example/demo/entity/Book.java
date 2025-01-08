@@ -51,6 +51,9 @@ public class Book {
     @Column(name = "total_price")
     private int totalPrice;
     
+    @Column(name = "seat_num", nullable = true)
+    private Integer seatNum;
+    
     
     @Enumerated(EnumType.STRING) // Enum 타입을 문자열로 저장
     @Column(name = "payment_status", columnDefinition = "ENUM('PAID', 'PENDING', 'REFUND_REQUESTED', 'REFUNDED') DEFAULT 'PAID'")

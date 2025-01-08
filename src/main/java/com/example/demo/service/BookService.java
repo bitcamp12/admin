@@ -20,10 +20,10 @@ public class BookService {
 	@Autowired
 	private BookRepository bookRepository;
 
-	public List<Book> getBookList() {
-		return bookRepository.findAll();
+	public List<Book> AllFindBookList() {
+		return bookRepository.AllFindBookList();
 	}
-
+	
 	public void bookDelete(int bookSeqInt) {
 		bookDAO.bookDelete(bookSeqInt);
 	}

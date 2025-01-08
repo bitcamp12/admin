@@ -34,7 +34,7 @@
 	        <div class="notice-image" th:if="${notice.imageFileName}">
 	         <img th:src="'https://kr.object.ncloudstorage.com/bitcamp-9th-bucket-135/storage/' + ${notice.imageFileName}" alt="공지사항 이미지">   
 	         </div>
-            <p th:text="${notice.content}">
+            <p style="white-space: pre-wrap;" th:text="${notice.content}">
                 공지사항 내용이 여기에 표시됩니다. 이 내용은 예시이며, 실제 데이터에 따라 변경됩니다. 
                 공지사항 상세 페이지의 디자인이 업데이트되어 가독성이 높아졌습니다.
             </p>

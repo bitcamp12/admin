@@ -78,7 +78,7 @@ public class SellerController {
     		model.addAttribute("name", username);
     	}
 		
-		return "/seller/index"; // index.html 템플릿을 렌더링
+		return "seller/index"; // index.html 템플릿을 렌더링
 	}
 
 //	@GetMapping("/logout")
@@ -90,7 +90,7 @@ public class SellerController {
 	// 공연정보등록
 	@GetMapping("/playRegisterForm")
 	public String playReg(Model model) {
-		return "/seller/body/playRegisterForm";
+		return "seller/body/playRegisterForm";
 	}
 
 	// 공연정보수정
@@ -112,7 +112,7 @@ public class SellerController {
 			model.addAttribute("startTime", startTime);
 			model.addAttribute("endTime", endTime);
 		}
-		return "/seller/body/playUpdate";
+		return "seller/body/playUpdate";
 	}
 
 	@GetMapping("/playList")
@@ -139,7 +139,7 @@ public class SellerController {
 		model.addAttribute("playList", playList);
 		model.addAttribute("paging", memberPaging.getPagingHTML());
 
-		return "/seller/body/playList"; // index.html 템플릿을 렌더링
+		return "seller/body/playList"; // index.html 템플릿을 렌더링
 	}
 	
 	
@@ -167,7 +167,7 @@ public class SellerController {
 		model.addAttribute("bookList", bookList);
 		model.addAttribute("paging", memberPaging.getPagingHTML());
 
-		return "/seller/body/bookList"; // index.html 템플릿을 렌더링
+		return "seller/body/bookList"; // index.html 템플릿을 렌더링
 	}
 
 
@@ -195,7 +195,7 @@ public class SellerController {
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("paging", memberPaging.getPagingHTML());
 
-		return "/seller/body/qnaList"; // index.html 템플릿을 렌더링
+		return "seller/body/qnaList"; // index.html 템플릿을 렌더링
 	}
 
 	// QnA 게시판 - 답변 뷰
@@ -214,7 +214,7 @@ public class SellerController {
 	// QnA 게시판 - 답변 등록
 	@GetMapping("/qnaWrite")
 	public String qnaWrite(@PathVariable("qnaSeq") int qnaSeq, Model model) {
-		return "/seller/body/qnaWrite";
+		return "seller/body/qnaWrite";
 	}
 
 	// 공연 시간 등록
@@ -222,7 +222,7 @@ public class SellerController {
 	public String timeRegisterForm(Model model) {
 		model.addAttribute("playList", playRepository.findAll());
 		model.addAttribute("theaterList", theaterRepository.findAll());
-		return "/seller/body/timeRegisterForm";
+		return "seller/body/timeRegisterForm";
 	}
 
 	// 공연 시간 등록
@@ -238,7 +238,7 @@ public class SellerController {
 				.from(playTimeTableRepository.findById(seq).get().getTargetDate().atZone(zoneId).toInstant());
 		model.addAttribute("targetDate", targetDate);
 
-		return "/seller/body/timeUpdateForm";
+		return "seller/body/timeUpdateForm";
 	}
 
 
@@ -266,7 +266,7 @@ public class SellerController {
 		model.addAttribute("timeList", timeList);
 		model.addAttribute("paging", memberPaging.getPagingHTML());
 
-		return "/seller/body/timeList"; // index.html 템플릿을 렌더링
+		return "seller/body/timeList"; // index.html 템플릿을 렌더링
 	}
 	
 	

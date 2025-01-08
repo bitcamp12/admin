@@ -25,15 +25,15 @@
 			<table>
 				<thead >
 					 <tr>
-	                    <th>사용자ID</th>
-	                    <th>공연명</th>
-	                    <th>공연일</th>
-	                    <th>예매번호</th>
-	                    <th>예매일</th>
-	                    <th>좌석번호</th>
-	                    <th>결제 금액</th>
-	                    <th>취소가능여부</th>
-	                    <th>상태</th>
+	                    <th class="userId">사용자ID</th>
+	                    <th class="listPlaySubject">공연명</th>
+	                    <th class="listDate">공연일</th>
+	                    <th class="listNo">예매번호</th>
+	                    <th class="listDate">예매일</th>
+	                    <th class="listNo">좌석No</th>
+	                    <th class="payAmount">결제금액</th>
+	                    <th class="listBtn">취소가능여부</th>
+	                    <th class="listBtn">상태</th>
 	                </tr>
 				</thead>
 				<tbody>
@@ -43,8 +43,8 @@
 						<td th:text="${#temporals.format(book.playTimeTable.targetDate, 'yyyy-MM-dd')}">작성일</td>
 						<td th:text="${book.bookSeq}" data-seq="${book.bookSeq}">1</td>
 						<td th:text="${#temporals.format(book.payDate, 'yyyy-MM-dd')}">예매일</td>
-						<td th:text="${book.bookedX + ', ' + book.bookedY}">1</td>
-						<td th:text="${book.totalPrice}">결제금액</td>
+						<td th:text="${book.seatNum}">1</td>
+						<td class="payAmount" th:text="${book.totalPrice}">결제금액</td>
 						<td ><button type="button" id="refundBtn"
 									 th:attr="data-seq=${book.bookSeq}"
 						             th:disabled="${T(java.time.LocalDate).now().compareTo(book.playTimeTable.targetDate.toLocalDate()) >= 0}"
@@ -53,7 +53,7 @@
 									 data-bs-target="#confirmModal"
 									 class="custom-btn"> </button>
 						</td>
-						<td th:text="${book.paymentStatus}">상태</td>
+						<td class="payStatus" th:text="${book.paymentStatus}">상태</td>
 					</tr>
 					<!-- 추가 행은 필요에 따라 추가 -->
 				</tbody>
@@ -102,6 +102,7 @@
   	</div>
 <script th:src="@{/static/js/book.js}"></script>
 <script type="text/javascript">
+	
 function memberPaging(page){
 	if($('#search').val() == '')
 		loadBodyForm('bookList?page=' + (page-1));
@@ -110,6 +111,8 @@ function memberPaging(page){
 		loadBodyForm('bookList?value='+value+"&page=" + (page-1));
 	}
 }
+
+
 </script>
 </body>
 </html>

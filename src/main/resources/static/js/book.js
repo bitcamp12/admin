@@ -57,6 +57,51 @@ function refresh() {
 }
 
 
+$(document).ready(function () {
+	// 결제 상태 값 한글로 변환.
+	payStatusConvert();
+	payAmountDisplay();
+});
+
+
+function payAmountDisplay() {
+	const payAmount = document.querySelectorAll("td.payAmount")
+	
+	for (let i = 0; i < payAmount.length; i++) {
+	    const cell = payAmount[i];
+	    const rawContent = cell.textContent.trim(); // 공백 제거
+	    const sanitizedContent = rawContent.replace(/[^0-9]/g, ""); // 숫자만 남기기
+	    const amount = parseInt(sanitizedContent, 10); // 숫자로 변환
+
+	    if (!isNaN(amount)) {
+	        const formattedAmount = new Intl.NumberFormat("ko-KR").format(amount) + "원";
+	        cell.textContent = formattedAmount; // 포맷된 값으로 변경
+	    } else {
+	        console.warn("Invalid amount:", rawContent); // 디버깅용
+	    }
+	}
+};	
+	
+
+// 결제 상태 값 한글로 변환
+function payStatusConvert() {
+	const payStatus = document.querySelectorAll("td.payStatus")
+	
+	payStatus.forEach(cell => {
+		if(cell.textContent.trim() === 'PAID') {
+			cell.textContent = '결제완료';
+		} else if(cell.textContent.trim() === 'PENDING') {
+			cell.textContent = '결제 전';
+		} else if(cell.textContent.trim() === 'REFUND REQUESTED') {
+			cell.textContent = '환불요청';
+		} else if(cell.textContent.trim() === 'REFUNDED') {
+			cell.textContent = '환불완료';
+		}
+		
+	})
+};	
+
+
 function closeModal() {
     // 모달 닫기
     //$(".confirmModal").modal("hide");

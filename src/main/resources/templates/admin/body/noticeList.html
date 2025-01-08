@@ -21,11 +21,11 @@
 		<table>
 			<thead>
 				<tr>
-					<th>글 번호</th>
-					<th>제목</th>
-					<th>작성 날짜</th>
-					<th>수정 날짜</th>
-					<th>숨김 여부</th>
+					<th class="listNo">번호</th>
+					<th class="listSubject">제목</th>
+					<th class="listDateTime">작성 날짜</th>
+					<th class="listDateTime">수정 날짜</th>
+					<th class="listBtn">숨김 여부</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,9 +35,9 @@
 		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
 		            <td th:text="${notice.title}" 
 		                th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
-		           <td th:text="${#temporals.format(notice.createdDate, 'yyyy년 MM월 dd일 HH시 mm분')}"
+		           <td th:text="${#temporals.format(notice.createdDate, 'yyyy-MM-dd HH:mm')}"
 				    th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
-					<td th:text="${#temporals.format(notice.updatedDate, 'yyyy년 MM월 dd일 HH시 mm분')}"
+					<td th:text="${#temporals.format(notice.updatedDate, 'yyyy-MM-dd HH:mm')}"
 				    th:onclick="|loadBodyForm('noticeDetail/${notice.noticeSeq}')|"></td>
 
 		            <td class="text-center">
